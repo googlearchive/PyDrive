@@ -1,0 +1,101 @@
+pydrive Package
+===============
+
+:mod:`apiattr` Module
+---------------------
+
+.. autoclass:: pydrive.apiattr.ApiAttribute
+    :members:
+    :show-inheritance:
+
+.. autoclass:: pydrive.apiattr.ApiAttributeMixin
+    :members:
+    :show-inheritance:
+
+.. autoclass:: pydrive.apiattr.ApiResource
+    :members:
+    :exclude-members: update
+    :show-inheritance:
+
+.. autoclass:: pydrive.apiattr.ApiResourceList
+    :members:
+    :private-members:
+    :show-inheritance:
+
+:mod:`auth` Module
+------------------
+
+.. autoexception:: pydrive.auth.AuthError
+    :show-inheritance:
+
+.. autoexception:: pydrive.auth.InvalidCredentialsError
+    :show-inheritance:
+
+.. autoexception:: pydrive.auth.AuthenticationRejected
+    :show-inheritance:
+
+.. autoexception:: pydrive.auth.AuthenticationError
+    :show-inheritance:
+
+.. autoexception:: pydrive.auth.RefreshError
+    :show-inheritance:
+
+.. automethod:: pydrive.auth.LoadAuth
+.. automethod:: pydrive.auth.CheckAuth
+
+.. autoclass:: pydrive.auth.GoogleAuth
+    :members:
+    :exclude-members: LocalWebserverAuth, CommandLineAuth
+    :show-inheritance:
+
+    .. automethod:: pydrive.auth.GoogleAuth.LocalWebserverAuth(host_name='localhost', port_numbers=[8080, 8090])
+    .. automethod:: pydrive.auth.GoogleAuth.CommandLineAuth()
+
+
+:mod:`drive` Module
+-------------------
+
+.. autoclass:: pydrive.drive.GoogleDrive
+    :members:
+    :show-inheritance:
+
+:mod:`files` Module
+-------------------
+
+.. autoexception:: pydrive.files.FileNotUploadedError
+    :show-inheritance:
+
+.. autoexception:: pydrive.files.ApiRequestError
+    :show-inheritance:
+
+.. autoexception:: pydrive.files.FileNotDownloadableError
+    :show-inheritance:
+
+.. automethod:: pydrive.files.LoadMetadata
+
+.. autoclass:: pydrive.files.GoogleDriveFileList
+    :members:
+    :show-inheritance:
+
+    .. automethod:: pydrive.files.GoogleDriveFileList._GetList()
+
+.. autoclass:: pydrive.files.GoogleDriveFile
+    :members:
+    :exclude-members: FetchMetadata, FetchContent
+    :show-inheritance:
+
+    .. automethod:: pydrive.files.GoogleDriveFile.FetchMetadata()
+    .. automethod:: pydrive.files.GoogleDriveFile.FetchContent()
+
+:mod:`settings` Module
+----------------------
+
+.. autoexception:: pydrive.settings.SettingsError
+    :show-inheritance:
+
+.. autoexception:: pydrive.settings.InvalidConfigError
+    :show-inheritance:
+
+
+.. automethod:: pydrive.settings.LoadSettingsFile
+.. automethod:: pydrive.settings.ValidateSettings

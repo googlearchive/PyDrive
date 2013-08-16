@@ -1,0 +1,7 @@
+*.pyc
+*~
+pydrive/test/configs/*
+pydrive/test/credentials/*
+
+*.egg-info
+dist

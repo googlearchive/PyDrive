@@ -1,0 +1,8 @@
+include AUTHORS
+include CHANGES
+include LICENSE
+include MANIFEST.in
+include README.rst
+recursive-include docs *
+recursive-include pydrive/test *
+recursive-exclude * *.py[co]

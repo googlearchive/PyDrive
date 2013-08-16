@@ -1,0 +1,11 @@
+client_config_backend: 'settings'
+client_config:
+  client_id: "{{YOUR_CLIENT_ID}}"
+  client_secret: "{{YOUR_CLIENT_SECRET}}"
+
+save_credentials: True
+save_credentials_backend: 'file'
+save_credentials_file: 'credentials/2.dat'
+
+oauth_scope:
+  - "https://www.googleapis.com/auth/drive"
