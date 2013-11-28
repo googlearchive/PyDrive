@@ -167,9 +167,9 @@ def _ValidateSettingsElement(data, struct, key):
             default = struct[key]['default']
         except KeyError:
             raise InvalidConfigError('Missing required setting %s' % key)
-    else:
-        data[key] = default
-        # If data exists, Check type of the data
+        else:
+            data[key] = default
+    # If data exists, Check type of the data
     elif type(value) is not data_type:
         raise InvalidConfigError('Setting %s should \
                                  be type %s' % (key, data_type))
