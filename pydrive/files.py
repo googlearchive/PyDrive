@@ -156,7 +156,7 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
       self.FetchContent()
     return self.content.getvalue().decode('utf-8')
 
-  def GetContentFile(self, filename):
+  def GetContentFile(self, filename, mimetype=None):
     """Save content of this file as a local file.
 
     :param filename: name of the file to write to.
@@ -164,7 +164,7 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     :raises: ApiRequestError, FileNotUploadedError, FileNotDownloadableError
     """
     if self.content is None or type(self.content) is not io.BytesIO:
-      self.FetchContent()
+      self.FetchContent(mimetype)
     f = open(filename, 'wb')
     f.write(self.content.getvalue())
     f.close()
@@ -188,7 +188,7 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
       raise FileNotUploadedError()
 
   @LoadMetadata
-  def FetchContent(self):
+  def FetchContent(self, mimetype=None):
     """Download file's content from download_url.
 
     :raises: ApiRequestError, FileNotUploadedError, FileNotDownloadableError
@@ -197,8 +197,17 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     if download_url:
       self.content = io.BytesIO(self._DownloadFromUrl(download_url))
       self.dirty['content'] = False
-    else:
-      raise FileNotDownloadableError('No downloadLink found in metadata')
+      return
+    
+    export_links = self.metadata.get('exportLinks')
+    if export_links and export_links.get(mimetype):
+      self.content = io.BytesIO(
+          self._DownloadFromUrl(export_links.get(mimetype)))
+      self.dirty['content'] = False
+      return
+
+    raise FileNotDownloadableError(
+        'No downloadLink/exportLinks for mimetype found in metadata')
 
   def Upload(self, param=None):
     """Upload/update file by choosing the most efficient method.

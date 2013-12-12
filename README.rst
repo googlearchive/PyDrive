@@ -77,6 +77,10 @@ efficient way.
     print 'Downloading file %s from Google Drive' % file3['title'] # 'hello.png'
     file3.GetContentFile('world.png')  # Save Drive file as a local file
 
+    # or download Google Docs files in an export format provided.
+    # downloading a docs document as an html file:
+    docsfile.GetContentFile('test.html', mimetype='text/html')
+
 File listing pagination made easy
 ---------------------------------
 
