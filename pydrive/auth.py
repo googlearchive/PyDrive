@@ -98,7 +98,9 @@ class GoogleAuth(ApiAttributeMixin, object):
         'oauth_scope': ['https://www.googleapis.com/auth/drive']
     }
     CLIENT_CONFIGS_LIST = ['client_id', 'client_secret', 'auth_uri',
-                           'token_uri', 'revoke_uri', 'redirect_uri']
+                           'token_uri', 'revoke_uri', 'redirect_uri',
+                           'client_service_email', 'client_user_email',
+                           'client_pkcs12_file_path']
     settings = ApiAttribute('settings')
     client_config = ApiAttribute('client_config')
     flow = ApiAttribute('flow')
@@ -286,6 +288,46 @@ class GoogleAuth(ApiAttributeMixin, object):
             raise InvalidCredentialsError('Credentials file cannot be \
                                           symbolic link')
 
+    @CheckAuth
+    def ServiceAuth(self):
+        """Authenticate and authorize using P12 private key, client id
+        and client email for a Service account.
+
+        :raises: AuthError, InvalidConfigError
+        """
+        try:
+            from oauth2client.client import SignedJwtAssertionCredentials
+            HAS_JWT_CREDS = True
+        except ImportError:
+            HAS_JWT_CREDS = False
+
+        if not HAS_JWT_CREDS:
+            raise AuthError('SignedJwtAssertionCredentials is not available. \
+                            PyCrypto or PyOpenSSL must be installed to use \
+                            this method.')
+
+        scope = scopes_to_string(self.settings['oauth_scope'])
+        user_email = self.client_config['client_user_email']
+        service_email = self.client_config['client_service_email']
+        if not (user_email and service_email):
+            raise InvalidConfigError('Both User & Service Emails must be \
+                                     specified to call ServiceAuth')
+
+        file_path = self.client_config['client_pkcs12_file_path']
+        try:
+            f = file(file_path, 'rb')
+        except IOError:
+            raise InvalidConfigError('Key file not found at %s' % file_path)
+        else:
+            key = f.read()
+            f.close()
+
+        self.credentials = SignedJwtAssertionCredentials(service_email, key,
+                                                         scope=scope,
+                                                         sub=user_email)
+
+        print 'Authentication successful.'
+
     def LoadClientConfig(self, backend=None):
         """Loads client configuration according to specified backend.
 
@@ -334,7 +376,10 @@ class GoogleAuth(ApiAttributeMixin, object):
                 'client_id',
                 'client_secret',
                 'auth_uri',
-                'token_uri'
+                'token_uri',
+                'client_user_email',
+                'client_service_email',
+                'client_pkcs12_file_path',
             ]
             for config in config_index:
                 self.client_config[config] = client_info[config]

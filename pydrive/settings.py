@@ -84,6 +84,18 @@ SETTINGS_STRUCT = {
                 'type': str,
                 'required': True,
                 'default': None
+            },
+            'client_user_email': {
+                'type': str,
+                'required': False
+            },
+            'client_service_email': {
+                'type': str,
+                'required': False
+            },
+            'client_pkcs12_file_path': {
+                'type': str,
+                'required': False
             }
         }
     },
