@@ -230,13 +230,27 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     def Trash(self, param=None):
         """Move a file to the trash.
 
+        :param param: additional parameter to file.
+        :type param: dict.
         :raises: ApiRequestError
         """
         self._FilesTrash(param=param)
 
+    def UnTrash(self, param=None):
+        """Move a file out of the trash.
+
+        :param param: additional parameter to file.
+        :type param: dict.
+        :raises: ApiRequestError
+        """
+        self._FilesUnTrash(param=param)
+
+
     def Delete(self, param=None):
         """Hard-delete a file
 
+        :param param: additional parameter to file.
+        :type param: dict.
         :raises: ApiRequestError
         """
         self._FilesDelete(param=param)
@@ -288,12 +302,30 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
             self.UpdateMetadata(metadata)
 
     @LoadAuth
+    def _FilesUnTrash(self, param=None):
+        """Un-delete (Trash) a file using Files.UnTrash().
+
+        :param param: additional parameter to file.
+        :type param: dict.
+        :raises: ApiRequestError
+        """
+        if param is None:
+            param = {}
+        param['fileId'] = self.metadata.get('id')
+        try:
+            metadata = self.auth.service.files().untrash(**param).execute()
+        except errors.HttpError, error:
+            raise ApiRequestError(error)
+        else:
+            return True
+
+    @LoadAuth
     def _FilesTrash(self, param=None):
         """Soft-delete (Trash) a file using Files.Trash().
 
         :param param: additional parameter to file.
         :type param: dict.
-        :raises: ApiRequestError, FileNotUploadedError
+        :raises: ApiRequestError
         """
         if param is None:
             param = {}
@@ -311,7 +343,7 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
 
         :param param: additional parameter to file.
         :type param: dict.
-        :raises: ApiRequestError, FileNotUploadedError
+        :raises: ApiRequestError
         """
         if param is None:
             param = {}
