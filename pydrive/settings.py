@@ -191,7 +191,7 @@ def _ValidateSettingsElement(data, struct, key):
         # If type of this data is list,
         # check if all values in the list is valid.
     elif data_type is list:
-        for element in value:
+        for element in data[key]:
             if type(element) is not struct[key]['struct']:
                 raise InvalidConfigError('Setting %s should be list of %s' %
                                          (key, struct[key]['struct']))

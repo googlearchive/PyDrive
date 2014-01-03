@@ -1,0 +1,14 @@
+client_config_backend: 'settings'
+client_config:
+  client_id: "{{YOUR_CLIENT_ID}}"
+  client_secret: "notasecret"
+  client_user_email: "{{YOUR_USER_EMAIL}}"
+  client_service_email: "{{YOUR_SERVICE_EMAIL}}"
+  client_pkcs12_file_path: "{{YOUR_PKCS12_FILE_PATH}}"
+
+save_credentials: True
+save_credentials_backend: 'file'
+save_credentials_file: 'credentials/5.dat'
+
+oauth_scope:
+  - "https://www.googleapis.com/auth/drive"
