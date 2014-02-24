@@ -52,6 +52,13 @@ class GoogleAuthTest(unittest.TestCase):
     self.CheckCredentialsFile('credentials/1.dat')
     time.sleep(1)
 
+  def test_05_ConfigFromSettingsWithoutOauthScope(self):
+    # Test if authentication works without oauth_scope
+    ga = GoogleAuth('settings/test5.yaml')
+    ga.LocalWebserverAuth()
+    self.assertEqual(ga.access_token_expired, False)
+    time.sleep(1)
+
   def DeleteOldCredentialsFile(self, credentials):
     try:
       os.remove(credentials)
