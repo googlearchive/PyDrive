@@ -377,15 +377,13 @@ class GoogleAuth(ApiAttributeMixin, object):
                 'client_secret',
                 'auth_uri',
                 'token_uri',
-                'client_user_email',
-                'client_service_email',
-                'client_pkcs12_file_path',
+                'client_email',
             ]
             for config in config_index:
                 self.client_config[config] = client_info[config]
-            self.client_config['revoke_uri'] = \
+                self.client_config['revoke_uri'] = \
                 client_info.get('revoke_uri')
-            self.client_config['redirect_uri'] = \
+                self.client_config['redirect_uri'] = \
                 client_info['redirect_uris'][0]
         except KeyError:
             raise InvalidConfigError('Insufficient client config in file')
