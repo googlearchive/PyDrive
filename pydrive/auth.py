@@ -49,7 +49,10 @@ def LoadAuth(decoratee):
         if self.auth is None:    # Initialize auth if needed.
             self.auth = GoogleAuth()
         if self.auth.access_token_expired:
-            self.auth.LocalWebserverAuth()
+            if self.settings.get('client_config_backend') == 'service':
+                self.auth.ServiceAuth()
+            else:
+                self.auth.LocalWebserverAuth()
         if self.auth.service is None:    # Check if drive api is built.
             self.auth.Authorize()
         return decoratee(self, *args, **kwargs)

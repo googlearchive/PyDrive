@@ -19,6 +19,10 @@ SETTINGS_STRUCT = {
             {
                 'value': 'settings',
                 'attribute': ['client_config']
+            },
+            {
+                'value': 'service',
+                'attribute': ['service_config']
             }
         ]
     },
@@ -85,17 +89,23 @@ SETTINGS_STRUCT = {
                 'required': True,
                 'default': None
             },
-            'client_user_email': {
-                'type': str,
-                'required': False
-            },
-            'client_service_email': {
-                'type': str,
-                'required': False
-            },
-            'client_pkcs12_file_path': {
-                'type': str,
-                'required': False
+            'service_config': {
+                'type': dict,
+                'required': False,
+                'struct': {
+                    'client_user_email': {
+                    'type': str,
+                    'required': True
+                    },
+                    'client_service_email': {
+                        'type': str,
+                        'required': True
+                    },
+                    'client_pkcs12_file_path': {
+                        'type': str,
+                        'required': True
+                    }
+                }
             }
         }
     },
