@@ -447,8 +447,9 @@ class GoogleAuth(ApiAttributeMixin, object):
                 self.client_config[config] = \
                     self.settings['service_config'][config]
             except KeyError:
-                raise InvalidConfigError('Insufficient service \
-                                         config in settings')
+                err = "Insufficient service config in settings"
+                err += "\n\nMissing: {} key.".format(config)
+                raise InvalidConfigError(err)
 
     def GetFlow(self):
         """Gets Flow object from client configuration.
