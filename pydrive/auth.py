@@ -498,3 +498,19 @@ class GoogleAuth(ApiAttributeMixin, object):
     self.http = self.credentials.authorize(self.http)
     self.service = build('drive', 'v2', http=self.http)
 
+  def GetUserInfo(self):
+    """Gets userinfo object for authenticated user (email, picture, etc)
+
+    Only call this method after http object has been created and
+    credentials are authorized, typically after a successful xxxAuth()
+    call.
+
+    :returns: dict -- userinfo for authenticated user
+    :raises: AuthenticationError
+    """
+    if self.http is None:
+      raise AuthenticationError('No http service')
+    if self.access_token_expired:
+      raise AuthenticationError('No valid credentials provided to authorize')
+    self.oauth_service = build('oauth2', 'v2', http=self.http)
+    return self.oauth_service.userinfo().get().execute()
