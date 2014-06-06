@@ -91,11 +91,36 @@ SETTINGS_STRUCT = {
         'type': list,
         'required': True,
         'struct': str,
-        'default': ['https://www.googleapis.com/auth/drive']
+        'default': [
+          'https://www.googleapis.com/auth/userinfo.email',
+          'https://www.googleapis.com/auth/drive'
+        ]
     },
     'save_credentials_file': {
         'type': str,
         'required': False,
+    },
+    'service_account': {
+        'type': bool,
+        'required': False,
+        'default': False,
+        'dependency': [
+            {
+                'value': True,
+                'attribute': [
+                    'service_account_email',
+                    'service_account_key_file'
+                ]
+            }
+        ]
+    },
+    'service_account_email': {
+        'type': str,
+        'required': False
+    },
+    'service_account_key_file': {
+        'type': str,
+        'required': False
     }
 }
 
