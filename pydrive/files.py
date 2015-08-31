@@ -146,14 +146,14 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     if self.get('mimeType') is None:
       self['mimeType'] = mimetypes.guess_type(filename)[0]
 
-  def GetContentString(self):
+  def GetContentString(self, mimetype=None):
     """Get content of this file as a string.
 
     :returns: str -- utf-8 decoded content of the file
     :raises: ApiRequestError, FileNotUploadedError, FileNotDownloadableError
     """
     if self.content is None or type(self.content) is not io.BytesIO:
-      self.FetchContent()
+      self.FetchContent(mimetype)
     return self.content.getvalue().decode('utf-8')
 
   def GetContentFile(self, filename, mimetype=None):
