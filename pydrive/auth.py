@@ -7,8 +7,10 @@ from apiclient.discovery import build
 from functools import wraps
 from oauth2client.client import FlowExchangeError
 from oauth2client.client import AccessTokenRefreshError
+from oauth2client.client import TokenRevokeError
 from oauth2client.client import OAuth2WebServerFlow
 from oauth2client.client import OOB_CALLBACK_URN
+from oauth2client.client import SignedJwtAssertionCredentials
 from oauth2client.file import Storage
 from oauth2client.file import CredentialsFileSymbolicLinkError
 from oauth2client.tools import ClientRedirectHandler
@@ -41,6 +43,11 @@ class AuthenticationError(AuthError):
 class RefreshError(AuthError):
   """Access token refresh error."""
 
+
+class ReovkeError(AuthError):
+    """Access token revoke error."""
+
+
 def LoadAuth(decoratee):
   """Decorator to check if the auth is valid and loads auth if not."""
   @wraps(decoratee)
@@ -60,25 +67,36 @@ def CheckAuth(decoratee):
   def _decorated(self, *args, **kwargs):
     dirty = False
     code = None
-    save_credentials = self.settings.get('save_credentials')
-    if self.credentials is None and save_credentials:
-      self.LoadCredentials()
-    if self.flow is None:
-      self.GetFlow()
-    if self.credentials is None:
-      code = decoratee(self, *args, **kwargs)
-      dirty = True
+    # special handling for service accounts
+    # decoratee must return email address of sub user
+    # instead of authentication token
+    service_account = self.settings.get('service_account')
+    if service_account:
+      if self.credentials is None:
+        sub_user = decoratee(self, *args, **kwargs)
+        self.LoadServiceAccountCredentials(sub_user)
+        self.Authorize()
     else:
-      if self.access_token_expired:
-        if self.credentials.refresh_token is not None:
-          self.Refresh()
-        else:
-          code = decoratee(self, *args, **kwargs)
+      # normal, non-service-account processing
+      save_credentials = self.settings.get('save_credentials')
+      if save_credentials:
+        self.LoadCredentials()
+      if self.flow is None:
+        self.GetFlow()
+      if self.credentials is None:
+        code = decoratee(self, *args, **kwargs)
         dirty = True
-    if code is not None:
-      self.Auth(code)
-    if dirty and save_credentials:
-      self.SaveCredentials()
+      else:
+        if self.access_token_expired:
+          if self.credentials.refresh_token is not None:
+            self.Refresh()
+          else:
+            code = decoratee(self, *args, **kwargs)
+          dirty = True
+      if code is not None:
+        self.Auth(code)
+      if dirty and save_credentials:
+        self.SaveCredentials()
   return _decorated
 
 
@@ -103,6 +121,7 @@ class GoogleAuth(ApiAttributeMixin, object):
   credentials = ApiAttribute('credentials')
   http = ApiAttribute('http')
   service = ApiAttribute('service')
+  oauth_service = ApiAttribute('oauth_service')
 
   def __init__(self, settings_file='settings.yaml'):
     """Create an instance of GoogleAuth.
@@ -201,7 +220,20 @@ class GoogleAuth(ApiAttributeMixin, object):
     print '    ' + authorize_url
     print
     return raw_input('Enter verification code: ').strip()
+    
+  @CheckAuth
+  def ServiceAccountAuth(self, sub_user):
+    """Authenticate and authorize from service account private key.
 
+    :param sub_user: email address of domain user that we are acting as (passed).
+    :type sub_user: str.
+    :returns: str -- user that we are acting as (parameter passed to return).
+    """
+    # if we are just switching users, revoke now
+    if self.credentials and self.credentials.access_token:
+      self.Revoke()
+    return sub_user
+    
   def LoadCredentials(self, backend=None):
     """Loads credentials or create empty credentials if it doesn't exist.
 
@@ -236,6 +268,36 @@ class GoogleAuth(ApiAttributeMixin, object):
       self.credentials = storage.get()
     except CredentialsFileSymbolicLinkError:
       raise InvalidCredentialsError('Credentials file cannot be symbolic link')
+
+  def LoadServiceAccountCredentials(self, sub_user, service_account_email=None, service_account_key_file=None):
+    """Loads service account credentials from settings.
+
+    :type service_account_email: str.
+    :type service_account_key_file: str.
+    :raises: InvalidConfigError, InvalidCredentialsError
+    """
+    key = None
+    if service_account_email is None:
+      service_account_email = self.settings.get('service_account_email')
+      if service_account_email is None:
+        raise InvalidConfigError('Please specify service account email')
+    if service_account_key_file is None:
+      service_account_key_file = self.settings.get('service_account_key_file')
+      if service_account_key_file is None:
+        raise InvalidConfigError('Please specify service account private key file')
+      try:
+        f = file(service_account_key_file, 'rb')
+        key = f.read()
+        f.close()
+      except:
+        pass
+      if not key:
+        raise InvalidCredentialsError('Could not read private key file')
+    try:
+      self.credentials = SignedJwtAssertionCredentials(
+        service_account_email, key, scopes_to_string(self.settings['oauth_scope']), sub=sub_user)
+    except:
+      raise InvalidCredentialsError('Could obtain service account credentials')
 
   def SaveCredentials(self, backend=None):
     """Saves credentials according to specified backend.
@@ -375,6 +437,21 @@ class GoogleAuth(ApiAttributeMixin, object):
     except AccessTokenRefreshError, error:
       raise RefreshError('Access token refresh failed: %s' % error)
 
+  def Revoke(self):
+    """Revokes the access_token.
+
+    :raises: RevokeError
+    """
+    if self.credentials is None:
+      raise RevokeError('No credential to revoke.')
+    if self.credentials.access_token:
+      if self.http is None:
+        self.http = httplib2.Http()
+      try:
+        self.credentials.revoke(self.http)
+      except TokenRevokeError, error:
+        raise RevokeError('Access token revoke failed: %s' % error)
+
   def GetAuthUrl(self):
     """Creates authentication url where user visits to grant access.
 
@@ -420,3 +497,20 @@ class GoogleAuth(ApiAttributeMixin, object):
       raise AuthenticationError('No valid credentials provided to authorize')
     self.http = self.credentials.authorize(self.http)
     self.service = build('drive', 'v2', http=self.http)
+
+  def GetUserInfo(self):
+    """Gets userinfo object for authenticated user (email, picture, etc)
+
+    Only call this method after http object has been created and
+    credentials are authorized, typically after a successful xxxAuth()
+    call.
+
+    :returns: dict -- userinfo for authenticated user
+    :raises: AuthenticationError
+    """
+    if self.http is None:
+      raise AuthenticationError('No http service')
+    if self.access_token_expired:
+      raise AuthenticationError('No valid credentials provided to authorize')
+    self.oauth_service = build('oauth2', 'v2', http=self.http)
+    return self.oauth_service.userinfo().get().execute()
