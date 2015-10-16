@@ -118,7 +118,7 @@ def LoadSettingsFile(filename=SETTINGS_FILE):
   try:
     stream = file(filename, 'r')
     data = load(stream, Loader=Loader)
-  except (YAMLError, IOError), e:
+  except (YAMLError, IOError) as e:
     raise SettingsError(e)
   return data
 

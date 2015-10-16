@@ -157,7 +157,7 @@ class GoogleAuth(ApiAttributeMixin, object):
       port_number = port
       try:
         httpd = ClientRedirectServer((host_name, port), ClientRedirectHandler)
-      except socket.error, e:
+      except socket.error as e:
         pass
       else:
         success = True
@@ -310,7 +310,7 @@ class GoogleAuth(ApiAttributeMixin, object):
       client_config_file = self.settings['client_config_file']
     try:
       client_type, client_info = clientsecrets.loadfile(client_config_file)
-    except clientsecrets.InvalidClientSecretsError, error:
+    except clientsecrets.InvalidClientSecretsError as error:
       raise InvalidConfigError('Invalid client secrets file %s' % error)
     if not client_type in (clientsecrets.TYPE_WEB,
                            clientsecrets.TYPE_INSTALLED):
@@ -372,7 +372,7 @@ class GoogleAuth(ApiAttributeMixin, object):
       self.http = httplib2.Http()
     try:
       self.credentials.refresh(self.http)
-    except AccessTokenRefreshError, error:
+    except AccessTokenRefreshError as error:
       raise RefreshError('Access token refresh failed: %s' % error)
 
   def GetAuthUrl(self):
@@ -405,7 +405,7 @@ class GoogleAuth(ApiAttributeMixin, object):
       self.GetFlow()
     try:
       self.credentials = self.flow.step2_exchange(code)
-    except FlowExchangeError, e:
+    except FlowExchangeError as e:
       raise AuthenticationError('OAuth2 code exchange failed: %s' % e)
     print 'Authentication successful.'
 

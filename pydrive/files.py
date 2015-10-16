@@ -108,7 +108,7 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     """
     try:
       return dict.__getitem__(self, key)
-    except KeyError, e:
+    except KeyError as e:
       if self.uploaded:
         raise KeyError(e)
       if self.get('id'):
@@ -179,7 +179,7 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     if file_id:
       try:
         metadata = self.auth.service.files().get(fileId=file_id).execute()
-      except errors.HttpError, error:
+      except errors.HttpError as error:
         raise ApiRequestError(error)
       else:
         self.uploaded = True
@@ -239,7 +239,7 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
       if self.dirty['content']:
         param['media_body'] = self._BuildMediaBody()
       metadata = self.auth.service.files().insert(**param).execute()
-    except errors.HttpError, error:
+    except errors.HttpError as error:
       raise ApiRequestError(error)
     else:
       self.uploaded = True
@@ -263,7 +263,7 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
       if self.dirty['content']:
         param['media_body'] = self._BuildMediaBody()
       metadata = self.auth.service.files().update(**param).execute()
-    except errors.HttpError, error:
+    except errors.HttpError as error:
       raise ApiRequestError(error)
     else:
       self.uploaded = True
@@ -285,7 +285,7 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     param['fileId'] = self.metadata.get('id')
     try:
       metadata = self.auth.service.files().patch(**param).execute()
-    except errors.HttpError, error:
+    except errors.HttpError as error:
       raise ApiRequestError(error)
     else:
       self.UpdateMetadata(metadata)
