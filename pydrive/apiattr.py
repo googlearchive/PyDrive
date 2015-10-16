@@ -1,3 +1,5 @@
+from six import iteritems
+
 class ApiAttribute(object):
   """A data descriptor that sets and returns values."""
 
@@ -72,7 +74,7 @@ class ApiResource(dict):
 
   def update(self, *args, **kwargs):
     """Overwritten method of dictionary."""
-    for k, v in dict(*args, **kwargs).iteritems():
+    for k, v in iteritems(dict(*args, **kwargs)):
       self[k] = v
 
   def UpdateMetadata(self, metadata=None):
