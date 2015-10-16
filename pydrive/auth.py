@@ -165,26 +165,26 @@ class GoogleAuth(ApiAttributeMixin, object):
     if success:
       oauth_callback = 'http://%s:%s/' % (host_name, port_number)
     else:
-      print 'Failed to start a local webserver. Please check your firewall'
-      print 'settings and locally running programs that may be blocking or'
-      print 'using configured ports. Default ports are 8080 and 8090.'
+      print('Failed to start a local webserver. Please check your firewall')
+      print('settings and locally running programs that may be blocking or')
+      print('using configured ports. Default ports are 8080 and 8090.')
       raise AuthenticationError()
     self.flow.redirect_uri = oauth_callback
     authorize_url = self.GetAuthUrl()
     webbrowser.open(authorize_url, new=1, autoraise=True)
-    print 'Your browser has been opened to visit:'
-    print
-    print '    ' + authorize_url
-    print
+    print('Your browser has been opened to visit:')
+    print()
+    print('    ' + authorize_url)
+    print()
     httpd.handle_request()
     if 'error' in httpd.query_params:
-      print 'Authentication request was rejected'
+      print('Authentication request was rejected')
       raise AuthenticationRejected('User rejected authentication')
     if 'code' in httpd.query_params:
       return httpd.query_params['code']
     else:
-      print 'Failed to find "code" in the query parameters of the redirect.'
-      print 'Try command-line authentication'
+      print('Failed to find "code" in the query parameters of the redirect.')
+      print('Try command-line authentication')
       raise AuthenticationError('No code found in redirect')
 
   @CheckAuth
@@ -196,10 +196,10 @@ class GoogleAuth(ApiAttributeMixin, object):
     """
     self.flow.redirect_uri = OOB_CALLBACK_URN
     authorize_url = self.GetAuthUrl()
-    print 'Go to the following link in your browser:'
-    print
-    print '    ' + authorize_url
-    print
+    print('Go to the following link in your browser:')
+    print()
+    print('    ' + authorize_url)
+    print()
     return raw_input('Enter verification code: ').strip()
 
   def LoadCredentials(self, backend=None):
@@ -407,7 +407,7 @@ class GoogleAuth(ApiAttributeMixin, object):
       self.credentials = self.flow.step2_exchange(code)
     except FlowExchangeError as e:
       raise AuthenticationError('OAuth2 code exchange failed: %s' % e)
-    print 'Authentication successful.'
+    print('Authentication successful.')
 
   def Authorize(self):
     """Authorizes and builds service.
