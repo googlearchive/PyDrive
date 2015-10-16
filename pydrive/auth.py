@@ -2,6 +2,7 @@ import socket
 import webbrowser
 import httplib2
 import oauth2client.clientsecrets as clientsecrets
+from six.moves import input
 
 from apiclient.discovery import build
 from functools import wraps
@@ -200,7 +201,7 @@ class GoogleAuth(ApiAttributeMixin, object):
     print()
     print('    ' + authorize_url)
     print()
-    return raw_input('Enter verification code: ').strip()
+    return input('Enter verification code: ').strip()
 
   def LoadCredentials(self, backend=None):
     """Loads credentials or create empty credentials if it doesn't exist.
