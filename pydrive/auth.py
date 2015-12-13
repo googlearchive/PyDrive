@@ -356,7 +356,10 @@ class GoogleAuth(ApiAttributeMixin, object):
         scopes_to_string(self.settings['oauth_scope']),
         **constructor_kwargs)
     if self.settings.get('get_refresh_token'):
-      self.flow.params.update({'access_type': 'offline'})
+      self.flow.params.update({
+          'access_type': 'offline',
+          'approval_prompt': 'force'
+      })
 
   def Refresh(self):
     """Refreshes the access_token.
