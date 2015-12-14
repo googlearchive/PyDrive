@@ -105,7 +105,7 @@ class GoogleAuth(ApiAttributeMixin, object):
   http = ApiAttribute('http')
   service = ApiAttribute('service')
 
-  def __init__(self, settings_file='settings.yaml'):
+  def __init__(self, settings_file='settings.yaml',http_timeout=None):
     """Create an instance of GoogleAuth.
 
     This constructor just sets the path of settings file.
@@ -114,6 +114,7 @@ class GoogleAuth(ApiAttributeMixin, object):
     :param settings_file: path of settings file. 'settings.yaml' by default.
     :type settings_file: str.
     """
+    self.http_timeout=http_timeout
     ApiAttributeMixin.__init__(self)
     self.client_config = {}
     try:
@@ -373,7 +374,7 @@ class GoogleAuth(ApiAttributeMixin, object):
       raise RefreshError('No refresh_token found.'
                          'Please set access_type of OAuth to offline.')
     if self.http is None:
-      self.http = httplib2.Http()
+      self.http = httplib2.Http(timeout=self.http_timeout)
     try:
       self.credentials.refresh(self.http)
     except AccessTokenRefreshError as error:
@@ -419,7 +420,7 @@ class GoogleAuth(ApiAttributeMixin, object):
     :raises: AuthenticationError
     """
     if self.http is None:
-      self.http = httplib2.Http()
+      self.http = httplib2.Http(timeout=self.http_timeout)
     if self.access_token_expired:
       raise AuthenticationError('No valid credentials provided to authorize')
     self.http = self.credentials.authorize(self.http)
