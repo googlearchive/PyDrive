@@ -2,6 +2,7 @@ import socket
 import webbrowser
 import httplib2
 import oauth2client.clientsecrets as clientsecrets
+from six.moves import input
 
 from apiclient.discovery import build
 from functools import wraps
@@ -157,7 +158,7 @@ class GoogleAuth(ApiAttributeMixin, object):
       port_number = port
       try:
         httpd = ClientRedirectServer((host_name, port), ClientRedirectHandler)
-      except socket.error, e:
+      except socket.error as e:
         pass
       else:
         success = True
@@ -165,26 +166,26 @@ class GoogleAuth(ApiAttributeMixin, object):
     if success:
       oauth_callback = 'http://%s:%s/' % (host_name, port_number)
     else:
-      print 'Failed to start a local webserver. Please check your firewall'
-      print 'settings and locally running programs that may be blocking or'
-      print 'using configured ports. Default ports are 8080 and 8090.'
+      print('Failed to start a local webserver. Please check your firewall')
+      print('settings and locally running programs that may be blocking or')
+      print('using configured ports. Default ports are 8080 and 8090.')
       raise AuthenticationError()
     self.flow.redirect_uri = oauth_callback
     authorize_url = self.GetAuthUrl()
     webbrowser.open(authorize_url, new=1, autoraise=True)
-    print 'Your browser has been opened to visit:'
-    print
-    print '    ' + authorize_url
-    print
+    print('Your browser has been opened to visit:')
+    print()
+    print('    ' + authorize_url)
+    print()
     httpd.handle_request()
     if 'error' in httpd.query_params:
-      print 'Authentication request was rejected'
+      print('Authentication request was rejected')
       raise AuthenticationRejected('User rejected authentication')
     if 'code' in httpd.query_params:
       return httpd.query_params['code']
     else:
-      print 'Failed to find "code" in the query parameters of the redirect.'
-      print 'Try command-line authentication'
+      print('Failed to find "code" in the query parameters of the redirect.')
+      print('Try command-line authentication')
       raise AuthenticationError('No code found in redirect')
 
   @CheckAuth
@@ -196,11 +197,11 @@ class GoogleAuth(ApiAttributeMixin, object):
     """
     self.flow.redirect_uri = OOB_CALLBACK_URN
     authorize_url = self.GetAuthUrl()
-    print 'Go to the following link in your browser:'
-    print
-    print '    ' + authorize_url
-    print
-    return raw_input('Enter verification code: ').strip()
+    print('Go to the following link in your browser:')
+    print()
+    print('    ' + authorize_url)
+    print()
+    return input('Enter verification code: ').strip()
 
   def LoadCredentials(self, backend=None):
     """Loads credentials or create empty credentials if it doesn't exist.
@@ -310,7 +311,7 @@ class GoogleAuth(ApiAttributeMixin, object):
       client_config_file = self.settings['client_config_file']
     try:
       client_type, client_info = clientsecrets.loadfile(client_config_file)
-    except clientsecrets.InvalidClientSecretsError, error:
+    except clientsecrets.InvalidClientSecretsError as error:
       raise InvalidConfigError('Invalid client secrets file %s' % error)
     if not client_type in (clientsecrets.TYPE_WEB,
                            clientsecrets.TYPE_INSTALLED):
@@ -375,7 +376,7 @@ class GoogleAuth(ApiAttributeMixin, object):
       self.http = httplib2.Http()
     try:
       self.credentials.refresh(self.http)
-    except AccessTokenRefreshError, error:
+    except AccessTokenRefreshError as error:
       raise RefreshError('Access token refresh failed: %s' % error)
 
   def GetAuthUrl(self):
@@ -408,9 +409,9 @@ class GoogleAuth(ApiAttributeMixin, object):
       self.GetFlow()
     try:
       self.credentials = self.flow.step2_exchange(code)
-    except FlowExchangeError, e:
+    except FlowExchangeError as e:
       raise AuthenticationError('OAuth2 code exchange failed: %s' % e)
-    print 'Authentication successful.'
+    print('Authentication successful.')
 
   def Authorize(self):
     """Authorizes and builds service.

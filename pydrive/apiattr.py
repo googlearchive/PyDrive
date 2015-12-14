@@ -1,3 +1,5 @@
+from six import Iterator, iteritems
+
 class ApiAttribute(object):
   """A data descriptor that sets and returns values."""
 
@@ -72,7 +74,7 @@ class ApiResource(dict):
 
   def update(self, *args, **kwargs):
     """Overwritten method of dictionary."""
-    for k, v in dict(*args, **kwargs).iteritems():
+    for k, v in iteritems(dict(*args, **kwargs)):
       self[k] = v
 
   def UpdateMetadata(self, metadata=None):
@@ -95,7 +97,7 @@ class ApiResource(dict):
     return dirty
 
 
-class ApiResourceList(ApiAttributeMixin, ApiResource):
+class ApiResourceList(ApiAttributeMixin, ApiResource, Iterator):
   """Abstract class of all api list resources.
 
   Inherits ApiResource and builds iterator to list any API resource.
@@ -124,7 +126,7 @@ class ApiResourceList(ApiAttributeMixin, ApiResource):
     """
     return self
 
-  def next(self):
+  def __next__(self):
     """Make API call to list resources and return them.
 
     Auto updates 'pageToken' everytime it makes API call and
@@ -156,7 +158,7 @@ class ApiResourceList(ApiAttributeMixin, ApiResource):
       del self['maxResults']
       return result
     else:
-      return self.next()
+      return next(self)
 
   def _GetList(self):
     """Helper function which actually makes API call.

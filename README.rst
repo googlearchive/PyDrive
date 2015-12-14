@@ -70,11 +70,11 @@ efficient way.
     file2 = drive.CreateFile()
     file2.SetContentFile('hello.png')
     file2.Upload()
-    print 'Created file %s with mimeType %s' % (file2['title'], file2['mimeType'])
+    print('Created file %s with mimeType %s' % (file2['title'], file2['mimeType']))
     # Created file hello.png with mimeType image/png
 
     file3 = drive.CreateFile({'id': file2['id']})
-    print 'Downloading file %s from Google Drive' % file3['title'] # 'hello.png'
+    print('Downloading file %s from Google Drive' % file3['title']) # 'hello.png'
     file3.GetContentFile('world.png')  # Save Drive file as a local file
 
     # or download Google Docs files in an export format provided.
@@ -91,10 +91,10 @@ File listing pagination made easy
     # Auto-iterate through all files that matches this query
     file_list = drive.ListFile({'q': "'root' in parents"}).GetList()
     for file1 in file_list:
-      print 'title: %s, id: %s' % (file1['title'], file1['id'])
+      print('title: %s, id: %s' % (file1['title'], file1['id']))
 
     # Paginate file lists by specifying number of max results
     for file_list in drive.ListFile({'maxResults': 10}):
       print 'Received %s files from Files.list()' % len(file_list) # <= 10
       for file1 in file_list:
-        print 'title: %s, id: %s' % (file1['title'], file1['id'])
+        print('title: %s, id: %s' % (file1['title'], file1['id']))
