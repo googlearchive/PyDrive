@@ -3,6 +3,7 @@ import mimetypes
 
 from apiclient import errors
 from apiclient.http import MediaIoBaseUpload
+from apiclient.http import MediaIoBaseDownload
 from functools import wraps
 
 from .apiattr import ApiAttribute
@@ -10,7 +11,6 @@ from .apiattr import ApiAttributeMixin
 from .apiattr import ApiResource
 from .apiattr import ApiResourceList
 from .auth import LoadAuth
-
 
 class FileNotUploadedError(RuntimeError):
   """Error trying to access metadata of file that is not uploaded."""
@@ -46,6 +46,7 @@ class GoogleDriveFileList(ApiResourceList):
   def __init__(self, auth=None, param=None):
     """Create an instance of GoogleDriveFileList."""
     super(GoogleDriveFileList, self).__init__(auth=auth, metadata=param)
+    self.update(fields="nextPageToken, files(id, name, mimeType, size)")
 
   @LoadAuth
   def _GetList(self):
@@ -55,7 +56,7 @@ class GoogleDriveFileList(ApiResourceList):
     """
     self.metadata = self.auth.service.files().list(**dict(self)).execute()
     result = []
-    for file_metadata in self.metadata['items']:
+    for file_metadata in self.metadata['files']:
       tmp_file = GoogleDriveFile(
           auth=self.auth,
           metadata=file_metadata,
@@ -141,8 +142,8 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     :type filename: str.
     """
     self.content = open(filename, 'rb')
-    if self.get('title') is None:
-      self['title'] = filename
+    if self.get('name') is None:
+      self['name'] = filename
     if self.get('mimeType') is None:
       self['mimeType'] = mimetypes.guess_type(filename)[0]
 
@@ -187,27 +188,31 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     else:
       raise FileNotUploadedError()
 
+  @LoadAuth
   @LoadMetadata
   def FetchContent(self, mimetype=None):
     """Download file's content from download_url.
 
     :raises: ApiRequestError, FileNotUploadedError, FileNotDownloadableError
     """
-    download_url = self.metadata.get('downloadUrl')
-    if download_url:
-      self.content = io.BytesIO(self._DownloadFromUrl(download_url))
+    if mimetype is None:
+      request = self.auth.service.files().get_media(
+        fileId=self.metadata.get('id'))
+    else:
+      request = self.auth.service.files().export_media(
+        fileId=self.metadata.get('id'),
+        mimeType=mimetype)
+    fh = io.BytesIO()
+    downloader = MediaIoBaseDownload(fh, request)
+    done = False
+    try:
+      while done is False:
+        progress, done = downloader.next_chunk()
+      self.content = fh
       self.dirty['content'] = False
-      return
-    
-    export_links = self.metadata.get('exportLinks')
-    if export_links and export_links.get(mimetype):
-      self.content = io.BytesIO(
-          self._DownloadFromUrl(export_links.get(mimetype)))
-      self.dirty['content'] = False
-      return
+    except errors.HttpError as error:
+      raise ApiRequestError(error)
 
-    raise FileNotDownloadableError(
-        'No downloadLink/exportLinks for mimetype found in metadata')
 
   def Upload(self, param=None):
     """Upload/update file by choosing the most efficient method.
@@ -235,10 +240,11 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     if param is None:
       param = {}
     param['body'] = self.GetChanges()
+    param['fields'] = 'id, name, mimeType, size'
     try:
       if self.dirty['content']:
         param['media_body'] = self._BuildMediaBody()
-      metadata = self.auth.service.files().insert(**param).execute()
+      metadata = self.auth.service.files().create(**param).execute()
     except errors.HttpError as error:
       raise ApiRequestError(error)
     else:
@@ -259,6 +265,7 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
       param = {}
     param['body'] = self.GetChanges()
     param['fileId'] = self.metadata.get('id')
+    param['fields'] = 'id, name, mimeType, size'
     try:
       if self.dirty['content']:
         param['media_body'] = self._BuildMediaBody()
@@ -273,22 +280,13 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
   @LoadAuth
   @LoadMetadata
   def _FilesPatch(self, param=None):
-    """Update metadata using Files.Patch().
+    """Update metadata and/or content using Files.Update().
 
     :param param: additional parameter to upload file.
     :type param: dict.
     :raises: ApiRequestError, FileNotUploadedError
     """
-    if param is None:
-      param = {}
-    param['body'] = self.GetChanges()
-    param['fileId'] = self.metadata.get('id')
-    try:
-      metadata = self.auth.service.files().patch(**param).execute()
-    except errors.HttpError as error:
-      raise ApiRequestError(error)
-    else:
-      self.UpdateMetadata(metadata)
+    self._FilesUpdate(param)
 
   def _BuildMediaBody(self):
     """Build MediaIoBaseUpload to get prepared to upload content of the file.
@@ -300,17 +298,3 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     if self.get('mimeType') is None:
       self['mimeType'] = 'application/octet-stream'
     return MediaIoBaseUpload(self.content, self['mimeType'])
-
-  @LoadAuth
-  def _DownloadFromUrl(self, url):
-    """Download file from url using provided credential.
-
-    :param url: link of the file to download.
-    :type url: str.
-    :returns: str -- content of downloaded file in string.
-    :raises: ApiRequestError
-    """
-    resp, content = self.auth.service._http.request(url)
-    if resp.status != 200:
-      raise ApiRequestError('Cannot download file: %s' % resp)
-    return content

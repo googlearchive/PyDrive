@@ -424,4 +424,4 @@ class GoogleAuth(ApiAttributeMixin, object):
     if self.access_token_expired:
       raise AuthenticationError('No valid credentials provided to authorize')
     self.http = self.credentials.authorize(self.http)
-    self.service = build('drive', 'v2', http=self.http)
+    self.service = build('drive', 'v3', http=self.http)
