@@ -299,7 +299,7 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     """
     if self.get('mimeType') is None:
       self['mimeType'] = 'application/octet-stream'
-    return MediaIoBaseUpload(self.content, self['mimeType'])
+    return MediaIoBaseUpload(self.content, self['mimeType'], resumable=True)
 
   @LoadAuth
   def _DownloadFromUrl(self, url):
