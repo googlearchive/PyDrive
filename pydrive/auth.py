@@ -49,10 +49,38 @@ def LoadAuth(decoratee):
     if self.auth is None:  # Initialize auth if needed.
       self.auth = GoogleAuth()
     if self.auth.access_token_expired:
-      self.auth.LocalWebserverAuth()
+      if self.auth_method == 'service':
+        self.auth.ServiceAuth()
+      else:
+        self.auth.LocalWebserverAuth()
     if self.auth.service is None:  # Check if drive api is built.
       self.auth.Authorize()
     return decoratee(self, *args, **kwargs)
+  return _decorated
+
+def CheckServiceAuth(decoratee):
+  """Decorator to authorize service account."""
+  @wraps(decoratee)
+  def _decorated(self, *args, **kwargs):
+    self.auth_method = 'service'
+    dirty = False
+    save_credentials = self.settings.get('save_credentials')
+    if self.credentials is None and save_credentials:
+      self.LoadCredentials()
+    if self.credentials is None:
+      decoratee(self, *args, **kwargs)
+      self.Authorize()
+      dirty = True
+    else:
+      if self.access_token_expired:
+        if self.credentials.refresh_token is not None:
+          self.Refresh()
+        else:
+          code = decoratee(self, *args, **kwargs)
+          self.Authorize()
+        dirty = True
+    if dirty and save_credentials:
+      self.SaveCredentials()
   return _decorated
 
 def CheckAuth(decoratee):
@@ -98,12 +126,15 @@ class GoogleAuth(ApiAttributeMixin, object):
       }
   CLIENT_CONFIGS_LIST = ['client_id', 'client_secret', 'auth_uri',
                          'token_uri', 'revoke_uri', 'redirect_uri']
+  SERVICE_CONFIGS_LIST = ['client_service_email', 'client_user_email',
+                          'client_pkcs12_file_path']
   settings = ApiAttribute('settings')
   client_config = ApiAttribute('client_config')
   flow = ApiAttribute('flow')
   credentials = ApiAttribute('credentials')
   http = ApiAttribute('http')
   service = ApiAttribute('service')
+  auth_method = ApiAttribute('auth_method')
 
   def __init__(self, settings_file='settings.yaml',http_timeout=None):
     """Create an instance of GoogleAuth.
@@ -204,6 +235,48 @@ class GoogleAuth(ApiAttributeMixin, object):
     print()
     return input('Enter verification code: ').strip()
 
+  @CheckServiceAuth
+  def ServiceAuth(self):
+    """Authenticate and authorize using P12 private key, client id
+    and client email for a Service account.
+    :raises: AuthError, InvalidConfigError
+    """
+    if not all(config in self.client_config
+               for config in self.SERVICE_CONFIGS_LIST):
+      self.LoadServiceConfigSettings()
+    try:
+      from oauth2client.client import SignedJwtAssertionCredentials
+      HAS_JWT_CREDS = True
+    except ImportError:
+      HAS_JWT_CREDS = False
+
+    if not HAS_JWT_CREDS:
+      raise AuthError('SignedJwtAssertionCredentials is not available. \
+                      PyOpenSSL must be installed to use \
+                      this method.')
+
+    scope = scopes_to_string(self.settings['oauth_scope'])
+    user_email = self.client_config['client_user_email']
+    service_email = self.client_config['client_service_email']
+    if not service_email:
+      raise InvalidConfigError('Service Emails must be \
+                               specified to call ServiceAuth')
+
+    file_path = self.client_config['client_pkcs12_file_path']
+    try:
+      f = file(file_path, 'rb')
+    except IOError:
+      raise InvalidConfigError('Key file not found at %s' % file_path)
+    else:
+      key = f.read()
+      f.close()
+
+    self.credentials = SignedJwtAssertionCredentials(service_email, key,
+                                                     scope=scope,
+                                                     sub=user_email)
+
+    print 'Authentication successful.'
+
   def LoadCredentials(self, backend=None):
     """Loads credentials or create empty credentials if it doesn't exist.
 
@@ -278,6 +351,46 @@ class GoogleAuth(ApiAttributeMixin, object):
     except CredentialsFileSymbolicLinkError:
       raise InvalidCredentialsError('Credentials file cannot be symbolic link')
 
+  @CheckAuth
+  def ServiceAuth(self):
+    """Authenticate and authorize using P12 private key, client id
+    and client email for a Service account.
+
+    :raises: AuthError, InvalidConfigError
+    """
+    try:
+      from oauth2client.client import SignedJwtAssertionCredentials
+      HAS_JWT_CREDS = True
+    except ImportError:
+      HAS_JWT_CREDS = False
+
+    if not HAS_JWT_CREDS:
+      raise AuthError('SignedJwtAssertionCredentials is not available. \
+                      PyCrypto or PyOpenSSL must be installed to use \
+                      this method.')
+
+    scope = scopes_to_string(self.settings['oauth_scope'])
+    user_email = self.client_config['client_user_email']
+    service_email = self.client_config['client_service_email']
+    if not (user_email and service_email):
+      raise InvalidConfigError('Both User & Service Emails must be \
+                               specified to call ServiceAuth')
+
+    file_path = self.client_config['client_pkcs12_file_path']
+    try:
+      f = file(file_path, 'rb')
+    except IOError:
+      raise InvalidConfigError('Key file not found at %s' % file_path)
+    else:
+      key = f.read()
+      f.close()
+
+    self.credentials = SignedJwtAssertionCredentials(service_email, key,
+                                                   scope=scope,
+                                                   sub=user_email)
+
+    print 'Authentication successful.'
+
   def LoadClientConfig(self, backend=None):
     """Loads client configuration according to specified backend.
 
@@ -296,6 +409,8 @@ class GoogleAuth(ApiAttributeMixin, object):
       self.LoadClientConfigFile()
     elif backend == 'settings':
       self.LoadClientConfigSettings()
+    elif backend == 'service':
+      self.LoadServiceConfigSettings()
     else:
       raise InvalidConfigError('Unknown client_config_backend')
 
@@ -318,13 +433,27 @@ class GoogleAuth(ApiAttributeMixin, object):
                            clientsecrets.TYPE_INSTALLED):
       raise InvalidConfigError('Unknown client_type of client config file')
     try:
-      config_index = ['client_id', 'client_secret', 'auth_uri', 'token_uri']
+      config_index = ['client_id', 'client_secret', 'auth_uri', 'token_uri',
+                     'client_email']
       for config in config_index:
         self.client_config[config] = client_info[config]
       self.client_config['revoke_uri'] = client_info.get('revoke_uri')
       self.client_config['redirect_uri'] = client_info['redirect_uris'][0]
     except KeyError:
       raise InvalidConfigError('Insufficient client config in file')
+
+  def LoadServiceConfigSettings(self):
+    """Loads client configuration from settings file.
+    :raises: InvalidConfigError
+    """
+    for config in self.SERVICE_CONFIGS_LIST:
+      try:
+        self.client_config[config] = \
+          self.settings['service_config'][config]
+      except KeyError:
+        err = "Insufficient service config in settings"
+        err += "\n\nMissing: {} key.".format(config)
+        raise InvalidConfigError(err)
 
   def LoadClientConfigSettings(self):
     """Loads client configuration from settings file.
