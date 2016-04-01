@@ -6,6 +6,7 @@ from six.moves import input
 
 from apiclient.discovery import build
 from functools import wraps
+from oauth2client.service_account import ServiceAccountCredentials
 from oauth2client.client import FlowExchangeError
 from oauth2client.client import AccessTokenRefreshError
 from oauth2client.client import OAuth2WebServerFlow
@@ -76,7 +77,7 @@ def CheckServiceAuth(decoratee):
         if self.credentials.refresh_token is not None:
           self.Refresh()
         else:
-          code = decoratee(self, *args, **kwargs)
+          decoratee(self, *args, **kwargs)
           self.Authorize()
         dirty = True
     if dirty and save_credentials:
@@ -241,41 +242,18 @@ class GoogleAuth(ApiAttributeMixin, object):
     and client email for a Service account.
     :raises: AuthError, InvalidConfigError
     """
-    if not all(config in self.client_config
-               for config in self.SERVICE_CONFIGS_LIST):
+    if set(self.SERVICE_CONFIGS_LIST) - set(self.client_config):
       self.LoadServiceConfigSettings()
-    try:
-      from oauth2client.client import SignedJwtAssertionCredentials
-      HAS_JWT_CREDS = True
-    except ImportError:
-      HAS_JWT_CREDS = False
-
-    if not HAS_JWT_CREDS:
-      raise AuthError('SignedJwtAssertionCredentials is not available. \
-                      PyOpenSSL must be installed to use \
-                      this method.')
-
-    scope = scopes_to_string(self.settings['oauth_scope'])
-    user_email = self.client_config['client_user_email']
+    scopes = scopes_to_string(self.settings['oauth_scope'])
+    user_email = self.client_config.get('client_user_email')
     service_email = self.client_config['client_service_email']
-    if not service_email:
-      raise InvalidConfigError('Service Emails must be \
-                               specified to call ServiceAuth')
-
     file_path = self.client_config['client_pkcs12_file_path']
-    try:
-      f = file(file_path, 'rb')
-    except IOError:
-      raise InvalidConfigError('Key file not found at %s' % file_path)
-    else:
-      key = f.read()
-      f.close()
-
-    self.credentials = SignedJwtAssertionCredentials(service_email, key,
-                                                     scope=scope,
-                                                     sub=user_email)
-
-    print 'Authentication successful.'
+    self.credentials = ServiceAccountCredentials.from_p12_keyfile(
+        service_account_email=service_email,
+        filename=file_path,
+        scopes=scopes)
+    if user_email:
+        self.credentials = self.credentials.create_delegated(sub=user_email)
 
   def LoadCredentials(self, backend=None):
     """Loads credentials or create empty credentials if it doesn't exist.
@@ -350,46 +328,6 @@ class GoogleAuth(ApiAttributeMixin, object):
       self.credentials.set_store(storage)
     except CredentialsFileSymbolicLinkError:
       raise InvalidCredentialsError('Credentials file cannot be symbolic link')
-
-  @CheckAuth
-  def ServiceAuth(self):
-    """Authenticate and authorize using P12 private key, client id
-    and client email for a Service account.
-
-    :raises: AuthError, InvalidConfigError
-    """
-    try:
-      from oauth2client.client import SignedJwtAssertionCredentials
-      HAS_JWT_CREDS = True
-    except ImportError:
-      HAS_JWT_CREDS = False
-
-    if not HAS_JWT_CREDS:
-      raise AuthError('SignedJwtAssertionCredentials is not available. \
-                      PyCrypto or PyOpenSSL must be installed to use \
-                      this method.')
-
-    scope = scopes_to_string(self.settings['oauth_scope'])
-    user_email = self.client_config['client_user_email']
-    service_email = self.client_config['client_service_email']
-    if not (user_email and service_email):
-      raise InvalidConfigError('Both User & Service Emails must be \
-                               specified to call ServiceAuth')
-
-    file_path = self.client_config['client_pkcs12_file_path']
-    try:
-      f = file(file_path, 'rb')
-    except IOError:
-      raise InvalidConfigError('Key file not found at %s' % file_path)
-    else:
-      key = f.read()
-      f.close()
-
-    self.credentials = SignedJwtAssertionCredentials(service_email, key,
-                                                   scope=scope,
-                                                   sub=user_email)
-
-    print 'Authentication successful.'
 
   def LoadClientConfig(self, backend=None):
     """Loads client configuration according to specified backend.
