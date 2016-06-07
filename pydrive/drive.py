@@ -36,3 +36,10 @@ class GoogleDrive(ApiAttributeMixin, object):
     :returns: pydrive.files.GoogleDriveFileList -- initialized with auth of this instance.
     """
     return GoogleDriveFileList(auth=self.auth, param=param)
+
+  def AboutDrive(self):
+    """Return information about the Google Drive of the auth instance.
+
+    :returns: A dictionary of Google Drive information like user, usage, quota etc.
+    """
+    return self.auth.service.about().get().execute()
