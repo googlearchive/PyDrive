@@ -12,20 +12,20 @@ class GoogleDriveFileListTest(unittest.TestCase):
   Equivalent to Files.list in Google Drive API.
   """
 
-  title = 'asdfjoijawioejgoiaweoganoqpnmgzwrouihoaiwe.ioawejogiawoj'
+  name = 'asdfjoijawioejgoiaweoganoqpnmgzwrouihoaiwe.ioawejogiawoj'
   ga = GoogleAuth('settings/test1.yaml')
   ga.LocalWebserverAuth()
   drive = GoogleDrive(ga)
   file_list = []
   for x in range(0, 10):
     file1 = drive.CreateFile()
-    file1['title'] = title
+    file1['name'] = name
     file1.Upload()
     file_list.append(file1)
 
   def test_01_Files_List_GetList(self):
     drive = GoogleDrive(self.ga)
-    flist = drive.ListFile({'q': "title = '%s' and trashed = false"%self.title})
+    flist = drive.ListFile({'q': "name = '%s' and trashed = false"%self.name})
     files = flist.GetList()  # Auto iterate every file
     for file1 in self.file_list:
       found = False
@@ -36,8 +36,8 @@ class GoogleDriveFileListTest(unittest.TestCase):
 
   def test_02_Files_List_ForLoop(self):
     drive = GoogleDrive(self.ga)
-    flist = drive.ListFile({'q': "title = '%s' and trashed = false"%self.title,
-                            'maxResults': 2})
+    flist = drive.ListFile({'q': "name = '%s' and trashed = false"%self.name,
+                            'pageSize': 2})
     files = []
     for x in flist:  # Build iterator to access files simply with for loop
       self.assertTrue(len(x) <= 2)
@@ -51,8 +51,8 @@ class GoogleDriveFileListTest(unittest.TestCase):
 
   def test_03_Files_List_GetList_Iterate(self):
     drive = GoogleDrive(self.ga)
-    flist = drive.ListFile({'q': "title = '%s' and trashed = false"%self.title,
-                            'maxResults': 2})
+    flist = drive.ListFile({'q': "name = '%s' and trashed = false"%self.name,
+                            'pageSize': 2})
     files = []
     while True:
       try:

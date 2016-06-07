@@ -153,12 +153,12 @@ class ApiResourceList(ApiAttributeMixin, ApiResource, Iterator):
 
     :returns: list -- list of API resources.
     """
-    if self.get('maxResults') is None:
-      self['maxResults'] = 1000
+    if self.get('pageSize') is None:
+      self['pageSize'] = 1000
       result = []
       for x in self:
         result.extend(x)
-      del self['maxResults']
+      del self['pageSize']
       return result
     else:
       return next(self)
