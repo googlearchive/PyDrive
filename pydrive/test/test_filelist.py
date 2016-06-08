@@ -25,7 +25,8 @@ class GoogleDriveFileListTest(unittest.TestCase):
 
   def test_01_Files_List_GetList(self):
     drive = GoogleDrive(self.ga)
-    flist = drive.ListFile({'q': "title = '%s' and trashed = false"%self.title})
+    flist = drive.ListFile({'q': "title = '%s' and trashed = false"
+                                 % self.title})
     files = flist.GetList()  # Auto iterate every file
     for file1 in self.file_list:
       found = False
@@ -67,6 +68,36 @@ class GoogleDriveFileListTest(unittest.TestCase):
         if file1['id'] == file2['id']:
           found = True
       self.assertEqual(found, True)
+
+  def test_File_List_Folders(self):
+    drive = GoogleDrive(self.ga)
+    folder1 = drive.CreateFile(
+      {'mimeType': 'application/vnd.google-apps.folder',
+       'title': self.title})
+    folder1.Upload()
+    self.file_list.append(folder1)
+
+    flist = drive.ListFile({'q': "title = '%s' and trashed = false"
+                                 % self.title})
+    count = 0
+    for _flist in flist:
+      for file1 in _flist:
+        self.assertFileInFileList(file1)
+        count += 1
+
+    self.assertTrue(count == 11)
+
+  def tearDown(self):
+    # Deleting uploaded files.
+    for file1 in self.file_list:
+      file1.Delete()
+
+  def assertFileInFileList(self, file_object):
+    found = False
+    for file1 in self.file_list:
+      if file_object['id'] == file1['id']:
+        found = True
+    self.assertEqual(found, True)
 
   def DeleteOldFile(self, file_name):
     try:
