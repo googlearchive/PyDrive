@@ -5,23 +5,16 @@ import unittest
 
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
+from pydrive.test import test_util
 
 
 class GoogleDriveFileListTest(unittest.TestCase):
   """Tests operations of files.GoogleDriveFileList class.
   Equivalent to Files.list in Google Drive API.
   """
-
-  title = 'asdfjoijawioejgoiaweoganoqpnmgzwrouihoaiwe.ioawejogiawoj'
   ga = GoogleAuth('settings/test1.yaml')
   ga.LocalWebserverAuth()
   drive = GoogleDrive(ga)
-  file_list = []
-  for x in range(0, 10):
-    file1 = drive.CreateFile()
-    file1['title'] = title
-    file1.Upload()
-    file_list.append(file1)
 
   def test_01_Files_List_GetList(self):
     drive = GoogleDrive(self.ga)
@@ -86,6 +79,20 @@ class GoogleDriveFileListTest(unittest.TestCase):
         count += 1
 
     self.assertTrue(count == 11)
+
+  # setUp and tearDown methods.
+  # ===========================
+  def setUp(self):
+    title = test_util.CreateRandomFileName()
+    file_list = []
+    for x in range(0, 10):
+      file1 = self.drive.CreateFile()
+      file1['title'] = title
+      file1.Upload()
+      file_list.append(file1)
+
+    self.title = title
+    self.file_list = file_list
 
   def tearDown(self):
     # Deleting uploaded files.

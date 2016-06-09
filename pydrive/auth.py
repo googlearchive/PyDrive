@@ -47,15 +47,32 @@ def LoadAuth(decoratee):
   """Decorator to check if the auth is valid and loads auth if not."""
   @wraps(decoratee)
   def _decorated(self, *args, **kwargs):
-    if self.auth is None:  # Initialize auth if needed.
+    # Initialize auth if needed.
+    if self.auth is None:
       self.auth = GoogleAuth()
+    # Re-create access token if it expired.
     if self.auth.access_token_expired:
       if self.auth_method == 'service':
         self.auth.ServiceAuth()
       else:
         self.auth.LocalWebserverAuth()
-    if self.auth.service is None:  # Check if drive api is built.
+
+    # Initialise service if not built yet.
+    if self.auth.service is None:
       self.auth.Authorize()
+
+    # Ensure that a thread-safe HTTP object is provided.
+    if kwargs is not None and \
+            "param" in kwargs and \
+            kwargs["param"] is not None and \
+            "http" in kwargs["param"] and \
+            kwargs["param"]["http"] is not None:
+      self.http = kwargs["param"]["http"]
+      del kwargs["param"]["http"]
+
+    else:  # If HTTP object not specified, each call creates new HTTP object.
+      self.http = self.auth.Get_Http_Object()
+
     return decoratee(self, *args, **kwargs)
   return _decorated
 
@@ -502,3 +519,13 @@ class GoogleAuth(ApiAttributeMixin, object):
       raise AuthenticationError('No valid credentials provided to authorize')
     self.http = self.credentials.authorize(self.http)
     self.service = build('drive', 'v2', http=self.http)
+
+  def Get_Http_Object(self):
+    """Create and athorize an httplib2.Http object. Necessary for
+    thread-safety.
+    :return: The http object to be used in each call.
+    :rtype: httplib2.Http
+    """
+    http = httplib2.Http(timeout=self.http_timeout)
+    http = self.credentials.authorize(http)
+    return http

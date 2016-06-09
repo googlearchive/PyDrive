@@ -1,12 +1,17 @@
 # -*- coding: utf-8 -*-
 import filecmp
 import os
-import sys
 import unittest
+
+from six.moves import range
+import timeout_decorator
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 from pydrive.files import ApiRequestError
+
+import test_util
 
 
 class GoogleDriveFileTest(unittest.TestCase):
@@ -298,6 +303,69 @@ class GoogleDriveFileTest(unittest.TestCase):
       self.fail("File not deleted correctly.")
     except ApiRequestError as e:
       pass
+
+  # Setup for concurrent upload testing.
+  # =====================================
+  class UploadWorker:
+    def __init__(self, gdrive_file, generate_http=False):
+      self.gdrive_file = gdrive_file
+      self.param = {}
+      if generate_http:
+        self.param = {"http": gdrive_file.auth.Get_Http_Object()}
+
+    def run(self):
+      self.gdrive_file.Upload(param=self.param)
+
+  def _parallel_uploader(self, num_of_uploads, num_of_workers,
+                         use_per_thread_http=False):
+    drive = GoogleDrive(self.ga)
+    thread_pool = ThreadPoolExecutor(max_workers=num_of_workers)
+
+    # Create list of gdrive_files.
+    upload_files = []
+    remote_name = test_util.CreateRandomFileName()
+    for i in range(num_of_uploads):
+      file_name = self.first_file if i % 2 == 0 else self.second_file
+      up_file = drive.CreateFile()
+      up_file['title'] = remote_name
+      up_file.SetContentFile(file_name)
+      upload_files.append(up_file)
+
+    # Ensure there are no files with the random file name.
+    files = drive.ListFile(param={'q': "title = '%s' and trashed = false" %
+                               remote_name}).GetList()
+    self.assertTrue(len(files) == 0)
+
+    # Submit upload jobs to ThreadPoolExecutor.
+    futures = []
+    for i in range(num_of_uploads):
+      upload_worker = self.UploadWorker(upload_files[i],
+                                        use_per_thread_http)
+      futures.append(thread_pool.submit(upload_worker.run))
+
+    # Ensure that all threads a) return, and b) encountered no exceptions.
+    for future in as_completed(futures):
+      self.assertIsNone(future.exception())
+    thread_pool.shutdown()
+
+    # Ensure 10 files were uploaded.
+    files = drive.ListFile(param={'q': "title = '%s' and trashed = false" %
+                                       remote_name}).GetList()
+    self.assertTrue(len(files) == 10)
+
+    # Remove uploaded files.
+    self.DeleteUploadedFiles(drive, [fi['id'] for fi in upload_files])
+
+  @timeout_decorator.timeout(80)
+  def test_Parallel_Files_Insert_File_Auto_Generated_HTTP(self):
+    self._parallel_uploader(10, 10)
+
+  @timeout_decorator.timeout(80)
+  def test_Parallel_Insert_File_Passed_HTTP(self):
+    self._parallel_uploader(10, 10, True)
+
+  # Helper functions.
+  # =================
 
   def DeleteOldFile(self, file_name):
     try:

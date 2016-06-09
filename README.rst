@@ -70,7 +70,8 @@ efficient way.
     file2 = drive.CreateFile()
     file2.SetContentFile('hello.png')
     file2.Upload()
-    print('Created file %s with mimeType %s' % (file2['title'], file2['mimeType']))
+    print('Created file %s with mimeType %s' % (file2['title'],
+    file2['mimeType']))
     # Created file hello.png with mimeType image/png
 
     file3 = drive.CreateFile({'id': file2['id']})
@@ -98,3 +99,31 @@ File listing pagination made easy
       print 'Received %s files from Files.list()' % len(file_list) # <= 10
       for file1 in file_list:
         print('title: %s, id: %s' % (file1['title'], file1['id']))
+
+Concurrent access made easy
+___________________________
+
+All calls made are thread-safe. The underlying implementation in the
+google-api-client library
+`is not thread-safe <https://developers.google
+.com/api-client-library/python/guide/thread_safety>`,
+which means that every request has to re-authenticate an http object. You
+can avoid this overhead by
+creating your own http object for each thread and re-use it for every call.
+
+This can be done as follows:
+
+.. code:: python
+
+    # Create httplib.Http() object.
+    http = drive.auth.Get_Http_Object()
+
+    # Create file object to upload.
+    file_obj = drive.CreateFile()
+    file_obj['title'] = "file name"
+
+    # Upload the file and pass the http object into the call to Upload.
+    file_obj.Upload(param={"http": http})
+
+You can specify the http-object in every access method which takes a *param*
+parameter.
