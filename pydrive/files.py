@@ -80,7 +80,7 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
 
     :param auth: authorized GoogleAuth instance.
     :type auth: pydrive.auth.GoogleAuth
-    :param metadata: file resource to initialize GoogleDirveFile with.
+    :param metadata: file resource to initialize GoogleDriveFile with.
     :type metadata: dict.
     :param uploaded: True if this file is confirmed to be uploaded.
     :type uploaded: bool.
@@ -161,7 +161,9 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     """Save content of this file as a local file.
 
     :param filename: name of the file to write to.
-    :type filename: str.
+    :type filename: str
+    :param mimetype: mimeType of the file.
+    :type mimetype: str
     :raises: ApiRequestError, FileNotUploadedError, FileNotDownloadableError
     """
     if self.content is None or type(self.content) is not io.BytesIO:
@@ -284,9 +286,9 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
       param = {}
     param['fileId'] = self.metadata.get('id') or self['id']
     try:
-      metadata = self.auth.service.files().untrash(**param).execute(
+      self.auth.service.files().untrash(**param).execute(
         http=self.http)
-    except errors.HttpError, error:
+    except errors.HttpError as error:
       raise ApiRequestError(error)
     else:
       if self.metadata:
@@ -305,9 +307,9 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
       param = {}
     param['fileId'] = self.metadata.get('id') or self['id']
     try:
-      metadata = self.auth.service.files().trash(**param).execute(
+      self.auth.service.files().trash(**param).execute(
         http=self.http)
-    except errors.HttpError, error:
+    except errors.HttpError as error:
       raise ApiRequestError(error)
     else:
       if self.metadata:
@@ -327,9 +329,8 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
       param = {}
     param['fileId'] = self.metadata.get('id') or self['id']
     try:
-      metadata = self.auth.service.files().delete(**param).execute(
-        http=self.http)
-    except errors.HttpError, error:
+      self.auth.service.files().delete(**param).execute(http=self.http)
+    except errors.HttpError as error:
       raise ApiRequestError(error)
     else:
       return True
@@ -400,7 +401,7 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     :returns: str -- content of downloaded file in string.
     :raises: ApiRequestError
     """
-    resp, content = self.auth.service._http.request(url)
+    resp, content = self.http.request(url)
     if resp.status != 200:
       raise ApiRequestError('Cannot download file: %s' % resp)
     return content

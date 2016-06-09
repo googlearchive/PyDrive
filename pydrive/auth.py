@@ -188,20 +188,23 @@ class GoogleAuth(ApiAttributeMixin, object):
 
   @CheckAuth
   def LocalWebserverAuth(self, host_name='localhost',
-                         port_numbers=[8080, 8090]):
-    """Authenticate and authorize from user by creating local webserver and
+                         port_numbers=None):
+    """Authenticate and authorize from user by creating local web server and
     retrieving authentication code.
 
-    This function is not for webserver application. It creates local webserver
+    This function is not for web server application. It creates local web server
     for user from standalone application.
 
-    :param host_name: host name of the local webserver.
+    :param host_name: host name of the local web server.
     :type host_name: str.
     :param port_numbers: list of port numbers to be tried to used.
     :type port_numbers: list.
-    :returns: str -- code returned from local webserver
+    :returns: str -- code returned from local web server
     :raises: AuthenticationRejected, AuthenticationError
     """
+    if port_numbers is None:
+      port_numbers = [8080, 8090]  # Mutable objects should not be default
+      # values, as each call's changes are global.
     success = False
     port_number = 0
     for port in port_numbers:
@@ -216,7 +219,7 @@ class GoogleAuth(ApiAttributeMixin, object):
     if success:
       oauth_callback = 'http://%s:%s/' % (host_name, port_number)
     else:
-      print('Failed to start a local webserver. Please check your firewall')
+      print('Failed to start a local web server. Please check your firewall')
       print('settings and locally running programs that may be blocking or')
       print('using configured ports. Default ports are 8080 and 8090.')
       raise AuthenticationError()
@@ -521,7 +524,7 @@ class GoogleAuth(ApiAttributeMixin, object):
     self.service = build('drive', 'v2', http=self.http)
 
   def Get_Http_Object(self):
-    """Create and athorize an httplib2.Http object. Necessary for
+    """Create and authorize an httplib2.Http object. Necessary for
     thread-safety.
     :return: The http object to be used in each call.
     :rtype: httplib2.Http

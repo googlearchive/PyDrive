@@ -11,7 +11,7 @@ from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 from pydrive.files import ApiRequestError
 
-import test_util
+from test import test_util
 
 
 class GoogleDriveFileTest(unittest.TestCase):

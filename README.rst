@@ -105,8 +105,7 @@ ___________________________
 
 All calls made are thread-safe. The underlying implementation in the
 google-api-client library
-`is not thread-safe <https://developers.google
-.com/api-client-library/python/guide/thread_safety>`,
+`is not thread-safe <https://developers.google.com/api-client-library/python/guide/thread_safety>`,
 which means that every request has to re-authenticate an http object. You
 can avoid this overhead by
 creating your own http object for each thread and re-use it for every call.

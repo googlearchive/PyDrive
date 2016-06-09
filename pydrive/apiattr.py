@@ -30,13 +30,14 @@ class ApiAttribute(object):
     if obj.dirty.get(self.name) is not None:
       del obj.dirty[self.name]
 
-
 class ApiAttributeMixin(object):
   """Mixin to initialize required global variables to use ApiAttribute."""
 
   def __init__(self):
     self.attr = {}
     self.dirty = {}
+    self.http = None  # Any element may make requests and will require this
+    # field.
 
 
 class ApiResource(dict):
@@ -50,7 +51,9 @@ class ApiResource(dict):
 
   def __init__(self, *args, **kwargs):
     """Create an instance of ApiResource."""
+    super(ApiResource, self).__init__()
     self.update(*args, **kwargs)
+    self.metadata = dict(self)
 
   def __getitem__(self, key):
     """Overwritten method of dictionary.
@@ -72,8 +75,8 @@ class ApiResource(dict):
 
   def __repr__(self):
     """Overwritten method of dictionary."""
-    dictrepr = dict.__repr__(self)
-    return '%s(%s)' % (type(self).__name__, dictrepr)
+    dict_representation = dict.__repr__(self)
+    return '%s(%s)' % (type(self).__name__, dict_representation)
 
   def update(self, *args, **kwargs):
     """Overwritten method of dictionary."""
@@ -132,7 +135,7 @@ class ApiResourceList(ApiAttributeMixin, ApiResource, Iterator):
   def __next__(self):
     """Make API call to list resources and return them.
 
-    Auto updates 'pageToken' everytime it makes API call and
+    Auto updates 'pageToken' every time it makes API call and
     raises StopIteration when it reached the end of iteration.
 
     :returns: list -- list of API resources.
