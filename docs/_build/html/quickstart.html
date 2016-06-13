@@ -1,0 +1,166 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Quickstart &mdash; PyDrive 1.1.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="PyDrive 1.1.1 documentation" href="index.html" />
+    <link rel="next" title="OAuth made easy" href="oauth.html" />
+    <link rel="prev" title="Welcome to PyDrive’s documentation!" href="index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="quickstart">
+<h1>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="authentication">
+<h2>Authentication<a class="headerlink" href="#authentication" title="Permalink to this headline">¶</a></h2>
+<p>Drive API requires OAuth2.0 for authentication. <em>PyDrive</em> makes your life much easier by handling complex authentication steps for you.</p>
+<ol class="arabic simple">
+<li>Go to <a class="reference external" href="https://console.developers.google.com/iam-admin/projects">APIs Console</a> and make your own project.</li>
+<li>Search for &#8216;Google Drive API&#8217;, select the entry, and click &#8216;Enable&#8217;.</li>
+<li>Select &#8216;Credentials&#8217; from the left menu, click &#8216;Create Credentials&#8217;, select &#8216;OAuth client ID&#8217;.</li>
+<li>Now, the product name and consent screen need to be set -&gt; click &#8216;Configure consent screen&#8217; and follow the instructions. Once finished:</li>
+</ol>
+<blockquote>
+<div><ol class="loweralpha simple">
+<li>Select &#8216;Application type&#8217; to be <em>Web application</em>.</li>
+<li>Enter an appropriate name.</li>
+<li>Input <em>http://localhost:8080</em> for &#8216;Authorized JavaScript origins&#8217;.</li>
+<li>Input <em>http://localhost:8080/</em> for &#8216;Authorized redirect URIs&#8217;.</li>
+<li>Click &#8216;Save&#8217;.</li>
+</ol>
+</div></blockquote>
+<ol class="arabic simple" start="5">
+<li>Click &#8216;Download JSON&#8217; on the right side of Client ID to download <strong>client_secret_&lt;really long ID&gt;.json</strong>.</li>
+</ol>
+<p>The downloaded file has all authentication information of your application.
+<strong>Rename the file to &#8220;client_secrets.json&#8221; and place it in your working directory.</strong></p>
+<p>Create <em>quickstart.py</em> file and copy and paste the following code.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pydrive.auth</span> <span class="kn">import</span> <span class="n">GoogleAuth</span>
+
+<span class="n">gauth</span> <span class="o">=</span> <span class="n">GoogleAuth</span><span class="p">()</span>
+<span class="n">gauth</span><span class="o">.</span><span class="n">LocalWebserverAuth</span><span class="p">()</span> <span class="c1"># Creates local webserver and auto handles authentication.</span>
+</pre></div>
+</div>
+<p>Run this code with <em>python quickstart.py</em> and you will see a web browser asking you for authentication. Click <em>Accept</em> and you are done with authentication. For more details, take a look at documentation: <a class="reference external" href="./oauth.html">OAuth made easy</a></p>
+</div>
+<div class="section" id="creating-and-updating-file">
+<h2>Creating and updating file<a class="headerlink" href="#creating-and-updating-file" title="Permalink to this headline">¶</a></h2>
+<p>There are many methods to create and update file metadata and contents. With <em>PyDrive</em>, all you have to know is <a class="reference external" href="./pydrive.html#pydrive.files.GoogleDriveFile.Upload">Upload()</a> method which makes optimal API call for you. Add the following code to your <em>quickstart.py</em> and run it.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pydrive.drive</span> <span class="kn">import</span> <span class="n">GoogleDrive</span>
+
+<span class="n">drive</span> <span class="o">=</span> <span class="n">GoogleDrive</span><span class="p">(</span><span class="n">gauth</span><span class="p">)</span>
+
+<span class="n">file1</span> <span class="o">=</span> <span class="n">drive</span><span class="o">.</span><span class="n">CreateFile</span><span class="p">({</span><span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;Hello.txt&#39;</span><span class="p">})</span>  <span class="c1"># Create GoogleDriveFile instance with title &#39;Hello.txt&#39;.</span>
+<span class="n">file1</span><span class="o">.</span><span class="n">SetContentString</span><span class="p">(</span><span class="s1">&#39;Hello World!&#39;</span><span class="p">)</span> <span class="c1"># Set content of the file from given string.</span>
+<span class="n">file1</span><span class="o">.</span><span class="n">Upload</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This code will create a new file with title <em>Hello.txt</em> and its content <em>Hello World!</em>. You can see and open this file from <a class="reference external" href="https://drive.google.com">Google Drive</a> if you want. For more details, take a look at documentation: <a class="reference external" href="./filemanagement.html">File management made easy</a></p>
+</div>
+<div class="section" id="getting-list-of-files">
+<h2>Getting list of files<a class="headerlink" href="#getting-list-of-files" title="Permalink to this headline">¶</a></h2>
+<p><em>PyDrive</em> handles paginations and parses response as list of <a class="reference external" href="./pydrive.html#pydrive.files.GoogleDriveFile">GoogleDriveFile</a>. Let&#8217;s get title and id of all the files in the root folder of Google Drive. Again, add the following code to <em>quickstart.py</em> and execute it.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c1"># Auto-iterate through all files that matches this query</span>
+<span class="n">file_list</span> <span class="o">=</span> <span class="n">drive</span><span class="o">.</span><span class="n">ListFile</span><span class="p">({</span><span class="s1">&#39;q&#39;</span><span class="p">:</span> <span class="s2">&quot;&#39;root&#39; in parents and trashed=false&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">GetList</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">file1</span> <span class="ow">in</span> <span class="n">file_list</span><span class="p">:</span>
+  <span class="k">print</span> <span class="s1">&#39;title: </span><span class="si">%s</span><span class="s1">, id: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">file1</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">],</span> <span class="n">file1</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>You will see title and id of all the files and folders in root folder of your Google Drive. For more details, take a look at documentation: <a class="reference external" href="./filelist.html">File listing made easy</a></p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Quickstart</a><ul>
+<li><a class="reference internal" href="#authentication">Authentication</a></li>
+<li><a class="reference internal" href="#creating-and-updating-file">Creating and updating file</a></li>
+<li><a class="reference internal" href="#getting-list-of-files">Getting list of files</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to PyDrive&#8217;s documentation!</a></li>
+      <li>Next: <a href="oauth.html" title="next chapter">OAuth made easy</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/quickstart.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, JunYoung Gwak, Scott Blevins, Robin Nabel, Google Inc..
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/quickstart.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

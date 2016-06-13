@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>File listing made easy &mdash; PyDrive 1.1.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="PyDrive 1.1.1 documentation" href="index.html" />
+    <link rel="next" title="pydrive package" href="pydrive.html" />
+    <link rel="prev" title="File management made easy" href="filemanagement.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="file-listing-made-easy">
+<h1>File listing made easy<a class="headerlink" href="#file-listing-made-easy" title="Permalink to this headline">¶</a></h1>
+<p><em>PyDrive</em> handles paginations and parses response as list of <a class="reference external" href="./pydrive.html#pydrive.files.GoogleDriveFile">GoogleDriveFile</a>.</p>
+<div class="section" id="get-all-files-which-matches-the-query">
+<h2>Get all files which matches the query<a class="headerlink" href="#get-all-files-which-matches-the-query" title="Permalink to this headline">¶</a></h2>
+<p>Create <a class="reference external" href="./pydrive.html#pydrive.files.GoogleDriveFileList">GoogleDriveFileList</a> instance with <a class="reference external" href="https://developers.google.com/drive/v2/reference/files/list#request">parameters of Files.list()</a> as <code class="docutils literal"><span class="pre">dict</span></code>. Call <a class="reference external" href="./pydrive.html#pydrive.apiattr.ApiResourceList.GetList">GetList()</a> and you will get all files that matches your query as a list of <a class="reference external" href="./pydrive.html#pydrive.files.GoogleDriveFile">GoogleDriveFile</a>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pydrive.drive</span> <span class="kn">import</span> <span class="n">GoogleDrive</span>
+
+<span class="n">drive</span> <span class="o">=</span> <span class="n">GoogleDrive</span><span class="p">(</span><span class="n">gauth</span><span class="p">)</span> <span class="c1"># Create GoogleDrive instance with authenticated GoogleAuth instance</span>
+
+<span class="c1"># Auto-iterate through all files in the root folder.</span>
+<span class="n">file_list</span> <span class="o">=</span> <span class="n">drive</span><span class="o">.</span><span class="n">ListFile</span><span class="p">({</span><span class="s1">&#39;q&#39;</span><span class="p">:</span> <span class="s2">&quot;&#39;root&#39; in parents and trashed=false&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">GetList</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">file1</span> <span class="ow">in</span> <span class="n">file_list</span><span class="p">:</span>
+  <span class="k">print</span> <span class="s1">&#39;title: </span><span class="si">%s</span><span class="s1">, id: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">file1</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">],</span> <span class="n">file1</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>You can update metadata or content of these <a class="reference external" href="./pydrive.html#pydrive.files.GoogleDriveFile">GoogleDriveFile</a> instances if you need it.</p>
+</div>
+<div class="section" id="paginate-and-iterate-through-files">
+<h2>Paginate and iterate through files<a class="headerlink" href="#paginate-and-iterate-through-files" title="Permalink to this headline">¶</a></h2>
+<p><em>PyDrive</em> provides Pythonic way of paginating and iterating through list of files. All you have to do is to limit number of results with <code class="docutils literal"><span class="pre">maxResults</span></code> parameter and build <code class="docutils literal"><span class="pre">for</span></code> loop retrieving file list from API each iteration.</p>
+<p>Sample code continues from above:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c1"># Paginate file lists by specifying number of max results</span>
+<span class="k">for</span> <span class="n">file_list</span> <span class="ow">in</span> <span class="n">drive</span><span class="o">.</span><span class="n">ListFile</span><span class="p">({</span><span class="s1">&#39;q&#39;</span><span class="p">:</span> <span class="s1">&#39;trashed=true&#39;</span><span class="p">,</span> <span class="s1">&#39;maxResults&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">}):</span>
+  <span class="k">print</span> <span class="s1">&#39;Received </span><span class="si">%s</span><span class="s1"> files from Files.list()&#39;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">file_list</span><span class="p">)</span> <span class="c1"># &lt;= 10</span>
+  <span class="k">for</span> <span class="n">file1</span> <span class="ow">in</span> <span class="n">file_list</span><span class="p">:</span>
+      <span class="k">print</span> <span class="s1">&#39;title: </span><span class="si">%s</span><span class="s1">, id: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">file1</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">],</span> <span class="n">file1</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">File listing made easy</a><ul>
+<li><a class="reference internal" href="#get-all-files-which-matches-the-query">Get all files which matches the query</a></li>
+<li><a class="reference internal" href="#paginate-and-iterate-through-files">Paginate and iterate through files</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="filemanagement.html" title="previous chapter">File management made easy</a></li>
+      <li>Next: <a href="pydrive.html" title="next chapter">pydrive package</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/filelist.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, JunYoung Gwak, Scott Blevins, Robin Nabel, Google Inc..
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/filelist.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
