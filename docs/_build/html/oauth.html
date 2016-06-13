@@ -1,0 +1,236 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>OAuth made easy &mdash; PyDrive 1.1.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="PyDrive 1.1.1 documentation" href="index.html" />
+    <link rel="next" title="File management made easy" href="filemanagement.html" />
+    <link rel="prev" title="Quickstart" href="quickstart.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="oauth-made-easy">
+<h1>OAuth made easy<a class="headerlink" href="#oauth-made-easy" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="authentication-in-two-lines">
+<h2>Authentication in two lines<a class="headerlink" href="#authentication-in-two-lines" title="Permalink to this headline">¶</a></h2>
+<p>OAuth2.0 is complex and difficult to start with. To make it more simple, <em>PyDrive</em> makes all authentication into just two lines.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pydrive.auth</span> <span class="kn">import</span> <span class="n">GoogleAuth</span>
+
+<span class="n">gauth</span> <span class="o">=</span> <span class="n">GoogleAuth</span><span class="p">()</span>
+<span class="n">gauth</span><span class="o">.</span><span class="n">LocalWebserverAuth</span><span class="p">()</span> <span class="c1"># Creates local webserver and auto handles authentication</span>
+</pre></div>
+</div>
+<p>To make this code work, you need to download application configurations file from APIs Console. Take a look at <a class="reference external" href="./quickstart.html#authentication">quickstart</a> for detailed instructions.</p>
+<p><a class="reference external" href="./pydrive.html#pydrive.auth.GoogleAuth.LocalWebserverAuth">LocalWebserverAuth()</a> is a built-in method of <a class="reference external" href="./pydrive.html#pydrive.auth.GoogleAuth">GoogleAuth</a> which sets up local webserver to automatically receive authentication code from user and authorizes by itself. You can also use <a class="reference external" href="./pydrive.html#pydrive.auth.GoogleAuth.CommandLineAuth">CommandLineAuth()</a> which manually takes code from user at command line.</p>
+</div>
+<div class="section" id="customizing-authentication-with-settings-yaml">
+<h2>Customizing authentication with <em>settings.yaml</em><a class="headerlink" href="#customizing-authentication-with-settings-yaml" title="Permalink to this headline">¶</a></h2>
+<p>OAuth is complicated and it requires a lot of settings. By default, when you don&#8217;t provide any settings, <em>PyDrive</em> will automatically set default values which works for most of the cases. Here are some default settings.</p>
+<ul class="simple">
+<li>Read client configuration from file <em>client_secrets.json</em></li>
+<li>OAuth scope: <a class="reference external" href="https://www.googleapis.com/auth/drive">https://www.googleapis.com/auth/drive</a></li>
+<li>Don&#8217;t save credentials</li>
+<li>Don&#8217;t retrieve refresh token</li>
+</ul>
+<p>However, you might want to customize these settings while maintaining two lines of clean code. If that is the case, you can make <em>settings.yaml</em> file in your working directory and <em>PyDrive</em> will read it to customize authentication behavior. This is how <em>settings.yaml</em> file looks like.</p>
+<div class="highlight-python"><div class="highlight"><pre>client_config_backend: {{str}}
+client_config_file: {{str}}
+client_config:
+  client_id: {{str}}
+  client_secret: {{str}}
+  auth_uri: {{str}}
+  token_uri: {{str}}
+  redirect_uri: {{str}}
+  revoke_uri: {{str}}
+
+save_credentials: {{bool}}
+save_credentials_backend: {{str}}
+save_credentials_file: {{str}}
+
+get_refresh_token: {{bool}}
+
+oauth_scope: {{list of str}}
+</pre></div>
+</div>
+<p>Fields explained:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">client_config_backend (str):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">From where to read client configuration(API application settings such as client_id and client_secrets) from. Valid values are &#8216;file&#8217; and &#8216;settings&#8217;. <strong>Default</strong>: &#8216;file&#8217;. <strong>Required</strong>: No.</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">client_config_file (str):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">When <em>client_config_backend</em> is &#8216;file&#8217;, path to the file containing client configuration. <strong>Default</strong>: &#8216;client_secrets.json&#8217;. <strong>Required</strong>: No.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">client_config (dict):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Place holding dictionary for client configuration when <em>client_config_backend</em> is &#8216;settings&#8217;. <strong>Required</strong>: Yes, only if <em>client_config_backend</em> is &#8216;settings&#8217;</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">client_config[&#8216;client_id&#8217;] (str):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">Client ID of the application. <strong>Required</strong>: Yes, only if <em>client_config_backend</em> is &#8216;settings&#8217;</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">client_config[&#8216;client_secret&#8217;] (str):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Client secret of the application. <strong>Required</strong>: Yes, only if <em>client_config_backend</em> is &#8216;settings&#8217;</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">client_config[&#8216;auth_uri&#8217;] (str):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">The authorization server endpoint URI. <strong>Default</strong>: &#8216;<a class="reference external" href="https://accounts.google.com/o/oauth2/auth">https://accounts.google.com/o/oauth2/auth</a>&#8216;. <strong>Required</strong>: No.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">client_config[&#8216;token_uri&#8217;] (str):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">The token server endpoint URI. <strong>Default</strong>: &#8216;<a class="reference external" href="https://accounts.google.com/o/oauth2/token">https://accounts.google.com/o/oauth2/token</a>&#8216;. <strong>Required</strong>: No.</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">client_config[&#8216;redirect_uri&#8217;] (str):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">Redirection endpoint URI. <strong>Default</strong>: &#8216;<a class="reference external" href="urn:ietf:wg:oauth:2.0:oob">urn:ietf:wg:oauth:2.0:oob</a>&#8216;. <strong>Required</strong>: No.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">client_config[&#8216;revoke_uri&#8217;] (str):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Revoke endpoint URI. <strong>Default</strong>: None. <strong>Required</strong>: No.</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">save_credentials (bool):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">True if you want to save credentials. <strong>Default</strong>: False. <strong>Required</strong>: No.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">save_credentials_backend (str):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Backend to save credentials to. &#8216;file&#8217; is the only valid value for now. <strong>Default</strong>: &#8216;file&#8217;. <strong>Required</strong>: No.</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">save_credentials_file (str):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">Destination of credentials file. <strong>Required</strong>: Yes, only if <em>save_credentials_backend</em> is &#8216;file&#8217;.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">get_refresh_token (bool):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">True if you want to retrieve refresh token along with access token. <strong>Default</strong>: False. <strong>Required</strong>: No.</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">oauth_scope (list of str):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">OAuth scope to authenticate. <strong>Default</strong>: [&#8216;<a class="reference external" href="https://www.googleapis.com/auth/drive">https://www.googleapis.com/auth/drive</a>&#8216;]. <strong>Required</strong>: No.</td>
+</tr>
+</tbody>
+</table>
+<p>Here is a sample <em>settings.yaml</em>:</p>
+<div class="highlight-python"><div class="highlight"><pre>client_config_backend: settings
+client_config:
+  client_id: 9637341109347.apps.googleusercontent.com
+  client_secret: psDskOoWr1P602PXRTHi
+
+save_credentials: True
+save_credentials_backend: file
+save_credentials_file: credentials.json
+
+get_refresh_token: True
+
+oauth_scope:
+  - https://www.googleapis.com/auth/drive.file
+  - https://www.googleapis.com/auth/drive.install
+</pre></div>
+</div>
+</div>
+<div class="section" id="building-your-own-authentication-flow">
+<h2>Building your own authentication flow<a class="headerlink" href="#building-your-own-authentication-flow" title="Permalink to this headline">¶</a></h2>
+<p>You might want to build your own authentication flow. For example, you might want to integrate your existing website with Drive API. In that case, you can customize authentication flow as follwing:</p>
+<ol class="arabic simple">
+<li>Get authentication Url from <a class="reference external" href="./pydrive.html#pydrive.auth.GoogleAuth.GetAuthUrl">GetAuthUrl()</a>.</li>
+<li>Ask users to visit the authentication Url and grant access to your application. Retrieve authentication code manually by user or automatically by building your own oauth2callback.</li>
+<li>Call <a class="reference external" href="./pydrive.html#pydrive.auth.GoogleAuth.Auth">Auth(code)</a> with the authentication code you retrieved from step 2.</li>
+</ol>
+<p>Your <em>settings.yaml</em> will work for your customized authentication flow, too.</p>
+<p>Here is a sample code for your customized authentication flow</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pydrive.auth</span> <span class="kn">import</span> <span class="n">GoogleAuth</span>
+
+<span class="n">gauth</span> <span class="o">=</span> <span class="n">GoogleAuth</span><span class="p">()</span>
+<span class="n">auth_url</span> <span class="o">=</span> <span class="n">gauth</span><span class="o">.</span><span class="n">GetAuthUrl</span><span class="p">()</span> <span class="c1"># Create authentication url user needs to visit</span>
+<span class="n">code</span> <span class="o">=</span> <span class="n">AskUserToVisitLinkAndGiveCode</span><span class="p">(</span><span class="n">auth_url</span><span class="p">)</span> <span class="c1"># Your customized authentication flow</span>
+<span class="n">gauth</span><span class="o">.</span><span class="n">Auth</span><span class="p">(</span><span class="n">code</span><span class="p">)</span> <span class="c1"># Authorize and build service from the code</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">OAuth made easy</a><ul>
+<li><a class="reference internal" href="#authentication-in-two-lines">Authentication in two lines</a></li>
+<li><a class="reference internal" href="#customizing-authentication-with-settings-yaml">Customizing authentication with <em>settings.yaml</em></a></li>
+<li><a class="reference internal" href="#building-your-own-authentication-flow">Building your own authentication flow</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="quickstart.html" title="previous chapter">Quickstart</a></li>
+      <li>Next: <a href="filemanagement.html" title="next chapter">File management made easy</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/oauth.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, JunYoung Gwak, Scott Blevins, Robin Nabel, Google Inc..
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/oauth.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

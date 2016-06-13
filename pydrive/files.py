@@ -237,14 +237,14 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
 
   def UnTrash(self, param=None):
     """Move a file out of the trash.
-    :param param: additional parameter to file.
+    :param param: Additional parameter to file.
     :type param: dict.
     :raises: ApiRequestError
     """
     self._FilesUnTrash(param=param)
 
   def Delete(self, param=None):
-    """Hard-delete a file
+    """Hard-delete a file.
 
     :param param: additional parameter to file.
     :type param: dict.

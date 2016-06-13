@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='PyDrive',
-    version='1.1.1',
+    version='1.1.2',
     author='JunYoung Gwak',
     author_email='jgwak@dreamylab.com',
     packages=['pydrive', 'pydrive.test'],

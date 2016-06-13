@@ -1,0 +1,49 @@
+.. PyDrive documentation master file, created by
+   sphinx-quickstart on Sun Jun 12 23:01:40 2016.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+Welcome to PyDrive's documentation!
+===================================
+
+PyDrive is a wrapper library of `google-api-python-client`_ that simplifies many common Google Drive API tasks.
+
+Project Info
+============
+
+- Homepage: `https://pypi.python.org/pypi/PyDrive <https://pypi.python.org/pypi/PyDrive>`_
+- Documentation:
+   - Version 1.0.0 (PyPI): `http://pythonhosted.org/PyDrive <http://pythonhosted.org/PyDrive>`_
+   - Version 1.1.2: `GitHub pages <https://googledrive.github.io/PyDrive/docs/_build/html/index.html>`_
+- Github: `https://github.com/googledrive/PyDrive <https://github.com/googledrive/PyDrive>`_
+
+How to install
+==============
+
+You can install PyDrive with regular ``pip`` command.
+
+::
+
+    $ pip install PyDrive
+
+Table of Contents
+=================
+
+.. toctree::
+   :maxdepth: 2
+
+   quickstart
+   oauth
+   filemanagement
+   filelist
+   pydrive
+
+
+.. _`google-api-python-client`: https://github.com/google/google-api-python-client
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`search`
+
