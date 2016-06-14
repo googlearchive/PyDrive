@@ -12,7 +12,9 @@ Project Info
 ============
 
 - Homepage: `https://pypi.python.org/pypi/PyDrive <https://pypi.python.org/pypi/PyDrive>`_
-- Documentation: `http://pythonhosted.org/PyDrive <http://pythonhosted.org/PyDrive>`_
+- Documentation:
+   - Version 1.0.0 (PyPI): `http://pythonhosted.org/PyDrive <http://pythonhosted.org/PyDrive>`_
+   - Version 1.1.2: `GitHub pages <https://googledrive.github.io/PyDrive/docs/_build/html/index.html>`_
 - Github: `https://github.com/googledrive/PyDrive <https://github.com/googledrive/PyDrive>`_
 
 How to install
