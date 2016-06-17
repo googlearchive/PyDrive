@@ -42,43 +42,58 @@
 <h1>OAuth made easy<a class="headerlink" href="#oauth-made-easy" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="authentication-in-two-lines">
 <h2>Authentication in two lines<a class="headerlink" href="#authentication-in-two-lines" title="Permalink to this headline">¶</a></h2>
-<p>OAuth2.0 is complex and difficult to start with. To make it more simple, <em>PyDrive</em> makes all authentication into just two lines.</p>
+<p>OAuth2.0 is complex and difficult to start with. To make it more simple,
+<em>PyDrive</em> makes all authentication into just two lines.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pydrive.auth</span> <span class="kn">import</span> <span class="n">GoogleAuth</span>
 
 <span class="n">gauth</span> <span class="o">=</span> <span class="n">GoogleAuth</span><span class="p">()</span>
-<span class="n">gauth</span><span class="o">.</span><span class="n">LocalWebserverAuth</span><span class="p">()</span> <span class="c1"># Creates local webserver and auto handles authentication</span>
+<span class="c1"># Create local webserver and auto handles authentication.</span>
+<span class="n">gauth</span><span class="o">.</span><span class="n">LocalWebserverAuth</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>To make this code work, you need to download application configurations file from APIs Console. Take a look at <a class="reference external" href="./quickstart.html#authentication">quickstart</a> for detailed instructions.</p>
-<p><a class="reference external" href="./pydrive.html#pydrive.auth.GoogleAuth.LocalWebserverAuth">LocalWebserverAuth()</a> is a built-in method of <a class="reference external" href="./pydrive.html#pydrive.auth.GoogleAuth">GoogleAuth</a> which sets up local webserver to automatically receive authentication code from user and authorizes by itself. You can also use <a class="reference external" href="./pydrive.html#pydrive.auth.GoogleAuth.CommandLineAuth">CommandLineAuth()</a> which manually takes code from user at command line.</p>
+<p>To make this code work, you need to download the application configurations file
+from APIs Console. Take a look at <a class="reference external" href="./quickstart.html#authentication">quickstart</a> for detailed instructions.</p>
+<p><a class="reference external" href="./pydrive.html#pydrive.auth.GoogleAuth.LocalWebserverAuth">LocalWebserverAuth()</a> is a built-in method of <a class="reference external" href="./pydrive.html#pydrive.auth.GoogleAuth">GoogleAuth</a> which sets up
+local webserver to automatically receive authentication code from user and
+authorizes by itself. You can also use <a class="reference external" href="./pydrive.html#pydrive.auth.GoogleAuth.CommandLineAuth">CommandLineAuth()</a> which manually
+takes code from user at command line.</p>
 </div>
-<div class="section" id="customizing-authentication-with-settings-yaml">
-<h2>Customizing authentication with <em>settings.yaml</em><a class="headerlink" href="#customizing-authentication-with-settings-yaml" title="Permalink to this headline">¶</a></h2>
-<p>OAuth is complicated and it requires a lot of settings. By default, when you don&#8217;t provide any settings, <em>PyDrive</em> will automatically set default values which works for most of the cases. Here are some default settings.</p>
+<div class="section" id="automatic-and-custom-authentication-with-settings-yaml">
+<h2>Automatic and custom authentication with <em>settings.yaml</em><a class="headerlink" href="#automatic-and-custom-authentication-with-settings-yaml" title="Permalink to this headline">¶</a></h2>
+<p>Read this section if you need a custom authentication flow, <strong>such as silent
+authentication on a remote machine</strong>. For an example of such a setup have a look
+at <a class="reference internal" href="#sample-settings-yaml">Sample settings.yaml</a>.</p>
+<p>OAuth is complicated and it requires a lot of settings. By default,
+when you don&#8217;t provide any settings, <em>PyDrive</em> will automatically set default
+values which works for most of the cases. Here are some default settings.</p>
 <ul class="simple">
 <li>Read client configuration from file <em>client_secrets.json</em></li>
-<li>OAuth scope: <a class="reference external" href="https://www.googleapis.com/auth/drive">https://www.googleapis.com/auth/drive</a></li>
+<li>OAuth scope: <code class="code docutils literal"><span class="pre">https://www.googleapis.com/auth/drive</span></code></li>
 <li>Don&#8217;t save credentials</li>
 <li>Don&#8217;t retrieve refresh token</li>
 </ul>
-<p>However, you might want to customize these settings while maintaining two lines of clean code. If that is the case, you can make <em>settings.yaml</em> file in your working directory and <em>PyDrive</em> will read it to customize authentication behavior. This is how <em>settings.yaml</em> file looks like.</p>
-<div class="highlight-python"><div class="highlight"><pre>client_config_backend: {{str}}
-client_config_file: {{str}}
-client_config:
-  client_id: {{str}}
-  client_secret: {{str}}
-  auth_uri: {{str}}
-  token_uri: {{str}}
-  redirect_uri: {{str}}
-  revoke_uri: {{str}}
+<p>However, you might want to customize these settings while maintaining two lines
+of clean code. If that is the case, you can make <em>settings.yaml</em> file in your
+working directory and <em>PyDrive</em> will read it to customize authentication
+behavior.</p>
+<p>These are all the possible fields of a <em>settings.yaml</em> file:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">client_config_backend</span><span class="p">:</span> <span class="p">{{</span><span class="nb">str</span><span class="p">}}</span>
+<span class="n">client_config_file</span><span class="p">:</span> <span class="p">{{</span><span class="nb">str</span><span class="p">}}</span>
+<span class="n">client_config</span><span class="p">:</span>
+  <span class="n">client_id</span><span class="p">:</span> <span class="p">{{</span><span class="nb">str</span><span class="p">}}</span>
+  <span class="n">client_secret</span><span class="p">:</span> <span class="p">{{</span><span class="nb">str</span><span class="p">}}</span>
+  <span class="n">auth_uri</span><span class="p">:</span> <span class="p">{{</span><span class="nb">str</span><span class="p">}}</span>
+  <span class="n">token_uri</span><span class="p">:</span> <span class="p">{{</span><span class="nb">str</span><span class="p">}}</span>
+  <span class="n">redirect_uri</span><span class="p">:</span> <span class="p">{{</span><span class="nb">str</span><span class="p">}}</span>
+  <span class="n">revoke_uri</span><span class="p">:</span> <span class="p">{{</span><span class="nb">str</span><span class="p">}}</span>
 
-save_credentials: {{bool}}
-save_credentials_backend: {{str}}
-save_credentials_file: {{str}}
+<span class="n">save_credentials</span><span class="p">:</span> <span class="p">{{</span><span class="nb">bool</span><span class="p">}}</span>
+<span class="n">save_credentials_backend</span><span class="p">:</span> <span class="p">{{</span><span class="nb">str</span><span class="p">}}</span>
+<span class="n">save_credentials_file</span><span class="p">:</span> <span class="p">{{</span><span class="nb">str</span><span class="p">}}</span>
 
-get_refresh_token: {{bool}}
+<span class="n">get_refresh_token</span><span class="p">:</span> <span class="p">{{</span><span class="nb">bool</span><span class="p">}}</span>
 
-oauth_scope: {{list of str}}
+<span class="n">oauth_scope</span><span class="p">:</span> <span class="p">{{</span><span class="nb">list</span> <span class="n">of</span> <span class="nb">str</span><span class="p">}}</span>
 </pre></div>
 </div>
 <p>Fields explained:</p>
@@ -130,7 +145,8 @@ oauth_scope: {{list of str}}
 </tr>
 </tbody>
 </table>
-<p>Here is a sample <em>settings.yaml</em>:</p>
+<div class="section" id="sample-settings-yaml">
+<h3>Sample <em>settings.yaml</em><a class="headerlink" href="#sample-settings-yaml" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-python"><div class="highlight"><pre>client_config_backend: settings
 client_config:
   client_id: 9637341109347.apps.googleusercontent.com
@@ -148,9 +164,12 @@ oauth_scope:
 </pre></div>
 </div>
 </div>
+</div>
 <div class="section" id="building-your-own-authentication-flow">
 <h2>Building your own authentication flow<a class="headerlink" href="#building-your-own-authentication-flow" title="Permalink to this headline">¶</a></h2>
-<p>You might want to build your own authentication flow. For example, you might want to integrate your existing website with Drive API. In that case, you can customize authentication flow as follwing:</p>
+<p>You might want to build your own authentication flow. For example, you might
+want to integrate your existing website with Drive API. In that case, you can
+customize authentication flow as follwing:</p>
 <ol class="arabic simple">
 <li>Get authentication Url from <a class="reference external" href="./pydrive.html#pydrive.auth.GoogleAuth.GetAuthUrl">GetAuthUrl()</a>.</li>
 <li>Ask users to visit the authentication Url and grant access to your application. Retrieve authentication code manually by user or automatically by building your own oauth2callback.</li>
@@ -179,7 +198,10 @@ oauth_scope:
   <ul>
 <li><a class="reference internal" href="#">OAuth made easy</a><ul>
 <li><a class="reference internal" href="#authentication-in-two-lines">Authentication in two lines</a></li>
-<li><a class="reference internal" href="#customizing-authentication-with-settings-yaml">Customizing authentication with <em>settings.yaml</em></a></li>
+<li><a class="reference internal" href="#automatic-and-custom-authentication-with-settings-yaml">Automatic and custom authentication with <em>settings.yaml</em></a><ul>
+<li><a class="reference internal" href="#sample-settings-yaml">Sample <em>settings.yaml</em></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#building-your-own-authentication-flow">Building your own authentication flow</a></li>
 </ul>
 </li>

@@ -95,6 +95,21 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
       self.UpdateMetadata(metadata)
     elif metadata:
       self.update(metadata)
+    self._ALL_FIELDS = 'alternateLink,appDataContents,' \
+                      'canComment,canReadRevisions,' \
+                 'copyable,createdDate,defaultOpenWithLink,description,' \
+                 'downloadUrl,editable,embedLink,etag,explicitlyTrashed,' \
+                 'exportLinks,fileExtension,fileSize,folderColorRgb,' \
+                 'fullFileExtension,headRevisionId,iconLink,id,' \
+                 'imageMediaMetadata,indexableText,isAppAuthorized,kind,' \
+                 'labels,lastModifyingUser,lastModifyingUserName,' \
+                 'lastViewedByMeDate,markedViewedByMeDate,md5Checksum,' \
+                 'mimeType,modifiedByMeDate,modifiedDate,openWithLinks,' \
+                 'originalFilename,ownedByMe,ownerNames,owners,parents,' \
+                 'permissions,properties,quotaBytesUsed,selfLink,shareable,' \
+                 'shared,sharedWithMeDate,sharingUser,spaces,thumbnail,' \
+                 'thumbnailLink,title,userPermission,version,' \
+                 'videoMediaMetadata,webContentLink,webViewLink,writersCanShare'
 
   def __getitem__(self, key):
     """Overwrites manner of accessing Files resource.
@@ -173,16 +188,28 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     f.close()
 
   @LoadAuth
-  def FetchMetadata(self):
+  def FetchMetadata(self, fields=None, fetch_all=False):
     """Download file's metadata from id using Files.get().
+
+    :param fields: The fields to include, as one string, each entry separated
+    by commas, e.g. 'fields,labels'.
+    :type fields: str
+
+    :param fetch_all: Whether to fetch all fields.
+    :type fetch_all: bool
 
     :raises: ApiRequestError, FileNotUploadedError
     """
     file_id = self.metadata.get('id') or self.get('id')
+
+    if fetch_all:
+      fields = self._ALL_FIELDS
+
     if file_id:
       try:
-        metadata = self.auth.service.files().get(fileId=file_id).execute(
-          http=self.http)
+        metadata = self.auth.service.files().get(fileId=file_id,
+                                                 fields=fields)\
+          .execute(http=self.http)
       except errors.HttpError as error:
         raise ApiRequestError(error)
       else:
@@ -251,6 +278,49 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     :raises: ApiRequestError
     """
     self._FilesDelete(param=param)
+
+  def InsertPermission(self, new_permission):
+    """Insert a new permission. Re-fetches all permissions after call.
+
+    :param new_permission: The new permission to insert, please see the
+    official Google Drive API guide on permissions.insert for details.
+
+    :type new_permission: object
+
+    :return: The permission object.
+    :rtype: object
+    """
+    file_id = self.metadata.get('id') or self['id']
+    try:
+      permission = self.auth.service.permissions().insert(
+        fileId=file_id, body=new_permission).execute(http=self.http)
+    except errors.HttpError as error:
+      raise ApiRequestError(error)
+    else:
+      self.GetPermissions()  # Update permissions field.
+
+    return permission
+
+  @LoadAuth
+  def GetPermissions(self):
+    """Downloads all permissions from Google Drive, as this information is
+    not downloaded by FetchMetadata by default.
+
+    :return: A list of the permission objects.
+    :rtype: object[]
+    """
+    self.FetchMetadata(fields='permissions')
+    return self.metadata.get('permissions')
+
+  def DeletePermission(self, permission_id):
+    """Deletes the permission specified by the permission_id.
+
+    :param permission_id: The permission id.
+    :type permission_id: str
+    :return: True if it succeeds.
+    :rtype: bool
+    """
+    return self._DeletePermission(permission_id)
 
   @LoadAuth
   def _FilesInsert(self, param=None):
@@ -405,3 +475,28 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     if resp.status != 200:
       raise ApiRequestError('Cannot download file: %s' % resp)
     return content
+
+  @LoadAuth
+  def _DeletePermission(self, permission_id):
+    """Deletes the permission remotely, and from the file object itself.
+
+    :param permission_id: The ID of the permission.
+    :type permission_id: str
+
+    :return: The permission
+    :rtype: object
+    """
+    file_id = self.metadata.get('id') or self['id']
+    try:
+      self.auth.service.permissions().delete(
+        fileId=file_id, permissionId=permission_id).execute()
+    except errors.HttpError as error:
+      raise ApiRequestError(error)
+    else:
+      if 'permissions' in self and 'permissions' in self.metadata:
+        permissions = self['permissions']
+        is_not_current_permission = lambda per: per['id'] == permission_id
+        permissions = filter(is_not_current_permission, permissions)
+        self['permissions'] = permissions
+        self.metadata['permissions'] = permissions
+      return True

@@ -26,6 +26,12 @@ You can install PyDrive with regular ``pip`` command.
 
     $ pip install PyDrive
 
+To install the most up-to-date version from GitHub, use:
+
+::
+
+    $ pip install -e git+git@github.com:googledrive/PyDrive.git#egg=PyDrive
+
 Table of Contents
 =================
 

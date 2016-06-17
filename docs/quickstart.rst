@@ -23,7 +23,7 @@ The downloaded file has all authentication information of your application.
 
 Create *quickstart.py* file and copy and paste the following code.
 
-::
+.. code-block:: python
 
     from pydrive.auth import GoogleAuth
     
@@ -40,7 +40,7 @@ Creating and updating file
 
 There are many methods to create and update file metadata and contents. With *PyDrive*, all you have to know is `Upload()`_ method which makes optimal API call for you. Add the following code to your *quickstart.py* and run it.
 
-::
+.. code-block:: python
 
     from pydrive.drive import GoogleDrive
 
@@ -61,12 +61,12 @@ Getting list of files
 
 *PyDrive* handles paginations and parses response as list of `GoogleDriveFile`_. Let's get title and id of all the files in the root folder of Google Drive. Again, add the following code to *quickstart.py* and execute it.
 
-::
+.. code-block:: python
 
     # Auto-iterate through all files that matches this query
     file_list = drive.ListFile({'q': "'root' in parents and trashed=false"}).GetList()
     for file1 in file_list:
-      print 'title: %s, id: %s' % (file1['title'], file1['id'])
+      print('title: %s, id: %s' % (file1['title'], file1['id']))
 
 You will see title and id of all the files and folders in root folder of your Google Drive. For more details, take a look at documentation: `File listing made easy`_
 
