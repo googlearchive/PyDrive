@@ -52,7 +52,7 @@ def LoadAuth(decoratee):
       self.auth = GoogleAuth()
     # Re-create access token if it expired.
     if self.auth.access_token_expired:
-      if self.auth_method == 'service':
+      if getattr(self, 'auth_method', default=False) == 'service':
         self.auth.ServiceAuth()
       else:
         self.auth.LocalWebserverAuth()

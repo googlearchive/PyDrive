@@ -11,12 +11,12 @@ from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 from pydrive.files import ApiRequestError
 
-from test import test_util
+import test_util
 
 
 class GoogleDriveFileTest(unittest.TestCase):
   """Tests basic file operations of files.GoogleDriveFile.
-  Mainly upload and download of contents and metadata.
+  Upload and download of contents and metadata, and thread-safety checks.
   Equivalent to Files.insert, Files.update, Files.patch in Google Drive API.
   """
 
@@ -204,6 +204,9 @@ class GoogleDriveFileTest(unittest.TestCase):
 
     self.DeleteUploadedFiles(drive, [file1['id']])
 
+  # Tests for Trash/UnTrash/Delete.
+  # ===============================
+
   def test_Files_Trash_File(self):
     drive = GoogleDrive(self.ga)
     file1 = drive.CreateFile()
@@ -303,6 +306,98 @@ class GoogleDriveFileTest(unittest.TestCase):
       self.fail("File not deleted correctly.")
     except ApiRequestError as e:
       pass
+
+  # Tests for Permissions.
+  # ======================
+
+  def test_Files_FetchMetadata_Fields(self):
+    drive = GoogleDrive(self.ga)
+    file1 = drive.CreateFile()
+    file1.Upload()
+
+    self.assertFalse('permissions' in file1)
+
+    file1.FetchMetadata('permissions')
+    self.assertTrue('permissions' in file1)
+    file1.Delete()
+
+  def test_Files_Insert_Permission(self):
+    drive = GoogleDrive(self.ga)
+    file1 = drive.CreateFile()
+    file1.Upload()
+
+    # Verify only one permission before inserting permission.
+    permissions = file1.GetPermissions()
+    self.assertEqual(len(permissions), 1)
+    self.assertEqual(len(file1['permissions']), 1)
+
+    # Insert the permission.
+    permission = file1.InsertPermission({'type': 'anyone',
+                            'value': 'anyone',
+                            'role': 'reader'})
+    self.assertTrue(permission)
+    self.assertEqual(len(file1["permissions"]), 2)
+    self.assertEqual(file1["permissions"][1]["type"], "anyone")
+
+    permissions = file1.GetPermissions()
+    self.assertEqual(len(file1["permissions"]), 2)
+    self.assertEqual(file1["permissions"][1]["type"], "anyone")
+    self.assertEqual(permissions[1]["type"], "anyone")
+
+    # Verify remote changes made.
+    file2 = drive.CreateFile({'id': file1['id']})
+    permissions = file2.GetPermissions()
+    self.assertEqual(len(permissions), 2)
+    self.assertEqual(permissions[1]["type"], "anyone")
+
+    file1.Delete()
+
+  def test_Files_Get_Permissions(self):
+    drive = GoogleDrive(self.ga)
+    file1 = drive.CreateFile()
+    file1.Upload()
+
+    self.assertFalse('permissions' in file1)
+
+    permissions = file1.GetPermissions()
+    self.assertTrue(permissions is not None)
+    self.assertTrue('permissions' in file1)
+
+    file1.Delete()
+
+  def test_Files_Delete_Permission(self):
+    drive = GoogleDrive(self.ga)
+    file1 = drive.CreateFile()
+    file1.Upload()
+    file1.InsertPermission({'type': 'anyone',
+                            'value': 'anyone',
+                            'role': 'reader'})
+    permissions = file1.GetPermissions()
+    self.assertEqual(len(permissions), 2)
+    self.assertEqual(len(file1['permissions']), 2)
+
+    file1.DeletePermission(permissions[1]['id'])
+    self.assertEqual(len(file1['permissions']), 1)
+
+    # Verify remote changes made.
+    file2 = drive.CreateFile({'id': file1['id']})
+    permissions = file2.GetPermissions()
+    self.assertEqual(len(permissions), 1)
+
+    file1.Delete()
+
+  def test_Files_Delete_Permission_Invalid(self):
+    drive = GoogleDrive(self.ga)
+    file1 = drive.CreateFile()
+    file1.Upload()
+
+    try:
+      file1.DeletePermission('invalid id')
+      self.fail("Deleting invalid permission not raising exception.")
+    except ApiRequestError as e:
+      pass
+
+    file1.Delete()
 
   # Setup for concurrent upload testing.
   # =====================================

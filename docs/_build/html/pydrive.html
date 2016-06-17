@@ -593,6 +593,24 @@ Can access and modify metadata like dictionary.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydrive.files.GoogleDriveFile.DeletePermission">
+<code class="descname">DeletePermission</code><span class="sig-paren">(</span><em>permission_id</em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive.files.GoogleDriveFile.DeletePermission" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes the permission specified by the permission_id.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>permission_id</strong> (<em>str</em>) &#8211; The permission id.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if it succeeds.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydrive.files.GoogleDriveFile.FetchContent">
 <code class="descname">FetchContent</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive.files.GoogleDriveFile.FetchContent" title="Permalink to this definition">¶</a></dt>
 <dd><p>Download file&#8217;s content from download_url.</p>
@@ -614,7 +632,19 @@ Can access and modify metadata like dictionary.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body">ApiRequestError, FileNotUploadedError</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fields</strong> &#8211; The fields to include, as one string, each entry separated</td>
+</tr>
+</tbody>
+</table>
+<p>by commas, e.g. &#8216;fields,labels&#8217;.
+:type fields: str</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fetch_all</strong> (<em>bool</em>) &#8211; Whether to fetch all fields.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body">ApiRequestError, FileNotUploadedError</td>
 </tr>
 </tbody>
 </table>
@@ -652,6 +682,48 @@ Can access and modify metadata like dictionary.</p>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">str &#8211; utf-8 decoded content of the file</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body">ApiRequestError, FileNotUploadedError, FileNotDownloadableError</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydrive.files.GoogleDriveFile.GetPermissions">
+<code class="descname">GetPermissions</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive.files.GoogleDriveFile.GetPermissions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Downloads all permissions from Google Drive, as this information is
+not downloaded by FetchMetadata by default.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A list of the permission objects.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">object[]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydrive.files.GoogleDriveFile.InsertPermission">
+<code class="descname">InsertPermission</code><span class="sig-paren">(</span><em>new_permission</em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive.files.GoogleDriveFile.InsertPermission" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert a new permission. Re-fetches all permissions after call.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>new_permission</strong> &#8211; The new permission to insert, please see the</td>
+</tr>
+</tbody>
+</table>
+<p>official Google Drive API guide on permissions.insert for details.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The permission object.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">object</td>
 </tr>
 </tbody>
 </table>

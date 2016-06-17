@@ -32,6 +32,12 @@ You can install PyDrive with regular ``pip`` command.
 
     $ pip install PyDrive
 
+To install the most up-to-date version from GitHub, use:
+
+::
+
+    $ pip install -e git+git@github.com:googledrive/PyDrive.git#egg=PyDrive
+
 OAuth made easy
 ---------------
 
@@ -103,11 +109,11 @@ File listing pagination made easy
         print('title: %s, id: %s' % (file1['title'], file1['id']))
 
 Concurrent access made easy
-___________________________
+---------------------------
 
 All calls made are thread-safe. The underlying implementation in the
 google-api-client library
-`is not thread-safe <https://developers.google.com/api-client-library/python/guide/thread_safety>`,
+`is not thread-safe <https://developers.google.com/api-client-library/python/guide/thread_safety>`_,
 which means that every request has to re-authenticate an http object. You
 can avoid this overhead by
 creating your own http object for each thread and re-use it for every call.

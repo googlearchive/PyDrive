@@ -8,7 +8,7 @@ Get all files which matches the query
 
 Create `GoogleDriveFileList`_ instance with `parameters of Files.list()`_ as ``dict``. Call `GetList()`_ and you will get all files that matches your query as a list of `GoogleDriveFile`_.
 
-::
+.. code-block:: python
 
     from pydrive.drive import GoogleDrive
 
@@ -17,7 +17,7 @@ Create `GoogleDriveFileList`_ instance with `parameters of Files.list()`_ as ``d
     # Auto-iterate through all files in the root folder.
     file_list = drive.ListFile({'q': "'root' in parents and trashed=false"}).GetList()
     for file1 in file_list:
-      print 'title: %s, id: %s' % (file1['title'], file1['id'])
+      print('title: %s, id: %s' % (file1['title'], file1['id']))
 
 You can update metadata or content of these `GoogleDriveFile`_ instances if you need it.
 
@@ -28,13 +28,13 @@ Paginate and iterate through files
 
 Sample code continues from above:
 
-::
+.. code-block:: python
 
     # Paginate file lists by specifying number of max results
     for file_list in drive.ListFile({'q': 'trashed=true', 'maxResults': 10}):
-      print 'Received %s files from Files.list()' % len(file_list) # <= 10
+      print('Received %s files from Files.list()' % len(file_list)) # <= 10
       for file1 in file_list:
-          print 'title: %s, id: %s' % (file1['title'], file1['id'])
+          print('title: %s, id: %s' % (file1['title'], file1['id']))
 
 
 .. _`GoogleDriveFile`: ./pydrive.html#pydrive.files.GoogleDriveFile
