@@ -399,6 +399,57 @@ class GoogleDriveFileTest(unittest.TestCase):
 
     file1.Delete()
 
+  def test_GFile_Conversion_Lossless_String(self):
+    drive = GoogleDrive(self.ga)
+    file1 = drive.CreateFile()
+
+    # Upload a string, and convert into Google Doc format.
+    test_string = 'Generic, non-exhaustive ASCII test string.'
+    file1.SetContentString(test_string)
+    file1.Upload({'convert': True})
+
+    # Download string as plain text.
+    downloaded_string = file1.GetContentString(mimetype='text/plain')
+    self.assertEqual(test_string, downloaded_string, "Strings do not match")
+
+    # Download content into file and ensure that file content matches original
+    # content string.
+    downloaded_file_name = '_tmp_downloaded_file_name.txt'
+    file1.GetContentFile(downloaded_file_name, mimetype='text/plain')
+    downloaded_string = open(downloaded_file_name).read()
+    self.assertEqual(test_string, downloaded_string, "Strings do not match")
+
+    # Delete temp file.
+    os.remove(downloaded_file_name)
+
+  def test_GFile_Conversion_Lossless_File(self):
+    drive = GoogleDrive(self.ga)
+    file1 = drive.CreateFile()
+
+    # Create a file to upload.
+    file_name = '_tmp_source_file.txt'
+    original_file_content = 'Generic, non-exhaustive ASCII test string.'
+    source_file = open(file_name, mode='w+')
+    source_file.write(original_file_content)
+    source_file.close()
+
+    # Upload source_file and convert into Google Doc format.
+    file1.SetContentFile(file_name)
+    file1.Upload({'convert': True})
+
+    # Download both as string and as file.
+    downloaded_content = file1.GetContentString(mimetype='txt/plain')
+    self.assertEqual(original_file_content, downloaded_content)
+
+    downloaded_file_name = '_tmp_downloaded_file_name.txt'
+    file1.GetContentFile(downloaded_file_name)
+    downloaded_content = open(downloaded_file_name).read()
+    self.assertEqual(original_file_content, downloaded_content)
+
+    # Delete temp files.
+    os.remove(file_name)
+    os.remove(downloaded_file_name)
+
   # Setup for concurrent upload testing.
   # =====================================
   class UploadWorker:
