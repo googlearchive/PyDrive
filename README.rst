@@ -8,8 +8,8 @@ that simplifies many common Google Drive API tasks.
 Project Info
 ------------
 
-- Homepage: `https://pypi.python.org/pypi/PyDrive <https://pypi.python.org/pypi/PyDrive>`_                                                 
-- Documentation: `Official documentation on GitHub pages <https://googledrive.github.io/PyDrive/docs/_build/html/index.html>`_
+- Homepage: `https://pypi.python.org/pypi/PyDrive <https://pypi.python.org/pypi/PyDrive>`_
+- Documentation: `Official documentation on GitHub pages <https://googledrive.github.io/PyDrive/docs/build/html/index.html>`_
 - Github: `https://github.com/googledrive/PyDrive <https://github.com/googledrive/PyDrive>`_
 
 Features of PyDrive
@@ -48,15 +48,15 @@ file *settings.yaml*.
 
     from pydrive.auth import GoogleAuth
     from pydrive.drive import GoogleDrive
-    
+
     gauth = GoogleAuth()
     gauth.LocalWebserverAuth()
-    
+
     drive = GoogleDrive(gauth)
 
 File management made easy
 -------------------------
-    
+
 Upload/update the file with one method. PyDrive will do it in the most
 efficient way.
 
