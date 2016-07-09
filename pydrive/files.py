@@ -146,6 +146,8 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     if self.get('mimeType') is None:
       self['mimeType'] = 'text/plain'
 
+    return self
+
   def SetContentFile(self, filename):
     """Set content of this file from a file.
 
@@ -161,6 +163,8 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
       self['title'] = filename
     if self.get('mimeType') is None:
       self['mimeType'] = mimetypes.guess_type(filename)[0]
+
+    return self
 
   def GetContentString(self, mimetype=None):
     """Get content of this file as a string.
@@ -218,6 +222,8 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     else:
       raise FileNotUploadedError()
 
+    return self
+
   @LoadMetadata
   def FetchContent(self, mimetype=None):
     """Download file's content from download_url.
@@ -255,12 +261,16 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     else:
       self._FilesInsert(param=param)
 
+    return self
+
   def Trash(self, param=None):
     """Move a file to the trash.
 
     :raises: ApiRequestError
     """
     self._FilesTrash(param=param)
+
+    return self
 
   def UnTrash(self, param=None):
     """Move a file out of the trash.
@@ -269,6 +279,8 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     :raises: ApiRequestError
     """
     self._FilesUnTrash(param=param)
+
+    return self
 
   def Delete(self, param=None):
     """Hard-delete a file.
