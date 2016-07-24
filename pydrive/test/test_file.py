@@ -428,27 +428,32 @@ class GoogleDriveFileTest(unittest.TestCase):
 
     # Create a file to upload.
     file_name = '_tmp_source_file.txt'
-    original_file_content = 'Generic, non-exhaustive ASCII test string.'
+    downloaded_file_name = '_tmp_downloaded_file_name.txt'
+    original_file_content = 'Generic, non-exhaustive\n ASCII test string.'
     source_file = open(file_name, mode='w+')
     source_file.write(original_file_content)
     source_file.close()
+    original_file_content = test_util.StripNewlines(original_file_content)
 
-    # Upload source_file and convert into Google Doc format.
-    file1.SetContentFile(file_name)
-    file1.Upload({'convert': True})
+    try:
+      # Upload source_file and convert into Google Doc format.
+      file1.SetContentFile(file_name)
+      file1.Upload({'convert': True})
 
-    # Download both as string and as file.
-    downloaded_content = file1.GetContentString(mimetype='txt/plain')
-    self.assertEqual(original_file_content, downloaded_content)
+      # Download as string.
+      downloaded_content = file1.GetContentString(mimetype='text/plain')
+      downloaded_content = test_util.StripNewlines(downloaded_content)
+      self.assertEqual(original_file_content, downloaded_content)
 
-    downloaded_file_name = '_tmp_downloaded_file_name.txt'
-    file1.GetContentFile(downloaded_file_name)
-    downloaded_content = open(downloaded_file_name).read()
-    self.assertEqual(original_file_content, downloaded_content)
-
-    # Delete temp files.
-    os.remove(file_name)
-    os.remove(downloaded_file_name)
+      # Download as file.
+      file1.GetContentFile(downloaded_file_name)
+      downloaded_content = open(downloaded_file_name).read()
+      downloaded_content = test_util.StripNewlines(downloaded_content)
+      self.assertEqual(original_file_content, downloaded_content)
+    finally:
+      # Delete temp files.
+      os.path.exists(file_name) and os.remove(file_name)
+      os.path.exists(downloaded_file_name) and os.remove(downloaded_file_name)
 
   # Setup for concurrent upload testing.
   # =====================================
