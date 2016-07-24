@@ -110,6 +110,7 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
                  'shared,sharedWithMeDate,sharingUser,spaces,thumbnail,' \
                  'thumbnailLink,title,userPermission,version,' \
                  'videoMediaMetadata,webContentLink,webViewLink,writersCanShare'
+    self.has_bom = True
 
   def __getitem__(self, key):
     """Overwrites manner of accessing Files resource.
@@ -168,7 +169,9 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     :returns: str -- utf-8 decoded content of the file
     :raises: ApiRequestError, FileNotUploadedError, FileNotDownloadableError
     """
-    if self.content is None or type(self.content) is not io.BytesIO:
+    if self.content is None or \
+                    type(self.content) is not io.BytesIO or \
+                    self.has_bom == remove_bom:
       self.FetchContent(mimetype, remove_bom)
     return self.content.getvalue().decode('utf-8')
 
@@ -181,7 +184,9 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     :type mimetype: str
     :raises: ApiRequestError, FileNotUploadedError, FileNotDownloadableError
     """
-    if self.content is None or type(self.content) is not io.BytesIO:
+    if self.content is None or \
+                    type(self.content) is not io.BytesIO or \
+                    self.has_bom == remove_bom:
       self.FetchContent(mimetype, remove_bom)
     f = open(filename, 'wb')
     f.write(self.content.getvalue())
@@ -239,7 +244,9 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
       raise FileNotDownloadableError(
         'No downloadLink/exportLinks for mimetype found in metadata')
 
-    self._RemoveBOM(self.content)
+    if remove_bom:
+        self._RemoveBOM(self.content)
+    self.has_bom = not remove_bom
 
 
   def Upload(self, param=None):

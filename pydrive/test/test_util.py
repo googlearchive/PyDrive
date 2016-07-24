@@ -10,4 +10,4 @@ def CreateRandomFileName():
 
 
 def StripNewlines(string):
-    newline_pattern.sub( "", string)
+    return newline_pattern.sub("", string)

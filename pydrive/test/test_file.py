@@ -441,19 +441,25 @@ class GoogleDriveFileTest(unittest.TestCase):
       file1.Upload({'convert': True})
 
       # Download as string.
-      downloaded_content = file1.GetContentString(mimetype='text/plain')
-      downloaded_content = test_util.StripNewlines(downloaded_content)
-      self.assertEqual(original_file_content, downloaded_content)
+      downloaded_content_bom = file1.GetContentString(mimetype='text/plain')
+      downloaded_content_no_bom = file1.GetContentString(mimetype='text/plain',
+                                                         remove_bom=True)
+      downloaded_content_bom = test_util.StripNewlines(downloaded_content_bom)
+      downloaded_content_no_bom = test_util.StripNewlines(downloaded_content_no_bom)
+      self.assertEqual(original_file_content, downloaded_content_no_bom)
+      self.assertNotEqual(original_file_content, downloaded_content_bom)
 
       # Download as file.
-      file1.GetContentFile(downloaded_file_name)
+      file1.GetContentFile(downloaded_file_name, remove_bom=True)
       downloaded_content = open(downloaded_file_name).read()
       downloaded_content = test_util.StripNewlines(downloaded_content)
       self.assertEqual(original_file_content, downloaded_content)
+
     finally:
       # Delete temp files.
       os.path.exists(file_name) and os.remove(file_name)
       os.path.exists(downloaded_file_name) and os.remove(downloaded_file_name)
+      file1.Delete()  # Delete uploaded file.
 
   # Setup for concurrent upload testing.
   # =====================================
