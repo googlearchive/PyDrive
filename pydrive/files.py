@@ -11,6 +11,13 @@ from .apiattr import ApiResource
 from .apiattr import ApiResourceList
 from .auth import LoadAuth
 
+BLOCK_SIZE = 1024
+# Usage: MIME_TYPE_TO_BOM['<Google Drive mime type>']['<download mimetype>'].
+MIME_TYPE_TO_BOM = {
+  'application/vnd.google-apps.document': {
+    'text/plain': u'\ufeff'.encode('utf8')
+  }
+}
 
 class FileNotUploadedError(RuntimeError):
   """Error trying to access metadata of file that is not uploaded."""
@@ -182,6 +189,8 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     :type filename: str
     :param mimetype: mimeType of the file.
     :type mimetype: str
+    :param remove_bom: Whether to remove the byte order marking.
+    :type remove_bom: bool
     :raises: ApiRequestError, FileNotUploadedError, FileNotDownloadableError
     """
     if self.content is None or \
@@ -244,8 +253,8 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
       raise FileNotDownloadableError(
         'No downloadLink/exportLinks for mimetype found in metadata')
 
-    if remove_bom:
-        self._RemoveBOM(self.content)
+    if mimetype == 'text/plain' and remove_bom:
+        self._RemovePrefix(self.content)
     self.has_bom = not remove_bom
 
 
@@ -510,28 +519,59 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
         self.metadata['permissions'] = permissions
       return True
 
-  def _RemoveBOM(self, file_object):
-    # Strip BOM if requested.
-    content_start = file_object.read(3).decode('utf-8')
-    if content_start[0] == u'\ufeff':
-      # Shift content left by 3 bytes, by copying 1KiB at a time.
-      block_size = 1024
+  @staticmethod
+  def _RemovePrefix(file_object, prefix, block_size=BLOCK_SIZE):
+    """Shifts content of passed file object 3 bytes to the left,
+    operation is in-place.
+
+    Args:
+      file_object (obj): The file object to manipulate.
+      prefix (str): The prefix to insert.
+    """
+    # Detect if prefix exists in file.
+    content_start = file_object.read(len(prefix))
+    if content_start == prefix:
+      # Shift content left by prefix length, by copying 1KiB at a time.
       copy_content = file_object.read(block_size)
       content_length = len(copy_content)
       total_size = content_length
 
       while content_length:
         current_location = file_object.tell()
-        write_location = current_location - content_length - 3
+        write_location = current_location - content_length - content_length
 
-        # Write block shifted by 3 bytes.
+        # Write block shifted by content_length bytes.
         file_object.seek(write_location)
         file_object.write(copy_content)
         file_object.seek(current_location)
 
         # Read next block of input.
-        copy_content = file_object.read(1024)
+        copy_content = file_object.read(block_size)
         content_length = len(copy_content)
         total_size += content_length
 
       file_object.truncate(total_size)
+
+  @staticmethod
+  def _InsertPrefix(file_object, prefix):
+    """Inserts the passed prefix in the beginning of the file, operation is
+    in-place.
+
+    Args:
+      file_object (obj): The file object to manipulate.
+      prefix (str): The prefix to insert.
+    """
+    first_block = file_object.read(BLOCK_SIZE)
+    second_block = file_object.read(BLOCK_SIZE)
+
+    # Write BOM.
+    file_object.seek(0)
+    file_object.write(prefix)
+    current_location = 3
+
+    # Write and read block alternatingly.
+    while len(second_block):
+          file_object.seek(current_location)
+          file_object.write(first_block)
+
+          first_block = second_block
