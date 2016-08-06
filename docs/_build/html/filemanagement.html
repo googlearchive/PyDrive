@@ -1,42 +1,149 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>File management made easy &mdash; PyDrive 1.1.1 documentation</title>
-    
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '1.1.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="PyDrive 1.1.1 documentation" href="index.html" />
-    <link rel="next" title="File listing made easy" href="filelist.html" />
-    <link rel="prev" title="OAuth made easy" href="oauth.html" />
-   
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>File management made easy &mdash; PyDrive 1.1.1 documentation</title>
+  
 
-  </head>
-  <body role="document">  
+  
+  
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="PyDrive 1.1.1 documentation" href="index.html"/>
+        <link rel="next" title="File listing made easy" href="filelist.html"/>
+        <link rel="prev" title="OAuth made easy" href="oauth.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> PyDrive
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="oauth.html">OAuth made easy</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">File management made easy</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#upload-a-new-file">Upload a new file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#delete-trash-and-un-trash-files">Delete, Trash and un-Trash files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#update-file-metadata">Update file metadata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#download-file-metadata-from-file-id">Download file metadata from file ID</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#handling-special-metadata">Handling special metadata</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#insert-permissions">Insert permissions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#list-permissions">List permissions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#remove-a-permission">Remove a Permission</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#upload-and-update-file-content">Upload and update file content</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#download-file-content">Download file content</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="filelist.html">File listing made easy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pydrive.html">pydrive package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">PyDrive</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>File management made easy</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/filemanagement.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <div class="section" id="file-management-made-easy">
 <h1>File management made easy<a class="headerlink" href="#file-management-made-easy" title="Permalink to this headline">¶</a></h1>
@@ -47,7 +154,7 @@ Manipulate file metadata and contents from <a class="reference external" href=".
 <div class="section" id="upload-a-new-file">
 <h2>Upload a new file<a class="headerlink" href="#upload-a-new-file" title="Permalink to this headline">¶</a></h2>
 <p>Here is a sample code to upload a file. <code class="docutils literal"><span class="pre">gauth</span></code> is an authenticated <a class="reference external" href="./pydrive.html#pydrive.auth.GoogleAuth">GoogleAuth</a> object.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pydrive.drive</span> <span class="kn">import</span> <span class="n">GoogleDrive</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pydrive.drive</span> <span class="kn">import</span> <span class="n">GoogleDrive</span>
 
 <span class="c1"># Create GoogleDrive instance with authenticated GoogleAuth instance.</span>
 <span class="n">drive</span> <span class="o">=</span> <span class="n">GoogleDrive</span><span class="p">(</span><span class="n">gauth</span><span class="p">)</span>
@@ -68,7 +175,7 @@ Manipulate file metadata and contents from <a class="reference external" href=".
 <code class="docutils literal"><span class="pre">Trash()</span></code> or <code class="docutils literal"><span class="pre">UnTrash()</span></code> on a GoogleDriveFile object.</p>
 <p><em>Note:</em> <code class="docutils literal"><span class="pre">Trash()</span></code> <em>moves a file into the trash and can be recovered,</em>
 <code class="docutils literal"><span class="pre">Delete()</span></code> <em>deletes the file permanently and immediately.</em></p>
-<div class="highlight-python"><div class="highlight"><pre><span class="c1"># Create GoogleDriveFile instance and upload it.</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Create GoogleDriveFile instance and upload it.</span>
 <span class="n">file1</span> <span class="o">=</span> <span class="n">drive</span><span class="o">.</span><span class="n">CreateFile</span><span class="p">()</span>
 <span class="n">file1</span><span class="o">.</span><span class="n">Upload</span><span class="p">()</span>
 
@@ -83,7 +190,7 @@ Manipulate file metadata and contents from <a class="reference external" href=".
 <p>You can manipulate file metadata from a <a class="reference external" href="./pydrive.html#pydrive.files.GoogleDriveFile">GoogleDriveFile</a> object just as you manipulate a <code class="docutils literal"><span class="pre">dict</span></code>.
 The format of file metadata can be found in the Google Drive API documentation: <a class="reference external" href="https://developers.google.com/drive/v2/reference/files#resource-representations">Files resource</a>.</p>
 <p>Sample code continues from <a class="reference internal" href="#upload-a-new-file">Upload a new file</a>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">file1</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;HelloWorld.txt&#39;</span> <span class="c1"># Change title of the file.</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">file1</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;HelloWorld.txt&#39;</span> <span class="c1"># Change title of the file.</span>
 <span class="n">file1</span><span class="o">.</span><span class="n">Upload</span><span class="p">()</span> <span class="c1"># Update metadata.</span>
 <span class="k">print</span><span class="p">(</span><span class="s1">&#39;title: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">file1</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">])</span> <span class="c1"># title: HelloWorld.txt.</span>
 </pre></div>
@@ -96,7 +203,7 @@ The format of file metadata can be found in the Google Drive API documentation: 
 <a class="reference external" href="./pydrive.html#pydrive.files.GoogleDriveFile">GoogleDriveFile</a> with file ID and access metadata from <a class="reference external" href="./pydrive.html#pydrive.files.GoogleDriveFile">GoogleDriveFile</a>
 just as you access <code class="docutils literal"><span class="pre">dict</span></code>.</p>
 <p>Sample code continues from above:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="c1"># Create GoogleDriveFile instance with file id of file1.</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Create GoogleDriveFile instance with file id of file1.</span>
 <span class="n">file2</span> <span class="o">=</span> <span class="n">drive</span><span class="o">.</span><span class="n">CreateFile</span><span class="p">({</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="n">file1</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]})</span>
 <span class="k">print</span><span class="p">(</span><span class="s1">&#39;title: </span><span class="si">%s</span><span class="s1">, mimeType: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">file2</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">],</span> <span class="n">file2</span><span class="p">[</span><span class="s1">&#39;mimeType&#39;</span><span class="p">]))</span>
 <span class="c1"># title: HelloWorld.txt, mimeType: text/plain</span>
@@ -109,7 +216,7 @@ just as you access <code class="docutils literal"><span class="pre">dict</span><
 PyDrive gives you access to the metadata of an object through
 <code class="docutils literal"><span class="pre">file_object.FetchMetadata()</span></code>. This function has two optional parameters:
 <code class="docutils literal"><span class="pre">fields</span></code> and <code class="docutils literal"><span class="pre">fetch_all</span></code>.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">file1</span> <span class="o">=</span> <span class="n">drive</span><span class="o">.</span><span class="n">CreateFile</span><span class="p">({</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;some file ID here&gt;&#39;</span><span class="p">})</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">file1</span> <span class="o">=</span> <span class="n">drive</span><span class="o">.</span><span class="n">CreateFile</span><span class="p">({</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;some file ID here&gt;&#39;</span><span class="p">})</span>
 
 <span class="c1"># Fetches all basic metadata fields, including file size, last modified etc.</span>
 <span class="n">file1</span><span class="o">.</span><span class="n">FetchMetadata</span><span class="p">()</span>
@@ -129,7 +236,7 @@ PyDrive gives you access to the metadata of an object through
 <h3>Insert permissions<a class="headerlink" href="#insert-permissions" title="Permalink to this headline">¶</a></h3>
 <p>Insert, retrieving or deleting permissions is illustrated by making a file
 readable to all who have a link to the file.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">file1</span> <span class="o">=</span> <span class="n">drive</span><span class="o">.</span><span class="n">CreateFile</span><span class="p">()</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">file1</span> <span class="o">=</span> <span class="n">drive</span><span class="o">.</span><span class="n">CreateFile</span><span class="p">()</span>
 <span class="n">file1</span><span class="o">.</span><span class="n">Upload</span><span class="p">()</span>
 
 <span class="c1"># Insert the permission.</span>
@@ -152,7 +259,7 @@ want to check whether a file is already shared?</p>
 <h3>List permissions<a class="headerlink" href="#list-permissions" title="Permalink to this headline">¶</a></h3>
 <p>Permissions can be fetched using the <code class="docutils literal"><span class="pre">GetPermissions()</span></code> function of a
 <code class="docutils literal"><span class="pre">GoogleDriveFile</span></code>, and can be used like so:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="c1"># Create a new file</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Create a new file</span>
 <span class="n">file1</span> <span class="o">=</span> <span class="n">drive</span><span class="o">.</span><span class="n">CreateFile</span><span class="p">()</span>
 <span class="c1"># Fetch permissions.</span>
 <span class="n">permissions</span> <span class="o">=</span> <span class="n">file1</span><span class="o">.</span><span class="n">GetPermissions</span><span class="p">()</span>
@@ -163,7 +270,7 @@ want to check whether a file is already shared?</p>
 </pre></div>
 </div>
 <p>For the more advanced user: <code class="docutils literal"><span class="pre">GetPermissions()</span></code> is a shorthand for:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="c1"># Fetch Metadata, including the permissions field.</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Fetch Metadata, including the permissions field.</span>
 <span class="n">file1</span><span class="o">.</span><span class="n">FetchMetadata</span><span class="p">(</span><span class="n">fields</span><span class="o">=</span><span class="s1">&#39;permissions&#39;</span><span class="p">)</span>
 
 <span class="c1"># The permissions array is now available for further use.</span>
@@ -176,7 +283,7 @@ want to check whether a file is already shared?</p>
 <p><em>PyDrive</em> allows you to remove a specific permission using the
 <code class="docutils literal"><span class="pre">DeletePermission(permission_id)</span></code> function. This function allows you to delete
 one permission at a time by providing the permission&#8217;s ID.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">file1</span> <span class="o">=</span> <span class="n">drive</span><span class="o">.</span><span class="n">CreateFile</span><span class="p">({</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;file ID here&gt;&#39;</span><span class="p">})</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">file1</span> <span class="o">=</span> <span class="n">drive</span><span class="o">.</span><span class="n">CreateFile</span><span class="p">({</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;file ID here&gt;&#39;</span><span class="p">})</span>
 <span class="n">permissions</span> <span class="o">=</span> <span class="n">file1</span><span class="o">.</span><span class="n">GetPermissions</span><span class="p">()</span>  <span class="c1"># Download file permissions.</span>
 
 <span class="n">permission_id</span> <span class="o">=</span> <span class="n">permissions</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>  <span class="c1"># Get a permission ID.</span>
@@ -192,7 +299,7 @@ one permission at a time by providing the permission&#8217;s ID.</p>
 content with either <a class="reference external" href="./pydrive.html#pydrive.files.GoogleDriveFile.SetContentFile">SetContentFile(filename)</a> or <a class="reference external" href="./pydrive.html#pydrive.files.GoogleDriveFile.SetContentString">SetContentString(content)</a>
 and call <a class="reference external" href="./pydrive.html#pydrive.files.GoogleDriveFile.Upload">Upload()</a> just as you did to upload or update file metadata.</p>
 <p>Sample code continues from <a class="reference internal" href="#download-file-metadata-from-file-id">Download file metadata from file ID</a>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">file4</span> <span class="o">=</span> <span class="n">drive</span><span class="o">.</span><span class="n">CreateFile</span><span class="p">({</span><span class="s1">&#39;title&#39;</span><span class="p">:</span><span class="s1">&#39;appdata.json&#39;</span><span class="p">,</span> <span class="s1">&#39;mimeType&#39;</span><span class="p">:</span><span class="s1">&#39;application/json&#39;</span><span class="p">})</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">file4</span> <span class="o">=</span> <span class="n">drive</span><span class="o">.</span><span class="n">CreateFile</span><span class="p">({</span><span class="s1">&#39;title&#39;</span><span class="p">:</span><span class="s1">&#39;appdata.json&#39;</span><span class="p">,</span> <span class="s1">&#39;mimeType&#39;</span><span class="p">:</span><span class="s1">&#39;application/json&#39;</span><span class="p">})</span>
 <span class="n">file4</span><span class="o">.</span><span class="n">SetContentString</span><span class="p">(</span><span class="s1">&#39;{&quot;firstname&quot;: &quot;John&quot;, &quot;lastname&quot;: &quot;Smith&quot;}&#39;</span><span class="p">)</span>
 <span class="n">file4</span><span class="o">.</span><span class="n">Upload</span><span class="p">()</span> <span class="c1"># Upload file.</span>
 <span class="n">file4</span><span class="o">.</span><span class="n">SetContentString</span><span class="p">(</span><span class="s1">&#39;{&quot;firstname&quot;: &quot;Claudio&quot;, &quot;lastname&quot;: &quot;Afshar&quot;}&#39;</span><span class="p">)</span>
@@ -212,7 +319,7 @@ and call <a class="reference external" href="./pydrive.html#pydrive.files.Google
 <p>Just as you uploaded file content, you can download it using
 <a class="reference external" href="./pydrive.html#pydrive.files.GoogleDriveFile.GetContentFile">GetContentFile(filename)</a> or <a class="reference external" href="./pydrive.html#pydrive.files.GoogleDriveFile.GetContentString">GetContentString()</a>.</p>
 <p>Sample code continues from above:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="c1"># Initialize GoogleDriveFile instance with file id.</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Initialize GoogleDriveFile instance with file id.</span>
 <span class="n">file6</span> <span class="o">=</span> <span class="n">drive</span><span class="o">.</span><span class="n">CreateFile</span><span class="p">({</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="n">file5</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]})</span>
 <span class="n">file6</span><span class="o">.</span><span class="n">GetContentFile</span><span class="p">(</span><span class="s1">&#39;catlove.png&#39;</span><span class="p">)</span> <span class="c1"># Download file as &#39;catlove.png&#39;.</span>
 
@@ -230,76 +337,71 @@ and call <a class="reference external" href="./pydrive.html#pydrive.files.Google
 </div>
 
 
+           </div>
           </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">File management made easy</a><ul>
-<li><a class="reference internal" href="#upload-a-new-file">Upload a new file</a></li>
-<li><a class="reference internal" href="#delete-trash-and-un-trash-files">Delete, Trash and un-Trash files</a></li>
-<li><a class="reference internal" href="#update-file-metadata">Update file metadata</a></li>
-<li><a class="reference internal" href="#download-file-metadata-from-file-id">Download file metadata from file ID</a></li>
-<li><a class="reference internal" href="#handling-special-metadata">Handling special metadata</a><ul>
-<li><a class="reference internal" href="#insert-permissions">Insert permissions</a></li>
-<li><a class="reference internal" href="#list-permissions">List permissions</a></li>
-<li><a class="reference internal" href="#remove-a-permission">Remove a Permission</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#upload-and-update-file-content">Upload and update file content</a></li>
-<li><a class="reference internal" href="#download-file-content">Download file content</a></li>
-</ul>
-</li>
-</ul>
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="oauth.html" title="previous chapter">OAuth made easy</a></li>
-      <li>Next: <a href="filelist.html" title="next chapter">File listing made easy</a></li>
-  </ul></li>
-</ul>
-</div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/filemanagement.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="filelist.html" class="btn btn-neutral float-right" title="File listing made easy" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="oauth.html" class="btn btn-neutral" title="OAuth made easy" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, JunYoung Gwak, Scott Blevins, Robin Nabel, Google Inc..
+
     </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
         </div>
       </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2016, JunYoung Gwak, Scott Blevins, Robin Nabel, Google Inc..
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
-      
-      |
-      <a href="_sources/filemanagement.txt"
-          rel="nofollow">Page source</a>
-    </div>
 
-    
+    </section>
 
-    
-  </body>
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.1.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
 </html>

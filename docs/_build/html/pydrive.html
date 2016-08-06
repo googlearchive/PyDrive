@@ -1,47 +1,147 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>pydrive package &mdash; PyDrive 1.1.1 documentation</title>
-    
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '1.1.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="PyDrive 1.1.1 documentation" href="index.html" />
-    <link rel="prev" title="File listing made easy" href="filelist.html" />
-   
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pydrive package &mdash; PyDrive 1.1.1 documentation</title>
+  
 
-  </head>
-  <body role="document">  
+  
+  
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="PyDrive 1.1.1 documentation" href="index.html"/>
+        <link rel="prev" title="File listing made easy" href="filelist.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> PyDrive
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="oauth.html">OAuth made easy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filemanagement.html">File management made easy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filelist.html">File listing made easy</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">pydrive package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-pydrive.apiattr">pydrive.apiattr module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-pydrive.auth">pydrive.auth module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-pydrive.drive">pydrive.drive module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-pydrive.files">pydrive.files module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-pydrive.settings">pydrive.settings module</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">PyDrive</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>pydrive package</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/pydrive.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <div class="section" id="pydrive-package">
 <h1>pydrive package<a class="headerlink" href="#pydrive-package" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="pydrive-apiattr-module">
-<h2>pydrive.apiattr module<a class="headerlink" href="#pydrive-apiattr-module" title="Permalink to this headline">¶</a></h2>
-<span class="target" id="module-pydrive.apiattr"></span><dl class="class">
+<div class="section" id="module-pydrive.apiattr">
+<span id="pydrive-apiattr-module"></span><h2>pydrive.apiattr module<a class="headerlink" href="#module-pydrive.apiattr" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
 <dt id="pydrive.apiattr.ApiAttribute">
 <em class="property">class </em><code class="descclassname">pydrive.apiattr.</code><code class="descname">ApiAttribute</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive.apiattr.ApiAttribute" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
@@ -83,6 +183,12 @@ Provides changed metadata elements to efficiently update api resources.</p>
 <dd><p>Update metadata and mark all of them to be clean.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="pydrive.apiattr.ApiResource.auth">
+<code class="descname">auth</code><a class="headerlink" href="#pydrive.apiattr.ApiResource.auth" title="Permalink to this definition">¶</a></dt>
+<dd><p>A data descriptor that sets and returns values.</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="pydrive.apiattr.ApiResource.update">
 <code class="descname">update</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive.apiattr.ApiResource.update" title="Permalink to this definition">¶</a></dt>
@@ -120,12 +226,18 @@ update &#8216;pageToken&#8217;.</p>
 <dd><p>Resets current iteration</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="pydrive.apiattr.ApiResourceList.metadata">
+<code class="descname">metadata</code><a class="headerlink" href="#pydrive.apiattr.ApiResourceList.metadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>A data descriptor that sets and returns values.</p>
+</dd></dl>
+
 </dd></dl>
 
 </div>
-<div class="section" id="pydrive-auth-module">
-<h2>pydrive.auth module<a class="headerlink" href="#pydrive-auth-module" title="Permalink to this headline">¶</a></h2>
-<span class="target" id="module-pydrive.auth"></span><dl class="exception">
+<div class="section" id="module-pydrive.auth">
+<span id="pydrive-auth-module"></span><h2>pydrive.auth module<a class="headerlink" href="#module-pydrive.auth" title="Permalink to this headline">¶</a></h2>
+<dl class="exception">
 <dt id="pydrive.auth.AuthError">
 <em class="property">exception </em><code class="descclassname">pydrive.auth.</code><code class="descname">AuthError</code><a class="headerlink" href="#pydrive.auth.AuthError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></p>
@@ -465,6 +577,48 @@ and client email for a Service account.
 </table>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="pydrive.auth.GoogleAuth.auth_method">
+<code class="descname">auth_method</code><a class="headerlink" href="#pydrive.auth.GoogleAuth.auth_method" title="Permalink to this definition">¶</a></dt>
+<dd><p>A data descriptor that sets and returns values.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydrive.auth.GoogleAuth.client_config">
+<code class="descname">client_config</code><a class="headerlink" href="#pydrive.auth.GoogleAuth.client_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>A data descriptor that sets and returns values.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydrive.auth.GoogleAuth.credentials">
+<code class="descname">credentials</code><a class="headerlink" href="#pydrive.auth.GoogleAuth.credentials" title="Permalink to this definition">¶</a></dt>
+<dd><p>A data descriptor that sets and returns values.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydrive.auth.GoogleAuth.flow">
+<code class="descname">flow</code><a class="headerlink" href="#pydrive.auth.GoogleAuth.flow" title="Permalink to this definition">¶</a></dt>
+<dd><p>A data descriptor that sets and returns values.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydrive.auth.GoogleAuth.http">
+<code class="descname">http</code><a class="headerlink" href="#pydrive.auth.GoogleAuth.http" title="Permalink to this definition">¶</a></dt>
+<dd><p>A data descriptor that sets and returns values.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydrive.auth.GoogleAuth.service">
+<code class="descname">service</code><a class="headerlink" href="#pydrive.auth.GoogleAuth.service" title="Permalink to this definition">¶</a></dt>
+<dd><p>A data descriptor that sets and returns values.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydrive.auth.GoogleAuth.settings">
+<code class="descname">settings</code><a class="headerlink" href="#pydrive.auth.GoogleAuth.settings" title="Permalink to this definition">¶</a></dt>
+<dd><p>A data descriptor that sets and returns values.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="exception">
@@ -546,9 +700,9 @@ and client email for a Service account.
 </dd></dl>
 
 </div>
-<div class="section" id="pydrive-files-module">
-<h2>pydrive.files module<a class="headerlink" href="#pydrive-files-module" title="Permalink to this headline">¶</a></h2>
-<span class="target" id="module-pydrive.files"></span><dl class="exception">
+<div class="section" id="module-pydrive.files">
+<span id="pydrive-files-module"></span><h2>pydrive.files module<a class="headerlink" href="#module-pydrive.files" title="Permalink to this headline">¶</a></h2>
+<dl class="exception">
 <dt id="pydrive.files.ApiRequestError">
 <em class="property">exception </em><code class="descclassname">pydrive.files.</code><code class="descname">ApiRequestError</code><a class="headerlink" href="#pydrive.files.ApiRequestError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">exceptions.IOError</span></code></p>
@@ -652,7 +806,7 @@ Can access and modify metadata like dictionary.</p>
 
 <dl class="method">
 <dt id="pydrive.files.GoogleDriveFile.GetContentFile">
-<code class="descname">GetContentFile</code><span class="sig-paren">(</span><em>filename</em>, <em>mimetype=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive.files.GoogleDriveFile.GetContentFile" title="Permalink to this definition">¶</a></dt>
+<code class="descname">GetContentFile</code><span class="sig-paren">(</span><em>filename</em>, <em>mimetype=None</em>, <em>remove_bom=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive.files.GoogleDriveFile.GetContentFile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save content of this file as a local file.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -661,6 +815,7 @@ Can access and modify metadata like dictionary.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>filename</strong> (<em>str</em>) &#8211; name of the file to write to.</li>
 <li><strong>mimetype</strong> (<em>str</em>) &#8211; mimeType of the file.</li>
+<li><strong>remove_bom</strong> (<em>bool</em>) &#8211; Whether to remove the byte order marking.</li>
 </ul>
 </td>
 </tr>
@@ -673,7 +828,7 @@ Can access and modify metadata like dictionary.</p>
 
 <dl class="method">
 <dt id="pydrive.files.GoogleDriveFile.GetContentString">
-<code class="descname">GetContentString</code><span class="sig-paren">(</span><em>mimetype=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive.files.GoogleDriveFile.GetContentString" title="Permalink to this definition">¶</a></dt>
+<code class="descname">GetContentString</code><span class="sig-paren">(</span><em>mimetype=None</em>, <em>remove_bom=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive.files.GoogleDriveFile.GetContentString" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get content of this file as a string.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -801,6 +956,24 @@ Sets mimeType to be &#8216;text/plain&#8217; if not specified.</p>
 </table>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="pydrive.files.GoogleDriveFile.content">
+<code class="descname">content</code><a class="headerlink" href="#pydrive.files.GoogleDriveFile.content" title="Permalink to this definition">¶</a></dt>
+<dd><p>A data descriptor that sets and returns values.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydrive.files.GoogleDriveFile.metadata">
+<code class="descname">metadata</code><a class="headerlink" href="#pydrive.files.GoogleDriveFile.metadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>A data descriptor that sets and returns values.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydrive.files.GoogleDriveFile.uploaded">
+<code class="descname">uploaded</code><a class="headerlink" href="#pydrive.files.GoogleDriveFile.uploaded" title="Permalink to this definition">¶</a></dt>
+<dd><p>A data descriptor that sets and returns values.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -878,68 +1051,69 @@ Sets mimeType to be &#8216;text/plain&#8217; if not specified.</p>
 </div>
 
 
+           </div>
           </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">pydrive package</a><ul>
-<li><a class="reference internal" href="#pydrive-apiattr-module">pydrive.apiattr module</a></li>
-<li><a class="reference internal" href="#pydrive-auth-module">pydrive.auth module</a></li>
-<li><a class="reference internal" href="#module-pydrive.drive">pydrive.drive module</a></li>
-<li><a class="reference internal" href="#pydrive-files-module">pydrive.files module</a></li>
-<li><a class="reference internal" href="#module-pydrive.settings">pydrive.settings module</a></li>
-</ul>
-</li>
-</ul>
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="filelist.html" title="previous chapter">File listing made easy</a></li>
-  </ul></li>
-</ul>
-</div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/pydrive.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="filelist.html" class="btn btn-neutral" title="File listing made easy" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, JunYoung Gwak, Scott Blevins, Robin Nabel, Google Inc..
+
     </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
         </div>
       </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2016, JunYoung Gwak, Scott Blevins, Robin Nabel, Google Inc..
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
-      
-      |
-      <a href="_sources/pydrive.txt"
-          rel="nofollow">Page source</a>
-    </div>
 
-    
+    </section>
 
-    
-  </body>
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.1.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
 </html>

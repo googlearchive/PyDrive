@@ -1,7 +1,7 @@
 This document outlines how to rebuild the documentation.
 
 General setup:
-- Install Sphinx.
+- Install Sphinx, `pip install sphinx`
 - run `make html` in this folder, to update the documentation.
 
 If code files were added, the easiest way to reflect code changes in the
