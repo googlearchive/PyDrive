@@ -8,7 +8,7 @@ that simplifies many common Google Drive API tasks.
 Project Info
 ------------
 
-- Homepage: `https://pypi.python.org/pypi/PyDrive <https://pypi.python.org/pypi/PyDrive>`_                                                 
+- Homepage: `https://pypi.python.org/pypi/PyDrive <https://pypi.python.org/pypi/PyDrive>`_
 - Documentation: `Official documentation on GitHub pages <https://googledrive.github.io/PyDrive/docs/_build/html/index.html>`_
 - Github: `https://github.com/googledrive/PyDrive <https://github.com/googledrive/PyDrive>`_
 
@@ -88,6 +88,7 @@ efficient way.
     # downloading a docs document as an html file:
     docsfile.GetContentFile('test.html', mimetype='text/html')
 
+
 File listing pagination made easy
 ---------------------------------
 
@@ -105,6 +106,7 @@ File listing pagination made easy
       print 'Received %s files from Files.list()' % len(file_list) # <= 10
       for file1 in file_list:
         print('title: %s, id: %s' % (file1['title'], file1['id']))
+
 
 Concurrent access made easy
 ---------------------------
