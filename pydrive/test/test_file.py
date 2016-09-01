@@ -483,11 +483,13 @@ class GoogleDriveFileTest(unittest.TestCase):
 
       content_bom = file1.GetContentString(mimetype='text/plain')
       content_no_bom = file1.GetContentString(mimetype='text/plain',
-                                              remove_bom=False)
+                                              remove_bom=True)
       content_bom_2 = file1.GetContentString(mimetype='text/plain')
 
-      # content_bom == bom_2, != no_bom
-      # TODO v1 check whether text/csv also has a BOM.
+      self.assertEqual(content_bom, content_bom_2)
+      self.assertNotEqual(content_bom, content_no_bom)
+      self.assertTrue(len(content_bom) > len(content_no_bom))
+
     finally:
       self.cleanup_gfile_conversion_test(file1, file_name, downloaded_file_name)
 
