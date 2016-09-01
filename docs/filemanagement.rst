@@ -219,6 +219,15 @@ Sample code continues from above:
     file7.Upload()
     # Uploaded content: '{"firstname": "Claudio", "familyname": "Afshar"}'
 
+**Advanced users**: Google Drive is `known`_ to add BOM (Byte Order Marks) to
+the beginning of some files, such as Google Documents downloaded as text files.
+In some cases confuses parsers and leads to corrupt files.
+PyDrive can remove the BOM from the beginning of a file when it
+is downloaded. Just set the `remove_bom` parameter in `GetContentString()` or
+`GetContentFile()` - see `examples/strip_bom_example.py` in the GitHub
+repository for an example.
+
+
 .. _`GoogleDriveFile`: ./pydrive.html#pydrive.files.GoogleDriveFile
 .. _`Upload()`: ./pydrive.html#pydrive.files.GoogleDriveFile.Upload
 .. _`GoogleAuth`: ./pydrive.html#pydrive.auth.GoogleAuth
@@ -229,3 +238,4 @@ Sample code continues from above:
 .. _`GetContentFile(filename)`: ./pydrive.html#pydrive.files.GoogleDriveFile.GetContentFile
 .. _`GetContentString()`: ./pydrive.html#pydrive.files.GoogleDriveFile.GetContentString
 .. _`official documentation`: https://developers.google.com/drive/v2/reference/files#resource-representations
+.. _`known`: https://productforums.google.com/forum/#!topic/docs/BJLimQDGtjQ
