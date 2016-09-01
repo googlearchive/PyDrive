@@ -493,7 +493,7 @@ class GoogleDriveFileTest(unittest.TestCase):
 
   def test_InsertPrefix(self):
     # Create BytesIO.
-    file_obj = BytesIO(u'abc')
+    file_obj = BytesIO('abc')
     original_length = len(file_obj.getvalue())
     char_to_insert = u'\ufeff'.encode('utf8')
 
@@ -505,7 +505,7 @@ class GoogleDriveFileTest(unittest.TestCase):
 
   def test_InsertPrefixLarge(self):
     # Create BytesIO.
-    test_content = u'abc' * 800
+    test_content = 'abc' * 800
     file_obj = BytesIO(test_content)
     original_length = len(file_obj.getvalue())
     char_to_insert = u'\ufeff'.encode('utf8')

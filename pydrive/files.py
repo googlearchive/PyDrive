@@ -254,7 +254,8 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
         'No downloadLink/exportLinks for mimetype found in metadata')
 
     if mimetype == 'text/plain' and remove_bom:
-        self._RemovePrefix(self.content)
+        self._RemovePrefix(self.content,
+                           MIME_TYPE_TO_BOM[self['mimetype']][mimetype])
     self.has_bom = not remove_bom
 
 
@@ -521,12 +522,13 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
 
   @staticmethod
   def _RemovePrefix(file_object, prefix, block_size=BLOCK_SIZE):
-    """Shifts content of passed file object 3 bytes to the left,
-    operation is in-place.
+    """Deletes passed prefix by shifting content of passed file object by to
+    the left. Operation is in-place.
 
     Args:
       file_object (obj): The file object to manipulate.
       prefix (str): The prefix to insert.
+      block_size (int): The size of the blocks which are moved one at a time.
     """
     # Detect if prefix exists in file.
     content_start = file_object.read(len(prefix))
@@ -553,7 +555,7 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
       file_object.truncate(total_size)
 
   @staticmethod
-  def _InsertPrefix(file_object, prefix):
+  def _InsertPrefix(file_object, prefix, block_size=BLOCK_SIZE):
     """Inserts the passed prefix in the beginning of the file, operation is
     in-place.
 
@@ -561,17 +563,31 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
       file_object (obj): The file object to manipulate.
       prefix (str): The prefix to insert.
     """
-    first_block = file_object.read(BLOCK_SIZE)
-    second_block = file_object.read(BLOCK_SIZE)
+    # Read the first two blocks.
+    first_block = file_object.read(block_size)
+    second_block = file_object.read(block_size)
+    # Pointer to the first byte of the next block to be read.
+    read_location = block_size * 2
 
     # Write BOM.
     file_object.seek(0)
     file_object.write(prefix)
-    current_location = 3
+    # {read|write}_location separated for readability.
+    write_location = len(prefix)
 
     # Write and read block alternatingly.
-    while len(second_block):
-          file_object.seek(current_location)
-          file_object.write(first_block)
+    while len(first_block):
+      # Write first block.
+      file_object.seek(write_location)
+      file_object.write(first_block)
+      # Increment write_location.
+      write_location += block_size
 
-          first_block = second_block
+      # Move second block into first variable.
+      first_block = second_block
+
+      # Read in the next block.
+      file_object.seek(read_location)
+      second_block = file_object.read(block_size)
+      # Increment read_location.
+      read_location += block_size
