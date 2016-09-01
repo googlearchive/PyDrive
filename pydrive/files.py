@@ -255,7 +255,7 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
 
     if mimetype == 'text/plain' and remove_bom:
         self._RemovePrefix(self.content,
-                           MIME_TYPE_TO_BOM[self['mimetype']][mimetype])
+                           MIME_TYPE_TO_BOM[self['mimeType']][mimetype])
     self.has_bom = not remove_bom
 
 
@@ -530,29 +530,35 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
       prefix (str): The prefix to insert.
       block_size (int): The size of the blocks which are moved one at a time.
     """
+    prefix_length = len(prefix)
     # Detect if prefix exists in file.
-    content_start = file_object.read(len(prefix))
+    content_start = file_object.read(prefix_length)
+
     if content_start == prefix:
       # Shift content left by prefix length, by copying 1KiB at a time.
-      copy_content = file_object.read(block_size)
-      content_length = len(copy_content)
-      total_size = content_length
+      block_to_write = file_object.read(block_size)
+      current_block_length = len(block_to_write)
 
-      while content_length:
-        current_location = file_object.tell()
-        write_location = current_location - content_length - content_length
+      # Read and write location in separate variables for simplicity.
+      read_location = prefix_length + current_block_length
+      write_location = 0
 
-        # Write block shifted by content_length bytes.
+      while current_block_length > 0:
+        # Write next block.
         file_object.seek(write_location)
-        file_object.write(copy_content)
-        file_object.seek(current_location)
+        file_object.write(block_to_write)
+        # Set write location to the next block.
+        write_location += len(block_to_write)
 
         # Read next block of input.
-        copy_content = file_object.read(block_size)
-        content_length = len(copy_content)
-        total_size += content_length
+        file_object.seek(read_location)
+        block_to_write = file_object.read(block_size)
+        # Update the current block length and read_location.
+        current_block_length = len(block_to_write)
+        read_location += current_block_length
 
-      file_object.truncate(total_size)
+      # Truncate the file to its, now shorter, length.
+      file_object.truncate(read_location - prefix_length)
 
   @staticmethod
   def _InsertPrefix(file_object, prefix, block_size=BLOCK_SIZE):
