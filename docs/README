@@ -1,8 +1,9 @@
 This document outlines how to rebuild the documentation.
 
 General setup:
-- Install Sphinx, `pip install sphinx`
-- run `make html` in this folder, to update the documentation.
+- Install Sphinx, `pip install sphinx` or `apt-get install python-sphinx`
+- Install the theme used for the docs: `pip install sphinx_rtd_theme`
+- Run `python setup.py build_sphinx --source-dir=docs/ --build-dir=docs/build --all-files`
 
 If code files were added, the easiest way to reflect code changes in the
 documentation by referencing the file from within pydrive.rst.

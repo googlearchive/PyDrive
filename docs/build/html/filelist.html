@@ -1,0 +1,238 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>File listing made easy &mdash; PyDrive 1.3.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="PyDrive 1.3.0 documentation" href="index.html"/>
+        <link rel="next" title="pydrive package" href="pydrive.html"/>
+        <link rel="prev" title="File management made easy" href="filemanagement.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> PyDrive
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.3.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="oauth.html">OAuth made easy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filemanagement.html">File management made easy</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">File listing made easy</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#get-all-files-which-matches-the-query">Get all files which matches the query</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#paginate-and-iterate-through-files">Paginate and iterate through files</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pydrive.html">pydrive package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">PyDrive</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>File listing made easy</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/filelist.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="file-listing-made-easy">
+<h1>File listing made easy<a class="headerlink" href="#file-listing-made-easy" title="Permalink to this headline">¶</a></h1>
+<p><em>PyDrive</em> handles paginations and parses response as list of <a class="reference external" href="./pydrive.html#pydrive.files.GoogleDriveFile">GoogleDriveFile</a>.</p>
+<div class="section" id="get-all-files-which-matches-the-query">
+<h2>Get all files which matches the query<a class="headerlink" href="#get-all-files-which-matches-the-query" title="Permalink to this headline">¶</a></h2>
+<p>Create <a class="reference external" href="./pydrive.html#pydrive.files.GoogleDriveFileList">GoogleDriveFileList</a> instance with <a class="reference external" href="https://developers.google.com/drive/v2/reference/files/list#request">parameters of Files.list()</a> as <code class="docutils literal"><span class="pre">dict</span></code>. Call <a class="reference external" href="./pydrive.html#pydrive.apiattr.ApiResourceList.GetList">GetList()</a> and you will get all files that matches your query as a list of <a class="reference external" href="./pydrive.html#pydrive.files.GoogleDriveFile">GoogleDriveFile</a>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pydrive.drive</span> <span class="kn">import</span> <span class="n">GoogleDrive</span>
+
+<span class="n">drive</span> <span class="o">=</span> <span class="n">GoogleDrive</span><span class="p">(</span><span class="n">gauth</span><span class="p">)</span> <span class="c1"># Create GoogleDrive instance with authenticated GoogleAuth instance</span>
+
+<span class="c1"># Auto-iterate through all files in the root folder.</span>
+<span class="n">file_list</span> <span class="o">=</span> <span class="n">drive</span><span class="o">.</span><span class="n">ListFile</span><span class="p">({</span><span class="s1">&#39;q&#39;</span><span class="p">:</span> <span class="s2">&quot;&#39;root&#39; in parents and trashed=false&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">GetList</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">file1</span> <span class="ow">in</span> <span class="n">file_list</span><span class="p">:</span>
+  <span class="k">print</span><span class="p">(</span><span class="s1">&#39;title: </span><span class="si">%s</span><span class="s1">, id: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">file1</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">],</span> <span class="n">file1</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]))</span>
+</pre></div>
+</div>
+<p>You can update metadata or content of these <a class="reference external" href="./pydrive.html#pydrive.files.GoogleDriveFile">GoogleDriveFile</a> instances if you need it.</p>
+</div>
+<div class="section" id="paginate-and-iterate-through-files">
+<h2>Paginate and iterate through files<a class="headerlink" href="#paginate-and-iterate-through-files" title="Permalink to this headline">¶</a></h2>
+<p><em>PyDrive</em> provides Pythonic way of paginating and iterating through list of files. All you have to do is to limit number of results with <code class="docutils literal"><span class="pre">maxResults</span></code> parameter and build <code class="docutils literal"><span class="pre">for</span></code> loop retrieving file list from API each iteration.</p>
+<p>Sample code continues from above:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Paginate file lists by specifying number of max results</span>
+<span class="k">for</span> <span class="n">file_list</span> <span class="ow">in</span> <span class="n">drive</span><span class="o">.</span><span class="n">ListFile</span><span class="p">({</span><span class="s1">&#39;q&#39;</span><span class="p">:</span> <span class="s1">&#39;trashed=true&#39;</span><span class="p">,</span> <span class="s1">&#39;maxResults&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">}):</span>
+  <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Received </span><span class="si">%s</span><span class="s1"> files from Files.list()&#39;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">file_list</span><span class="p">))</span> <span class="c1"># &lt;= 10</span>
+  <span class="k">for</span> <span class="n">file1</span> <span class="ow">in</span> <span class="n">file_list</span><span class="p">:</span>
+      <span class="k">print</span><span class="p">(</span><span class="s1">&#39;title: </span><span class="si">%s</span><span class="s1">, id: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">file1</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">],</span> <span class="n">file1</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="pydrive.html" class="btn btn-neutral float-right" title="pydrive package" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="filemanagement.html" class="btn btn-neutral" title="File management made easy" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, JunYoung Gwak, Scott Blevins, Robin Nabel, Google Inc..
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.3.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

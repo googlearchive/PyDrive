@@ -11,6 +11,13 @@ from .apiattr import ApiResource
 from .apiattr import ApiResourceList
 from .auth import LoadAuth
 
+BLOCK_SIZE = 1024
+# Usage: MIME_TYPE_TO_BOM['<Google Drive mime type>']['<download mimetype>'].
+MIME_TYPE_TO_BOM = {
+  'application/vnd.google-apps.document': {
+    'text/plain': u'\ufeff'.encode('utf8')
+  }
+}
 
 class FileNotUploadedError(RuntimeError):
   """Error trying to access metadata of file that is not uploaded."""
@@ -110,6 +117,7 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
                  'shared,sharedWithMeDate,sharingUser,spaces,thumbnail,' \
                  'thumbnailLink,title,userPermission,version,' \
                  'videoMediaMetadata,webContentLink,webViewLink,writersCanShare'
+    self.has_bom = True
 
   def __getitem__(self, key):
     """Overwrites manner of accessing Files resource.
@@ -133,16 +141,18 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
       else:
         raise FileNotUploadedError()
 
-  def SetContentString(self, content):
+  def SetContentString(self, content, encoding='utf-8'):
     """Set content of this file to be a string.
 
     Creates io.BytesIO instance of utf-8 encoded string.
     Sets mimeType to be 'text/plain' if not specified.
 
+    :param encoding: The encoding to use when setting the content of this file.
+    :type encoding: str
     :param content: content of the file in string.
-    :type content: str.
+    :type content: str
     """
-    self.content = io.BytesIO(content.encode('utf-8'))
+    self.content = io.BytesIO(content.encode(encoding))
     if self.get('mimeType') is None:
       self['mimeType'] = 'text/plain'
 
@@ -162,27 +172,42 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     if self.get('mimeType') is None:
       self['mimeType'] = mimetypes.guess_type(filename)[0]
 
-  def GetContentString(self, mimetype=None):
+  def GetContentString(self, mimetype=None, encoding='utf-8', remove_bom=False):
     """Get content of this file as a string.
+
+    :param mimetype: The mimetype of the content string.
+    :type mimetype: str
+
+    :param encoding: The encoding to use when decoding the byte string.
+    :type encoding: str
+
+    :param remove_bom: Whether to strip a known BOM.
+    :type remove_bom: bool
 
     :returns: str -- utf-8 decoded content of the file
     :raises: ApiRequestError, FileNotUploadedError, FileNotDownloadableError
     """
-    if self.content is None or type(self.content) is not io.BytesIO:
-      self.FetchContent(mimetype)
-    return self.content.getvalue().decode('utf-8')
+    if self.content is None or \
+                    type(self.content) is not io.BytesIO or \
+                    self.has_bom == remove_bom:
+      self.FetchContent(mimetype, remove_bom)
+    return self.content.getvalue().decode(encoding)
 
-  def GetContentFile(self, filename, mimetype=None):
+  def GetContentFile(self, filename, mimetype=None, remove_bom=False):
     """Save content of this file as a local file.
 
     :param filename: name of the file to write to.
     :type filename: str
     :param mimetype: mimeType of the file.
     :type mimetype: str
+    :param remove_bom: Whether to remove the byte order marking.
+    :type remove_bom: bool
     :raises: ApiRequestError, FileNotUploadedError, FileNotDownloadableError
     """
-    if self.content is None or type(self.content) is not io.BytesIO:
-      self.FetchContent(mimetype)
+    if self.content is None or \
+                    type(self.content) is not io.BytesIO or \
+                    self.has_bom == remove_bom:
+      self.FetchContent(mimetype, remove_bom)
     f = open(filename, 'wb')
     f.write(self.content.getvalue())
     f.close()
@@ -219,26 +244,30 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
       raise FileNotUploadedError()
 
   @LoadMetadata
-  def FetchContent(self, mimetype=None):
+  def FetchContent(self, mimetype=None, remove_bom=False):
     """Download file's content from download_url.
 
     :raises: ApiRequestError, FileNotUploadedError, FileNotDownloadableError
     """
     download_url = self.metadata.get('downloadUrl')
+    export_links = self.metadata.get('exportLinks')
     if download_url:
       self.content = io.BytesIO(self._DownloadFromUrl(download_url))
       self.dirty['content'] = False
-      return
-    
-    export_links = self.metadata.get('exportLinks')
-    if export_links and export_links.get(mimetype):
+
+    elif export_links and export_links.get(mimetype):
       self.content = io.BytesIO(
           self._DownloadFromUrl(export_links.get(mimetype)))
       self.dirty['content'] = False
-      return
 
-    raise FileNotDownloadableError(
+    else:
+      raise FileNotDownloadableError(
         'No downloadLink/exportLinks for mimetype found in metadata')
+
+    if mimetype == 'text/plain' and remove_bom:
+        self._RemovePrefix(self.content,
+                           MIME_TYPE_TO_BOM[self['mimeType']][mimetype])
+        self.has_bom = not remove_bom
 
   def Upload(self, param=None):
     """Upload/update file by choosing the most efficient method.
@@ -500,3 +529,81 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
         self['permissions'] = permissions
         self.metadata['permissions'] = permissions
       return True
+
+  @staticmethod
+  def _RemovePrefix(file_object, prefix, block_size=BLOCK_SIZE):
+    """Deletes passed prefix by shifting content of passed file object by to
+    the left. Operation is in-place.
+
+    Args:
+      file_object (obj): The file object to manipulate.
+      prefix (str): The prefix to insert.
+      block_size (int): The size of the blocks which are moved one at a time.
+    """
+    prefix_length = len(prefix)
+    # Detect if prefix exists in file.
+    content_start = file_object.read(prefix_length)
+
+    if content_start == prefix:
+      # Shift content left by prefix length, by copying 1KiB at a time.
+      block_to_write = file_object.read(block_size)
+      current_block_length = len(block_to_write)
+
+      # Read and write location in separate variables for simplicity.
+      read_location = prefix_length + current_block_length
+      write_location = 0
+
+      while current_block_length > 0:
+        # Write next block.
+        file_object.seek(write_location)
+        file_object.write(block_to_write)
+        # Set write location to the next block.
+        write_location += len(block_to_write)
+
+        # Read next block of input.
+        file_object.seek(read_location)
+        block_to_write = file_object.read(block_size)
+        # Update the current block length and read_location.
+        current_block_length = len(block_to_write)
+        read_location += current_block_length
+
+      # Truncate the file to its, now shorter, length.
+      file_object.truncate(read_location - prefix_length)
+
+  @staticmethod
+  def _InsertPrefix(file_object, prefix, block_size=BLOCK_SIZE):
+    """Inserts the passed prefix in the beginning of the file, operation is
+    in-place.
+
+    Args:
+      file_object (obj): The file object to manipulate.
+      prefix (str): The prefix to insert.
+    """
+    # Read the first two blocks.
+    first_block = file_object.read(block_size)
+    second_block = file_object.read(block_size)
+    # Pointer to the first byte of the next block to be read.
+    read_location = block_size * 2
+
+    # Write BOM.
+    file_object.seek(0)
+    file_object.write(prefix)
+    # {read|write}_location separated for readability.
+    write_location = len(prefix)
+
+    # Write and read block alternatingly.
+    while len(first_block):
+      # Write first block.
+      file_object.seek(write_location)
+      file_object.write(first_block)
+      # Increment write_location.
+      write_location += block_size
+
+      # Move second block into first variable.
+      first_block = second_block
+
+      # Read in the next block.
+      file_object.seek(read_location)
+      second_block = file_object.read(block_size)
+      # Increment read_location.
+      read_location += block_size

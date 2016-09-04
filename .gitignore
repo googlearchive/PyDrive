@@ -5,3 +5,7 @@ pydrive/test/credentials/*
 
 *.egg-info
 dist
+build/
+.cache
+
+client_secrets.json

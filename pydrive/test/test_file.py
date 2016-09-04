@@ -2,6 +2,7 @@
 import filecmp
 import os
 import unittest
+from io import BytesIO
 
 from six.moves import range
 import timeout_decorator
@@ -9,7 +10,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
-from pydrive.files import ApiRequestError
+from pydrive.files import ApiRequestError, GoogleDriveFile
 
 import test_util
 
@@ -398,6 +399,150 @@ class GoogleDriveFileTest(unittest.TestCase):
       pass
 
     file1.Delete()
+
+  def test_GFile_Conversion_Lossless_String(self):
+    drive = GoogleDrive(self.ga)
+    file1 = drive.CreateFile()
+
+    # Upload a string, and convert into Google Doc format.
+    test_string = 'Generic, non-exhaustive ASCII test string.'
+    file1.SetContentString(test_string)
+    file1.Upload({'convert': True})
+
+    # Download string as plain text.
+    downloaded_string = file1.GetContentString(mimetype='text/plain')
+    self.assertEqual(test_string, downloaded_string, "Strings do not match")
+
+    # Download content into file and ensure that file content matches original
+    # content string.
+    downloaded_file_name = '_tmp_downloaded_file_name.txt'
+    file1.GetContentFile(downloaded_file_name, mimetype='text/plain')
+    downloaded_string = open(downloaded_file_name).read()
+    self.assertEqual(test_string, downloaded_string, "Strings do not match")
+
+    # Delete temp file.
+    os.remove(downloaded_file_name)
+
+  # Tests for GDrive conversion.
+  # ============================
+
+  def setup_gfile_conversion_test(self):
+    drive = GoogleDrive(self.ga)
+    file1 = drive.CreateFile()
+
+    # Create a file to upload.
+    file_name = '_tmp_source_file.txt'
+    downloaded_file_name = '_tmp_downloaded_file_name.txt'
+    original_file_content = 'Generic, non-exhaustive\n ASCII test string.'
+    source_file = open(file_name, mode='w+')
+    source_file.write(original_file_content)
+    source_file.close()
+    original_file_content = test_util.StripNewlines(original_file_content)
+
+    return file1, file_name, original_file_content, downloaded_file_name
+
+  def cleanup_gfile_conversion_test(self, file1, file_name,
+                                    downloaded_file_name):
+    # Delete temporary files.
+    os.path.exists(file_name) and os.remove(file_name)
+    os.path.exists(downloaded_file_name) and os.remove(downloaded_file_name)
+    file1.Delete()  # Delete uploaded file.
+
+  def test_GFile_Conversion_Remove_BOM(self):
+    (file1, file_name, original_file_content, downloaded_file_name) = \
+        self.setup_gfile_conversion_test()
+    try:
+      # Upload source_file and convert into Google Doc format.
+      file1.SetContentFile(file_name)
+      file1.Upload({'convert': True})
+
+      # Download as string.
+      downloaded_content_no_bom = file1.GetContentString(mimetype='text/plain',
+                                                         remove_bom=True)
+      downloaded_content_no_bom = test_util.StripNewlines(
+        downloaded_content_no_bom)
+      self.assertEqual(original_file_content, downloaded_content_no_bom)
+
+      # Download as file.
+      file1.GetContentFile(downloaded_file_name, remove_bom=True)
+      downloaded_content = open(downloaded_file_name).read()
+      downloaded_content = test_util.StripNewlines(downloaded_content)
+      self.assertEqual(original_file_content, downloaded_content)
+
+    finally:
+      self.cleanup_gfile_conversion_test(file1, file_name, downloaded_file_name)
+
+  def test_Gfile_Conversion_Add_Remove_BOM(self):
+    """Tests whether you can switch between the BOM appended and removed
+    version on the fly."""
+    (file1, file_name, original_file_content, downloaded_file_name) = \
+        self.setup_gfile_conversion_test()
+    try:
+      file1.SetContentFile(file_name)
+      file1.Upload({'convert': True})
+
+      content_bom = file1.GetContentString(mimetype='text/plain')
+      content_no_bom = file1.GetContentString(mimetype='text/plain',
+                                              remove_bom=True)
+      content_bom_2 = file1.GetContentString(mimetype='text/plain')
+
+      self.assertEqual(content_bom, content_bom_2)
+      self.assertNotEqual(content_bom, content_no_bom)
+      self.assertTrue(len(content_bom) > len(content_no_bom))
+
+    finally:
+      self.cleanup_gfile_conversion_test(file1, file_name, downloaded_file_name)
+
+  def test_InsertPrefix(self):
+    # Create BytesIO.
+    file_obj = BytesIO('abc')
+    original_length = len(file_obj.getvalue())
+    char_to_insert = u'\ufeff'.encode('utf8')
+
+    # Insert the prefix.
+    GoogleDriveFile._InsertPrefix(file_obj, char_to_insert)
+    modified_length = len(file_obj.getvalue())
+    self.assertGreater(modified_length, original_length)
+    self.assertEqual(file_obj.getvalue(), u'\ufeffabc'.encode('utf8'))
+
+  def test_InsertPrefixLarge(self):
+    # Create BytesIO.
+    test_content = 'abc' * 800
+    file_obj = BytesIO(test_content)
+    original_length = len(file_obj.getvalue())
+    char_to_insert = u'\ufeff'.encode('utf8')
+
+    # Insert the prefix.
+    GoogleDriveFile._InsertPrefix(file_obj, char_to_insert)
+    modified_length = len(file_obj.getvalue())
+    self.assertGreater(modified_length, original_length)
+    expected_content = u'\ufeff' + test_content
+    self.assertEqual(file_obj.getvalue(), expected_content.encode('utf8'))
+
+  def test_RemovePrefix(self):
+    # Create BytesIO.
+    file_obj = BytesIO(u'\ufeffabc'.encode('utf8'))
+    original_length = len(file_obj.getvalue())
+    char_to_remove = u'\ufeff'.encode('utf8')
+
+    # Insert the prefix.
+    GoogleDriveFile._RemovePrefix(file_obj, char_to_remove)
+    modified_length = len(file_obj.getvalue())
+    self.assertLess(modified_length, original_length)
+    self.assertEqual(file_obj.getvalue(), 'abc')
+
+  def test_RemovePrefixLarge(self):
+    # Create BytesIO.
+    test_content = u'\ufeff' + u'abc' * 800
+    file_obj = BytesIO(test_content.encode('utf8'))
+    original_length = len(file_obj.getvalue())
+    char_to_remove = u'\ufeff'.encode('utf8')
+
+    # Insert the prefix.
+    GoogleDriveFile._RemovePrefix(file_obj, char_to_remove)
+    modified_length = len(file_obj.getvalue())
+    self.assertLess(modified_length, original_length)
+    self.assertEqual(file_obj.getvalue(), test_content[1:])
 
   # Setup for concurrent upload testing.
   # =====================================
