@@ -67,6 +67,18 @@ Getting list of files
     file_list = drive.ListFile({'q': "'root' in parents and trashed=false"}).GetList()
     for file1 in file_list:
       print('title: %s, id: %s' % (file1['title'], file1['id']))
+      
+ Creating a Folder
+ ----------------------
+ GoogleDrive treats everything as a file except it has different mimetypes for different file formats so a folder is also a file and its mimetype is folder. here is the code which you can put in quickstart.py and execute it.
+ .. code-block:: python
+      def create_folder(id, subfolder):
+          newFolder = drive.CreateFile({'title': subfolder, "parents": [{"kind": "drive#fileLink", "id": id}],
+                                     "mimeType": "application/vnd.google-apps.folder"})
+          newFolder.Upload()
+          return newFolder
+          
+pass in the parameter for folder name in the create_folder function and id represent the id of the parent folder under which we are creating that folder
 
 You will see title and id of all the files and folders in root folder of your Google Drive. For more details, take a look at documentation: `File listing made easy`_
 
