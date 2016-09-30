@@ -67,6 +67,66 @@ Getting list of files
     file_list = drive.ListFile({'q': "'root' in parents and trashed=false"}).GetList()
     for file1 in file_list:
       print('title: %s, id: %s' % (file1['title'], file1['id']))
+ 
+Creating a Folder
+----------------------
+
+GoogleDrive treats everything as a file except it has different mimetypes for different file formats so a folder is also a file and its mimetype is folder. here is the code which you can put in quickstart.py and execute it.
+ .. code-block:: python
+      def create_folder(id, subfolder):
+          newFolder = drive.CreateFile({'title': subfolder, "parents": [{"kind": "drive#fileLink", "id": id}],
+                                     "mimeType": "application/vnd.google-apps.folder"})
+          newFolder.Upload()
+          return newFolder
+          
+pass in the parameter for folder name in the create_folder function and id represent the id of the parent folder under which we are creating that folder
+
+Id of the title
+-----------------------
+
+id of the title is a function that return id of the given title's file in the directory.
+   .. code-block:: python
+          def id_of_title(title,parent_directory_id):
+              foldered_list=drive.ListFile({'q':  "'"+parent_directory_id+"' in parents and trashed=false"}).GetList()
+              for file in foldered_list:
+              if(file['title']==title):
+                  return file['id']
+          return None
+          
+ folder browser
+ -----------------------
+ This return a json output of the data in the directory with some important attributes like size, title, parent_id etc
+    .. code-block:: python
+           browsed=[]
+def folder_browser(structure,id):
+    for element in structure:
+        if type(element) is dict:
+            print (element['title'])
+        else:
+            print (element)
+    print("Enter Name of Folder You Want to Use\nEnter '/' to use current folder\nEnter ':' to create New Folder and use that" )
+    inp=input()
+    if inp=='/':
+        return id
+    elif inp==':':
+        print("Enter Name of Folder You Want to Create")
+        inp=input()
+        newfolder=create_folder(id,inp)
+        if not os.path.exists(HOME_DIRECTORY+ROOT_FOLDER_NAME+os.path.sep+USERNAME):
+            os.makedirs(HOME_DIRECTORY+ROOT_FOLDER_NAME+os.path.sep+USERNAME)
+        return newfolder['id']
+
+    else:
+        folder_selected=inp
+        for element in structure:
+            if type(element) is dict:
+                if element["title"]==folder_selected:
+                    struc=element["list"]
+                    browsed.append(folder_selected)
+                    print("Inside "+folder_selected)
+                    return folder_browser(struc,element['id'])
+                    
+ here structure is the list of folders that is present 
 
 You will see title and id of all the files and folders in root folder of your Google Drive. For more details, take a look at documentation: `File listing made easy`_
 
