@@ -2,7 +2,6 @@ import unittest
 
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
-from pydrive.files import ApiRequestError
 
 class ApiAttributeTest(unittest.TestCase):
     """Test ApiAttr functions.

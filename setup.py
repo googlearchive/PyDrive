@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='PyDrive',
-    version='1.3.0',
+    version='1.3.1',
     author='JunYoung Gwak',
     author_email='jgwak@dreamylab.com',
     maintainer='Robin Nabel',
@@ -14,6 +14,7 @@ setup(
     long_description=open('README.rst').read(),
     install_requires=[
         "google-api-python-client >= 1.2",
+        "oauth2client >= 4.0.0",
         "PyYAML >= 3.0",
     ],
 )
