@@ -12,10 +12,9 @@ from oauth2client.client import AccessTokenRefreshError
 from oauth2client.client import OAuth2WebServerFlow
 from oauth2client.client import OOB_CALLBACK_URN
 from oauth2client.file import Storage
-from oauth2client.file import CredentialsFileSymbolicLinkError
 from oauth2client.tools import ClientRedirectHandler
 from oauth2client.tools import ClientRedirectServer
-from oauth2client.util import scopes_to_string
+from oauth2client._helpers import scopes_to_string
 from .apiattr import ApiAttribute
 from .apiattr import ApiAttributeMixin
 from .settings import LoadSettingsFile
@@ -307,7 +306,7 @@ class GoogleAuth(ApiAttributeMixin, object):
     try:
       storage = Storage(credentials_file)
       self.credentials = storage.get()
-    except CredentialsFileSymbolicLinkError:
+    except IOError:
       raise InvalidCredentialsError('Credentials file cannot be symbolic link')
 
   def SaveCredentials(self, backend=None):
@@ -346,7 +345,7 @@ class GoogleAuth(ApiAttributeMixin, object):
       storage = Storage(credentials_file)
       storage.put(self.credentials)
       self.credentials.set_store(storage)
-    except CredentialsFileSymbolicLinkError:
+    except IOError:
       raise InvalidCredentialsError('Credentials file cannot be symbolic link')
 
   def LoadClientConfig(self, backend=None):
