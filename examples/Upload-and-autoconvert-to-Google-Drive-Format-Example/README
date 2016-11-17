@@ -1,0 +1,15 @@
+This script uploads a file to a folder on Google Drive. If the file can be
+converted into the Google format, such as a Google Sheet, it will be converted.
+
+To run the script you need to complete the following steps:
+1. Update settings.yaml with your:
+   - client ID,
+   - client secret, and
+   - credential storage path
+2. Update upload.py with the location you save your settings.yaml file. This
+   can be an absolute or relative path.
+
+
+This example is adapted from Evren Yurtesen (https://github.com/yurtesen/)
+with his consent.
+Originally posted here: https://github.com/prasmussen/gdrive/issues/154
