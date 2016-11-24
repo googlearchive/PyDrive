@@ -352,6 +352,23 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     return self._DeletePermission(permission_id)
 
   @LoadAuth
+  def Delete(self):
+    """Delete file from id using Files.delete().
+
+    :raises: ApiRequestError, FileNotUploadedError
+    """
+    file_id = self.metadata.get('id') or self.get('id')
+    if file_id:
+      try:
+        metadata = self.auth.service.files().delete(fileId=file_id).execute()
+      except errors.HttpError, error:
+        raise ApiRequestError(error)
+      else:
+        self.uploaded = False
+    else:
+      raise FileNotUploadedError()
+
+  @LoadAuth
   def _FilesInsert(self, param=None):
     """Upload a new file using Files.insert().
 
