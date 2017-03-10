@@ -114,6 +114,18 @@ class GoogleDriveFileTest(unittest.TestCase):
 
     self.DeleteUploadedFiles(drive, [file1['id']])
 
+  def test_Files_Insert_Empty_Content_File(self):
+    open('empty.txt', 'a').close()
+    drive = GoogleDrive(self.ga)
+    file1 = drive.CreateFile()
+    filename = 'empty'
+    file1['title'] = filename
+    file1.SetContentFile('empty.txt')
+    file1.Upload()
+
+    file1.Delete()
+    os.remove('empty.txt')
+
   def test_06_Files_Patch(self):
     drive = GoogleDrive(self.ga)
     file1 = drive.CreateFile()
