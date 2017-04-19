@@ -103,20 +103,22 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     elif metadata:
       self.update(metadata)
     self._ALL_FIELDS = 'alternateLink,appDataContents,' \
-                      'canComment,canReadRevisions,' \
+                 'canComment,canReadRevisions,capabilities' \
                  'copyable,createdDate,defaultOpenWithLink,description,' \
                  'downloadUrl,editable,embedLink,etag,explicitlyTrashed,' \
                  'exportLinks,fileExtension,fileSize,folderColorRgb,' \
-                 'fullFileExtension,headRevisionId,iconLink,id,' \
+                 'fullFileExtension,hasAugmentedPermissions,' \
+                 'headRevisionId,iconLink,id,' \
                  'imageMediaMetadata,indexableText,isAppAuthorized,kind,' \
                  'labels,lastModifyingUser,lastModifyingUserName,' \
                  'lastViewedByMeDate,markedViewedByMeDate,md5Checksum,' \
                  'mimeType,modifiedByMeDate,modifiedDate,openWithLinks,' \
                  'originalFilename,ownedByMe,ownerNames,owners,parents,' \
                  'permissions,properties,quotaBytesUsed,selfLink,shareable,' \
-                 'shared,sharedWithMeDate,sharingUser,spaces,thumbnail,' \
-                 'thumbnailLink,title,userPermission,version,' \
-                 'videoMediaMetadata,webContentLink,webViewLink,writersCanShare'
+                 'shared,sharedWithMeDate,sharingUser,spaces,teamDriveId,' \
+                 'thumbnail,thumbnailLink,title,trashedDate,trashingUser' \
+                 'userPermission,version,videoMediaMetadata,webContentLink,'\
+                 'webViewLink,writersCanShare'
     self.has_bom = True
 
   def __getitem__(self, key):
