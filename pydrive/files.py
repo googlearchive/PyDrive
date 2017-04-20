@@ -309,7 +309,7 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     """
     self._FilesDelete(param=param)
 
-  def InsertPermission(self, new_permission):
+  def InsertPermission(self, new_permission, **kwargs):
     """Insert a new permission. Re-fetches all permissions after call.
 
     :param new_permission: The new permission to insert, please see the
@@ -323,7 +323,7 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     file_id = self.metadata.get('id') or self['id']
     try:
       permission = self.auth.service.permissions().insert(
-        fileId=file_id, body=new_permission).execute(http=self.http)
+        fileId=file_id, body=new_permission, **kwargs).execute(http=self.http)
     except errors.HttpError as error:
       raise ApiRequestError(error)
     else:
