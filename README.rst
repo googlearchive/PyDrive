@@ -3,7 +3,7 @@ PyDrive
 
 *PyDrive* is a wrapper library of
 `google-api-python-client <https://code.google.com/p/google-api-python-client/>`_
-that simplifies many common Google Drive API tasks.
+that simplifies many common Google Drive API (v2) tasks.
 
 Project Info
 ------------
@@ -16,7 +16,7 @@ Features of PyDrive
 -------------------
 
 -  Simplifies OAuth2.0 into just few lines with flexible settings.
--  Wraps `Google Drive API <https://developers.google.com/drive/>`_ into
+-  Wraps `Google Drive API v2 <https://developers.google.com/drive/v2/web/about-sdk>`_ into
    classes of each resource to make your program more object-oriented.
 -  Helps common operations else than API calls, such as content fetching
    and pagination control.
