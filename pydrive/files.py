@@ -232,9 +232,11 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
 
     if file_id:
       try:
-        metadata = self.auth.service.files().get(fileId=file_id,
-                                                 fields=fields)\
-          .execute(http=self.http)
+        metadata = self.auth.service.files().get(
+          fileId=file_id,
+          fields=fields,
+          supportsTeamDrives=True
+        ).execute(http=self.http)
       except errors.HttpError as error:
         raise ApiRequestError(error)
       else:
