@@ -364,6 +364,10 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     if param is None:
       param = {}
     param['body'] = self.GetChanges()
+
+    # teamdrive support
+    param['supportsTeamDrives'] = True
+
     try:
       if self.dirty['content']:
         param['media_body'] = self._BuildMediaBody()
