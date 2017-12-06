@@ -115,6 +115,7 @@ ______________________
     oauth_scope:
       - https://www.googleapis.com/auth/drive.file
       - https://www.googleapis.com/auth/drive.install
+      - https://www.googleapis.com/auth/drive.metadata
 
 Building your own authentication flow
 -------------------------------------
