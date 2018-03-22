@@ -60,8 +60,14 @@ class GoogleDriveFileList(ApiResourceList):
 
     :returns: list -- list of pydrive.files.GoogleDriveFile.
     """
+    # Teamdrive support
+    self['corpus'] = 'DEFAULT'
+    self['supportsTeamDrives'] = True
+    self['includeTeamDriveItems'] = True
+
     self.metadata = self.auth.service.files().list(**dict(self)).execute(
       http=self.http)
+
     result = []
     for file_metadata in self.metadata['items']:
       tmp_file = GoogleDriveFile(
@@ -232,9 +238,12 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
 
     if file_id:
       try:
-        metadata = self.auth.service.files().get(fileId=file_id,
-                                                 fields=fields)\
-          .execute(http=self.http)
+        metadata = self.auth.service.files().get(
+          fileId=file_id,
+          fields=fields,
+          # Teamdrive support
+          supportsTeamDrives=True
+        ).execute(http=self.http)
       except errors.HttpError as error:
         raise ApiRequestError(error)
       else:
@@ -362,6 +371,10 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     if param is None:
       param = {}
     param['body'] = self.GetChanges()
+
+    # teamdrive support
+    param['supportsTeamDrives'] = True
+
     try:
       if self.dirty['content']:
         param['media_body'] = self._BuildMediaBody()
@@ -384,6 +397,10 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     if param is None:
       param = {}
     param['fileId'] = self.metadata.get('id') or self['id']
+
+    # Teamdrive support
+    param['supportsTeamDrives'] = True
+
     try:
       self.auth.service.files().untrash(**param).execute(
         http=self.http)
@@ -405,6 +422,10 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     if param is None:
       param = {}
     param['fileId'] = self.metadata.get('id') or self['id']
+
+    # Teamdrive support
+    param['supportsTeamDrives'] = True
+
     try:
       self.auth.service.files().trash(**param).execute(
         http=self.http)
@@ -427,6 +448,10 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     if param is None:
       param = {}
     param['fileId'] = self.metadata.get('id') or self['id']
+
+    # Teamdrive support
+    param['supportsTeamDrives'] = True
+
     try:
       self.auth.service.files().delete(**param).execute(http=self.http)
     except errors.HttpError as error:
@@ -447,6 +472,10 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
       param = {}
     param['body'] = self.GetChanges()
     param['fileId'] = self.metadata.get('id')
+
+    # Teamdrive support
+    param['supportsTeamDrives'] = True
+
     try:
       if self.dirty['content']:
         param['media_body'] = self._BuildMediaBody()
@@ -472,6 +501,10 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
       param = {}
     param['body'] = self.GetChanges()
     param['fileId'] = self.metadata.get('id')
+
+    # Teamdrive support
+    param['supportsTeamDrives'] = True
+
     try:
       metadata = self.auth.service.files().patch(**param).execute(
         http=self.http)
