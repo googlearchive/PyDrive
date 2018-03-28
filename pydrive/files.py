@@ -1,4 +1,5 @@
 import io
+import os
 import mimetypes
 
 from apiclient import errors
@@ -103,20 +104,22 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     elif metadata:
       self.update(metadata)
     self._ALL_FIELDS = 'alternateLink,appDataContents,' \
-                      'canComment,canReadRevisions,' \
+                 'canComment,canReadRevisions,capabilities' \
                  'copyable,createdDate,defaultOpenWithLink,description,' \
                  'downloadUrl,editable,embedLink,etag,explicitlyTrashed,' \
                  'exportLinks,fileExtension,fileSize,folderColorRgb,' \
-                 'fullFileExtension,headRevisionId,iconLink,id,' \
+                 'fullFileExtension,hasAugmentedPermissions,' \
+                 'headRevisionId,iconLink,id,' \
                  'imageMediaMetadata,indexableText,isAppAuthorized,kind,' \
                  'labels,lastModifyingUser,lastModifyingUserName,' \
                  'lastViewedByMeDate,markedViewedByMeDate,md5Checksum,' \
                  'mimeType,modifiedByMeDate,modifiedDate,openWithLinks,' \
                  'originalFilename,ownedByMe,ownerNames,owners,parents,' \
                  'permissions,properties,quotaBytesUsed,selfLink,shareable,' \
-                 'shared,sharedWithMeDate,sharingUser,spaces,thumbnail,' \
-                 'thumbnailLink,title,userPermission,version,' \
-                 'videoMediaMetadata,webContentLink,webViewLink,writersCanShare'
+                 'shared,sharedWithMeDate,sharingUser,spaces,teamDriveId,' \
+                 'thumbnail,thumbnailLink,title,trashedDate,trashingUser' \
+                 'userPermission,version,videoMediaMetadata,webContentLink,'\
+                 'webViewLink,writersCanShare'
     self.has_bom = True
 
   def __getitem__(self, key):
@@ -308,7 +311,7 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     """
     self._FilesDelete(param=param)
 
-  def InsertPermission(self, new_permission):
+  def InsertPermission(self, new_permission, **kwargs):
     """Insert a new permission. Re-fetches all permissions after call.
 
     :param new_permission: The new permission to insert, please see the
@@ -322,7 +325,7 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     file_id = self.metadata.get('id') or self['id']
     try:
       permission = self.auth.service.permissions().insert(
-        fileId=file_id, body=new_permission).execute(http=self.http)
+        fileId=file_id, body=new_permission, **kwargs).execute(http=self.http)
     except errors.HttpError as error:
       raise ApiRequestError(error)
     else:
@@ -489,7 +492,13 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     """
     if self.get('mimeType') is None:
       self['mimeType'] = 'application/octet-stream'
-    return MediaIoBaseUpload(self.content, self['mimeType'], resumable=True)
+
+    # Resumable downloads are used if the upload content is not empty.
+    self.content.seek(0, os.SEEK_END)
+    size = self.content.tell()
+    self.content.seek(0)
+
+    return MediaIoBaseUpload(self.content, self['mimeType'], resumable=size is not 0)
 
   @LoadAuth
   def _DownloadFromUrl(self, url):
