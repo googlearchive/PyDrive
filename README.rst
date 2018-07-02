@@ -9,8 +9,8 @@ Project Info
 ------------
 
 - Homepage: `https://pypi.python.org/pypi/PyDrive <https://pypi.python.org/pypi/PyDrive>`_
-- Documentation: `Official documentation on GitHub pages <https://googledrive.github.io/PyDrive/docs/build/html/index.html>`_
-- GitHub: `https://github.com/googledrive/PyDrive <https://github.com/googledrive/PyDrive>`_
+- Documentation: `Official documentation on GitHub pages <https://gsuitedevs.github.io/PyDrive/docs/build/html/index.html>`_
+- GitHub: `https://github.com/gsuitedevs/PyDrive <https://github.com/gsuitedevs/PyDrive>`_
 
 Features of PyDrive
 -------------------
@@ -34,7 +34,7 @@ To install the current development version from GitHub, use:
 
 ::
 
-    $  pip install git+https://github.com/googledrive/PyDrive.git#egg=PyDrive
+    $  pip install git+https://github.com/gsuitedevs/PyDrive.git#egg=PyDrive
 
 OAuth made easy
 ---------------

@@ -8,7 +8,7 @@ setup(
     maintainer='Robin Nabel',
     maintainer_email='rnabel@ucdavis.edu',
     packages=['pydrive', 'pydrive.test'],
-    url='https://github.com/googledrive/PyDrive',
+    url='https://github.com/gsuitedevs/PyDrive',
     license='LICENSE',
     description='Google Drive API made easy.',
     long_description=open('README.rst').read(),
