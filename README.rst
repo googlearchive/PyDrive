@@ -102,7 +102,7 @@ File listing pagination made easy
 
     # Paginate file lists by specifying number of max results
     for file_list in drive.ListFile({'maxResults': 10}):
-      print 'Received %s files from Files.list()' % len(file_list) # <= 10
+      print('Received %s files from Files.list()' % len(file_list)) # <= 10
       for file1 in file_list:
         print('title: %s, id: %s' % (file1['title'], file1['id']))
 
