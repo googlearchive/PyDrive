@@ -2,7 +2,7 @@ PyDrive
 -------
 
 *PyDrive* is a wrapper library of
-`google-api-python-client <https://code.google.com/p/google-api-python-client/>`_
+`google-api-python-client <https://github.com/google/google-api-python-client>`_
 that simplifies many common Google Drive API tasks.
 
 Project Info
