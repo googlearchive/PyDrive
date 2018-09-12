@@ -147,6 +147,10 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
       else:
         raise FileNotUploadedError()
 
+  def __lt__(self, other):
+    """ Allows sorted() function for GoogleDriveFile objects """
+    return self['title'] < other['title']
+
   def SetContentString(self, content, encoding='utf-8'):
     """Set content of this file to be a string.
 
