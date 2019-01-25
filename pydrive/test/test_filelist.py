@@ -21,7 +21,7 @@ class GoogleDriveFileListTest(unittest.TestCase):
     flist = drive.ListFile({'q': "title = '%s' and trashed = false"
                                  % self.title})
     files = flist.GetList()  # Auto iterate every file
-    for file1 in self.file_list:
+    for file1 in sorted(self.file_list):
       found = False
       for file2 in files:
         if file1['id'] == file2['id']:
