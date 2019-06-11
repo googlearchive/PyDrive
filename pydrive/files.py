@@ -162,7 +162,7 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     if self.get('mimeType') is None:
       self['mimeType'] = 'text/plain'
 
-  def SetContentFile(self, filename):
+  def SetContentFile(self, file = None, filename):
     """Set content of this file from a file.
 
     Opens the file specified by this method.
@@ -172,7 +172,11 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     :param filename: name of the file to be uploaded.
     :type filename: str.
     """
-    self.content = open(filename, 'rb')
+    if(file is not None):
+      self.content = file
+    else:
+      self.content = open(filename, 'rb')
+      
     if self.get('title') is None:
       self['title'] = filename
     if self.get('mimeType') is None:
