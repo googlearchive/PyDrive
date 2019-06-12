@@ -162,7 +162,7 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     if self.get('mimeType') is None:
       self['mimeType'] = 'text/plain'
 
-  def SetContentFile(self, file = None, filename):
+  def SetContentFile(self, filename,  file = None):
     """Set content of this file from a file.
 
     Opens the file specified by this method.
