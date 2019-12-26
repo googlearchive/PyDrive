@@ -1,8 +1,8 @@
 import io
 import mimetypes
 
-from apiclient import errors
-from apiclient.http import MediaIoBaseUpload
+from googleapiclient import errors
+from googleapiclient.http import MediaIoBaseUpload
 from functools import wraps
 
 from .apiattr import ApiAttribute
