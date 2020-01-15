@@ -3,7 +3,7 @@
   :alt: Travis
 
 PyDrive2
--------
+--------
 
 *PyDrive2* is a wrapper library of
 `google-api-python-client <https://github.com/google/google-api-python-client>`_
@@ -18,7 +18,7 @@ Project Info
 - GitHub: `https://github.com/iterative/PyDrive2 <https://github.com/iterative/PyDrive2>`_
 
 Features of PyDrive2
--------------------
+--------------------
 
 -  Simplifies OAuth2.0 into just few lines with flexible settings.
 -  Wraps `Google Drive API <https://developers.google.com/drive/>`_ into
