@@ -1,0 +1,89 @@
+cache:
+  directories:
+    - $HOME/.cache/pip
+    - $HOME/.pyenv
+dist: xenial
+env:
+  global:
+    - HOMEBREW_NO_AUTO_UPDATE=1
+    - PYENV_ROOT="$HOME/.pyenv"
+    - PATH="$PYENV_ROOT/bin:$PATH"
+    - PIP_CACHE_DIR="$HOME/.cache/pip"  # unify pip cache location for all platforms
+stages:
+  - check
+  - test
+  - build
+  - name: deploy
+    if: (branch = master OR tag is present) AND repo = iterative/pydrive2
+# Travis doesn't support testing python on Mac yet, so we need
+# to workaround it by installing it directly with brew.
+#
+# Note that we specify language as ruby-2.4.3 to help us satisfy
+# fpm dependencies, as travis runs el capitan with an old ruby
+# version, that causes fpm to crash.
+#
+# Each job will use the previous job's `stage` tag if not specified.
+jobs:
+  include:
+  # patch formatting checks
+#  - name: "Check patch formatting"
+#    stage: check
+#    os: linux
+#    language: python
+#    python: 3.7
+#    before_install:
+#    install:
+#    script: ./scripts/ci/check_patch.sh
+  # test jobs
+  - name: "3.7 on Windows"
+    stage: test
+    os: windows           # Windows 10.0.17134 N/A Build 17134
+    language: shell       # 'language: python' is an error on Travis CI Windows
+  - name: "3.5 on Linux"
+    language: python
+    python: 3.5
+  - name: "3.6 on Linux"
+    language: python
+    python: 3.6
+  - name: "3.7 on Linux"
+    language: python
+    python: 3.7
+  - name: "3.7 on Mac"
+    os: osx
+    osx_image: xcode11.3
+  # build jobs
+  - name: "Pypi pkgs"
+    language: python
+    python: 3.7
+    script: ./scripts/build_package.sh
+  # deploy jobs
+  - name: "Pypi pkgs"
+    if: tag is present
+    stage: deploy
+    language: python
+    python: 3.7
+    script: ./scripts/build_package.sh
+    deploy:
+    - provider: pypi
+      user:
+        secure: "Jngu0feLpeVq7yAFTKX5lY4CiJmAuI6ik8KqCMpKH8s0K1dLDWz6cVuSjfed3eXWmalZgVn3mrKv4HVN7OXjC4fB7y7Z5C8pKywWBFKJWRP8jE4baGinSPj95LtgPB0Ho8aTicTdMuGxFFLl9zJwY4Je7oUZUV7KKcn4TOhl2QNy9hjdnow+fwMr6aTWkilLYuv8kLDwyghEK2kaoKAVj6I78nJkUNR/MgkFwKuAx2sT7MnwZcxTsLvsJJBv+WHKQMEfST2LOTuOmYYHWb1i5zk+t2lIdNrYEq3jn9MtCapYx3MGJbWr21MeBi9tPDDkvGpa3wMOsLWmzW1heuK77d2jOeKD0sufKRDQKj9vc0jdH6tiP4GwsXocYhediftoEAMADA/YlgU5Pa1uTk+/81KJWfJwChjqFh5Lryxvzha0nGfoIodwj+yz5q9LquuHBpHlkb+9IDiEFsENWbmTGPijvmfPUpS8xqjOpxW4iYqMbE20mgQeKwaEQSxgauis584h2ORymBQ9HJnJ6eZiZDyWaueKY6iSBgaLHULCS93OjeeKb8LDD4mMBFSz55w/sMo0zcOyURcTQobYLwUc0v5H6JqYLoyePTgeCaV8pfasrj3Y6NBfutXDiAZt3OULR4dY71pb8DIPwUrpmaMAbShutpMdIvvsLQQaFtCvM/Y="
+      password:
+        secure: "e8H7reWnAkEjtZrAaGER0Ngkx3PZWHO21X3n8C4PDBsnZKvTcVyabM0At48/cabpI9WnEIWGQ17UNwX26bWaYexHw2CZhndF9IpPROJesGKnLYkb8MNzcbsCbrznS1uQ2+GCgjb4xRWk55SbxXSPes1YidfMxOVDZNMpbf+50jLotMTwLIyK1aP3z2N6PzP4lIA6xfGwjph2i2k3QWCpPwXfx5anpYD7vkyKgbeElCNAk2CMxqaTVYeBQh2a00ihiWyJSpuCmI+sIZnNPsPcY7KNUcWRJbWAEX5HXTpkpzkkWGDjgx35BoxA2vZa3clCCI85blvzM6tL1rBIxNB+wz7CjYrOjJ5pXDzFaV/nGmFtCk9mlnrsn41bAVcH9QWjiqLfcsRrGRpjNEt1bOlHcGOAheESrpWIfD+pYj0d50eA4K9wiVbpayIK2OTTasYdY16y2QWN0Ac5CRNclUE7StT2+wyex+aRFn/VK8GpZc6DPmc6cY3MdItt/uM5cbt27Uk0s/LD245D0gYhkaMwz4s9uQYwZh/NfC7rCJRTdRKluCnbZlROQNh+BQrgbx9+aJAqjokE/NsE10xnmuBPCTz6pVBOquf6X5+WSn7hLJH1eagSvbl2QCxWnDI4mXQIdxHNcvHXhUjwsTBuDNf+CSX05zYmBdBJjaPItIOiQhU="
+      skip_existing: true
+      file_glob: true
+      file:
+        - dist/pydrive2*.whl
+        - dist/pydrive2*.tar.gz
+      skip_cleanup: true
+      on:
+        tags: true
+        repo: iterative/pydrive2
+
+before_install:
+  - bash ./scripts/ci/before_install.sh
+  - source env.sh
+  - bash ./scripts/ci/check_python.sh
+install:
+  - bash ./scripts/ci/install.sh
+script:
+  - bash ./scripts/ci/script.sh
