@@ -2,7 +2,7 @@ import unittest
 import os
 import time
 
-from pydrive.auth import GoogleAuth
+from pydrive2.auth import GoogleAuth
 
 class GoogleAuthTest(unittest.TestCase):
   """Tests basic OAuth2 operations of auth.GoogleAuth."""

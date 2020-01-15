@@ -1,16 +1,16 @@
 from setuptools import setup
 
 setup(
-    name='PyDrive',
-    version='1.3.1',
+    name='PyDrive2',
+    version='1.4.0',
     author='JunYoung Gwak',
     author_email='jgwak@dreamylab.com',
-    maintainer='Robin Nabel',
-    maintainer_email='rnabel@ucdavis.edu',
-    packages=['pydrive', 'pydrive.test'],
-    url='https://github.com/gsuitedevs/PyDrive',
-    license='LICENSE',
-    description='Google Drive API made easy.',
+    maintainer='DVC team',
+    maintainer_email='support@dvc.org',
+    packages=['pydrive2', 'pydrive2.test'],
+    url='https://github.com/iterative/PyDrive2',
+    license='Apache License 2.0',
+    description='Google Drive API made easy. Maintained fork of PyDrive.',
     long_description=open('README.rst').read(),
     install_requires=[
         "google-api-python-client >= 1.2",

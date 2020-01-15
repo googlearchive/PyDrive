@@ -1,18 +1,19 @@
-PyDrive
+PyDrive2
 -------
 
-*PyDrive* is a wrapper library of
+*PyDrive2* is a wrapper library of
 `google-api-python-client <https://github.com/google/google-api-python-client>`_
-that simplifies many common Google Drive API tasks.
+that simplifies many common Google Drive API tasks. It is an actively
+maintained fork of `https://pypi.python.org/pypi/PyDrive <https://pypi.python.org/pypi/PyDrive>`_.
 
 Project Info
 ------------
 
-- Homepage: `https://pypi.python.org/pypi/PyDrive <https://pypi.python.org/pypi/PyDrive>`_
+- Homepage: `https://pypi.python.org/pypi/PyDrive2 <https://pypi.python.org/pypi/PyDrive2>`_
 - Documentation: `Official documentation on GitHub pages <https://gsuitedevs.github.io/PyDrive/docs/build/html/index.html>`_
-- GitHub: `https://github.com/gsuitedevs/PyDrive <https://github.com/gsuitedevs/PyDrive>`_
+- GitHub: `https://github.com/iterative/PyDrive2 <https://github.com/iterative/PyDrive2>`_
 
-Features of PyDrive
+Features of PyDrive2
 -------------------
 
 -  Simplifies OAuth2.0 into just few lines with flexible settings.
@@ -24,17 +25,17 @@ Features of PyDrive
 How to install
 --------------
 
-You can install PyDrive with regular ``pip`` command.
+You can install PyDrive2 with regular ``pip`` command.
 
 ::
 
-    $ pip install PyDrive
+    $ pip install PyDrive2
 
 To install the current development version from GitHub, use:
 
 ::
 
-    $  pip install git+https://github.com/gsuitedevs/PyDrive.git#egg=PyDrive
+    $  pip install git+https://github.com/iterative/PyDrive2.git#egg=PyDrive2
 
 OAuth made easy
 ---------------
@@ -46,8 +47,8 @@ file *settings.yaml*.
 .. code:: python
 
 
-    from pydrive.auth import GoogleAuth
-    from pydrive.drive import GoogleDrive
+    from pydrive2.auth import GoogleAuth
+    from pydrive2.drive import GoogleDrive
 
     gauth = GoogleAuth()
     gauth.LocalWebserverAuth()
@@ -57,7 +58,7 @@ file *settings.yaml*.
 File management made easy
 -------------------------
 
-Upload/update the file with one method. PyDrive will do it in the most
+Upload/update the file with one method. PyDrive2 will do it in the most
 efficient way.
 
 .. code:: python
@@ -91,7 +92,7 @@ efficient way.
 File listing pagination made easy
 ---------------------------------
 
-*PyDrive* handles file listing pagination for you.
+*PyDrive2* handles file listing pagination for you.
 
 .. code:: python
 

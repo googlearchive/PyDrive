@@ -11,7 +11,7 @@ class GoogleDrive(ApiAttributeMixin, object):
     """Create an instance of GoogleDrive.
 
     :param auth: authorized GoogleAuth instance.
-    :type auth: pydrive.auth.GoogleAuth.
+    :type auth: pydrive2.auth.GoogleAuth.
     """
     ApiAttributeMixin.__init__(self)
     self.auth = auth
@@ -23,7 +23,7 @@ class GoogleDrive(ApiAttributeMixin, object):
 
     :param metadata: file resource to initialize GoogleDriveFile with.
     :type metadata: dict.
-    :returns: pydrive.files.GoogleDriveFile -- initialized with auth of this instance.
+    :returns: pydrive2.files.GoogleDriveFile -- initialized with auth of this instance.
     """
     return GoogleDriveFile(auth=self.auth, metadata=metadata)
 
@@ -34,7 +34,7 @@ class GoogleDrive(ApiAttributeMixin, object):
 
     :param param: parameter to be sent to Files.List().
     :type param: dict.
-    :returns: pydrive.files.GoogleDriveFileList -- initialized with auth of this instance.
+    :returns: pydrive2.files.GoogleDriveFileList -- initialized with auth of this instance.
     """
     return GoogleDriveFileList(auth=self.auth, param=param)
 

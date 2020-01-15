@@ -4,5 +4,5 @@ include LICENSE
 include MANIFEST.in
 include README.rst
 recursive-include docs *
-recursive-include pydrive/test *
+recursive-include pydrive2/test *
 recursive-exclude * *.py[co]

@@ -8,9 +8,9 @@ from six.moves import range
 import timeout_decorator
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-from pydrive.auth import GoogleAuth
-from pydrive.drive import GoogleDrive
-from pydrive.files import ApiRequestError, GoogleDriveFile
+from pydrive2.auth import GoogleAuth
+from pydrive2.drive import GoogleDrive
+from pydrive2.files import ApiRequestError, GoogleDriveFile
 
 import test_util
 

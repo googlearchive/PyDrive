@@ -58,7 +58,7 @@ class GoogleDriveFileList(ApiResourceList):
   def _GetList(self):
     """Overwritten method which actually makes API call to list files.
 
-    :returns: list -- list of pydrive.files.GoogleDriveFile.
+    :returns: list -- list of pydrive2.files.GoogleDriveFile.
     """
     # Teamdrive support
     self['corpus'] = 'DEFAULT'
@@ -92,7 +92,7 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     """Create an instance of GoogleDriveFile.
 
     :param auth: authorized GoogleAuth instance.
-    :type auth: pydrive.auth.GoogleAuth
+    :type auth: pydrive2.auth.GoogleAuth
     :param metadata: file resource to initialize GoogleDriveFile with.
     :type metadata: dict.
     :param uploaded: True if this file is confirmed to be uploaded.
