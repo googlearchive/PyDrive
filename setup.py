@@ -18,6 +18,6 @@ setup(
         "PyYAML >= 3.0",
     ],
     extras_require={
-        "tests": ["timeout-decorator"],
+        "tests": ["timeout-decorator", "test-util"],
     },
 )
