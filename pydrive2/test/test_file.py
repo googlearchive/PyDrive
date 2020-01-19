@@ -12,7 +12,7 @@ from pydrive2.auth import GoogleAuth
 from pydrive2.drive import GoogleDrive
 from pydrive2.files import ApiRequestError, GoogleDriveFile
 
-import .test_util
+from . import test_util
 
 
 class GoogleDriveFileTest(unittest.TestCase):
