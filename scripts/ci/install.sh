@@ -9,7 +9,7 @@ scriptdir="$(dirname $0)"
 # networking issues. Thus, let's retry a few times to see if it will eventually
 # work or not.
 $scriptdir/retry.sh pip install --upgrade pip setuptools wheel
-$scriptdir/retry.sh pip install .
+$scriptdir/retry.sh pip install .[tests]
 
 git config --global user.email "dvctester@example.com"
 git config --global user.name "DVC Tester"
