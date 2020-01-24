@@ -65,8 +65,11 @@ class GoogleDriveFileList(ApiResourceList):
     self['supportsTeamDrives'] = True
     self['includeTeamDriveItems'] = True
 
-    self.metadata = self.auth.service.files().list(**dict(self)).execute(
-      http=self.http)
+    try:
+      self.metadata = self.auth.service.files().list(**dict(self)).execute(
+        http=self.http)
+    except errors.HttpError as error:
+      raise ApiRequestError(error)
 
     result = []
     for file_metadata in self.metadata['items']:
