@@ -61,9 +61,8 @@ class GoogleDriveFileList(ApiResourceList):
     :returns: list -- list of pydrive2.files.GoogleDriveFile.
     """
     # Teamdrive support
-    self['corpus'] = 'DEFAULT'
-    self['supportsTeamDrives'] = True
-    self['includeTeamDriveItems'] = True
+    self['supportsAllDrives'] = True
+    self['includeItemsFromAllDrives'] = True
 
     try:
       self.metadata = self.auth.service.files().list(**dict(self)).execute(
@@ -245,7 +244,7 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
           fileId=file_id,
           fields=fields,
           # Teamdrive support
-          supportsTeamDrives=True
+          supportsAllDrives=True
         ).execute(http=self.http)
       except errors.HttpError as error:
         raise ApiRequestError(error)
@@ -376,7 +375,7 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     param['body'] = self.GetChanges()
 
     # teamdrive support
-    param['supportsTeamDrives'] = True
+    param['supportsAllDrives'] = True
 
     try:
       if self.dirty['content']:
@@ -402,7 +401,7 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     param['fileId'] = self.metadata.get('id') or self['id']
 
     # Teamdrive support
-    param['supportsTeamDrives'] = True
+    param['supportsAllDrives'] = True
 
     try:
       self.auth.service.files().untrash(**param).execute(
@@ -427,7 +426,7 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     param['fileId'] = self.metadata.get('id') or self['id']
 
     # Teamdrive support
-    param['supportsTeamDrives'] = True
+    param['supportsAllDrives'] = True
 
     try:
       self.auth.service.files().trash(**param).execute(
@@ -453,7 +452,7 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     param['fileId'] = self.metadata.get('id') or self['id']
 
     # Teamdrive support
-    param['supportsTeamDrives'] = True
+    param['supportsAllDrives'] = True
 
     try:
       self.auth.service.files().delete(**param).execute(http=self.http)
@@ -477,7 +476,7 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     param['fileId'] = self.metadata.get('id')
 
     # Teamdrive support
-    param['supportsTeamDrives'] = True
+    param['supportsAllDrives'] = True
 
     try:
       if self.dirty['content']:
@@ -506,7 +505,7 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     param['fileId'] = self.metadata.get('id')
 
     # Teamdrive support
-    param['supportsTeamDrives'] = True
+    param['supportsAllDrives'] = True
 
     try:
       metadata = self.auth.service.files().patch(**param).execute(
