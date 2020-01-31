@@ -17,7 +17,7 @@ setup(
         "oauth2client >= 4.0.0",
         "PyYAML >= 3.0",
         "httplib2 <= 0.15.0",
-        "pyOpenSSL => 19.1.0"
+        "pyOpenSSL >= 19.1.0"
     ],
     extras_require={
         "tests": ["timeout-decorator"],
