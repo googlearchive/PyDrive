@@ -13,8 +13,6 @@ stages:
 #  - check
 #  - test
   - build
-  - name: deploy
-    if: (branch = master OR tag is present) AND repo = iterative/PyDrive2
 # Travis doesn't support testing python on Mac yet, so we need
 # to workaround it by installing it directly with brew.
 #
@@ -53,14 +51,8 @@ jobs:
 #    osx_image: xcode11.3
   # build jobs
   - name: "Pypi pkgs"
-    stage: build
-    language: python
-    python: 3.7
-    script: ./scripts/build_package.sh
-  # deploy jobs
-  - name: "Pypi pkgs"
     if: tag is present
-    stage: deploy
+    stage: build
     language: python
     python: 3.7
     script: ./scripts/build_package.sh
