@@ -14,7 +14,7 @@ stages:
 #  - test
   - build
   - name: deploy
-    if: (branch = master OR tag is present) AND repo = iterative/pydrive2
+    if: (branch = master OR tag is present) AND repo = iterative/PyDrive2
 # Travis doesn't support testing python on Mac yet, so we need
 # to workaround it by installing it directly with brew.
 #
@@ -78,7 +78,7 @@ jobs:
       skip_cleanup: true
       on:
         tags: true
-        repo: iterative/pydrive2
+        repo: iterative/PyDrive2
 
 before_install:
   - bash ./scripts/ci/before_install.sh
