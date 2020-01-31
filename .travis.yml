@@ -24,7 +24,7 @@ stages:
 #
 # Each job will use the previous job's `stage` tag if not specified.
 jobs:
-  include:
+  allow_failures:
   # patch formatting checks
 #  - name: "Check patch formatting"
 #    stage: check
@@ -51,6 +51,7 @@ jobs:
   - name: "3.7 on Mac"
     os: osx
     osx_image: xcode11.3
+  include:
   # build jobs
   - name: "Pypi pkgs"
     language: python
