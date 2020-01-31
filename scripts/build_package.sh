@@ -3,7 +3,7 @@
 set -e
 set -x
 
-if [ ! -d "pydrive" ]; then
+if [ ! -d "pydrive2" ]; then
     echo "Please run this script from repository root"
     exit 1
 fi
