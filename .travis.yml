@@ -55,7 +55,7 @@ jobs:
     stage: build
     language: python
     python: 3.7
-    script: ./scripts/build_package.sh
+    script: ./scripts/pypi_upload.sh
     deploy:
     - provider: pypi
       user:
