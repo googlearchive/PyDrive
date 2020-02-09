@@ -537,7 +537,7 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     """
     resp, content = self.http.request(url)
     if resp.status != 200:
-      raise ApiRequestError('Cannot download file: %s' % resp)
+      raise ApiRequestError(errors.HttpError(resp, content, uri=url))
     return content
 
   @LoadAuth
