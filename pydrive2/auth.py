@@ -3,6 +3,7 @@ import webbrowser
 import httplib2
 import oauth2client.clientsecrets as clientsecrets
 from six.moves import input
+import threading
 
 from apiclient.discovery import build
 from functools import wraps
@@ -69,8 +70,12 @@ def LoadAuth(decoratee):
       self.http = kwargs["param"]["http"]
       del kwargs["param"]["http"]
 
-    else:  # If HTTP object not specified, each call creates new HTTP object.
-      self.http = self.auth.Get_Http_Object()
+    else:
+      # If HTTP object not specified, create or resuse an HTTP
+      # object from the thread local storage.
+      if not getattr(self.auth.thread_local, "http", None):
+        self.auth.thread_local.http = self.auth.Get_Http_Object()
+      self.http = self.auth.thread_local.http
 
     return decoratee(self, *args, **kwargs)
   return _decorated
@@ -164,6 +169,7 @@ class GoogleAuth(ApiAttributeMixin, object):
     """
     self.http_timeout=http_timeout
     ApiAttributeMixin.__init__(self)
+    self.thread_local = threading.local()
     self.client_config = {}
     try:
       self.settings = LoadSettingsFile(settings_file)
