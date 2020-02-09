@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='PyDrive2',
-    version='1.4.4',
+    version='1.4.5',
     author='JunYoung Gwak',
     author_email='jgwak@dreamylab.com',
     maintainer='DVC team',
