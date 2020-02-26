@@ -3,4 +3,4 @@
 set -x
 set -e
 
-py.test -v -s
+py.test -v -s -m automated

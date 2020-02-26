@@ -1,21 +1,24 @@
 import unittest
+import pytest
 
 from pydrive2.auth import GoogleAuth
 from pydrive2.drive import GoogleDrive
+from pydrive2.test.test_util import pydrive_retry, setup_credentials
 
+
+@pytest.mark.automated
 class ApiAttributeTest(unittest.TestCase):
     """Test ApiAttr functions.
     """
-    ga = GoogleAuth('settings/test1.yaml')
-    ga.LocalWebserverAuth()
-    first_file = 'a.png'
-    second_file = 'b.png'
+
+    @classmethod
+    def setup_class(cls):
+        setup_credentials()
 
     def test_UpdateMetadataNotInfinitelyNesting(self):
         # Verify 'metadata' field present.
         self.assertTrue(self.file1.metadata is not None)
-        self.file1.UpdateMetadata()
-        self.file1.UpdateMetadata()
+        pydrive_retry(lambda: self.file1.UpdateMetadata())
 
         # Verify 'metadata' field still present.
         self.assertTrue(self.file1.metadata is not None)
@@ -23,12 +26,14 @@ class ApiAttributeTest(unittest.TestCase):
         self.assertTrue('metadata' not in self.file1.metadata)
 
     def setUp(self):
-        self.drive = GoogleDrive(self.ga)
+        ga = GoogleAuth('pydrive2/test/settings/test1.yaml')
+        ga.ServiceAuth()
+        self.drive = GoogleDrive(ga)
         self.file1 = self.drive.CreateFile()
-        self.file1.Upload()
+        pydrive_retry(lambda: self.file1.Upload())
 
     def tearDown(self):
-        self.file1.Delete()
+        pydrive_retry(lambda: self.file1.Delete())
 
 if __name__ == '__main__':
     unittest.main()
