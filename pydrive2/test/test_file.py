@@ -35,7 +35,7 @@ class GoogleDriveFileTest(unittest.TestCase):
     create_file(cls.first_file, cls.first_file)
     create_file(cls.second_file, cls.second_file)
 
-    cls.ga = GoogleAuth('pydrive2/test/settings/test1.yaml')
+    cls.ga = GoogleAuth('pydrive2/test/settings/default.yaml')
     cls.ga.ServiceAuth()
 
 

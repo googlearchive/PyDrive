@@ -10,7 +10,7 @@ from pydrive2.files import ApiRequestError
 newline_pattern = re.compile(r'[\r\n]')
 
 GDRIVE_USER_CREDENTIALS_DATA = "GDRIVE_USER_CREDENTIALS_DATA"
-DEFAULT_USER_CREDENTIALS_FILE = "credentials/1.dat"
+DEFAULT_USER_CREDENTIALS_FILE = "credentials/default.dat"
 
 
 def setup_credentials(credentials_path=DEFAULT_USER_CREDENTIALS_FILE):

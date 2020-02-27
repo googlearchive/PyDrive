@@ -13,7 +13,7 @@ class GoogleAuthTest(unittest.TestCase):
     # Delete old credentials file
     self.DeleteOldCredentialsFile('credentials/1.dat')
     # Test if authentication works with config read from file
-    ga = GoogleAuth('pydrive2/test/settings/test1.yaml')
+    ga = GoogleAuth('pydrive2/test/settings/test_oauth_test_01.yaml')
     ga.LocalWebserverAuth()
     self.assertEqual(ga.access_token_expired, False)
     # Test if correct credentials file is created
@@ -24,7 +24,7 @@ class GoogleAuthTest(unittest.TestCase):
     # Delete old credentials file
     self.DeleteOldCredentialsFile('credentials/2.dat')
     # Test if authentication works with config read from settings
-    ga = GoogleAuth('pydrive2/test/settings/test2.yaml')
+    ga = GoogleAuth('pydrive2/test/settings/test_oauth_test_02.yaml')
     ga.LocalWebserverAuth()
     self.assertEqual(ga.access_token_expired, False)
     # Test if correct credentials file is created
@@ -35,7 +35,7 @@ class GoogleAuthTest(unittest.TestCase):
     # Delete old credentials file
     self.DeleteOldCredentialsFile('credentials/4.dat')
     # Provide wrong credentials file
-    ga = GoogleAuth('pydrive2/test/settings/test3.yaml')
+    ga = GoogleAuth('pydrive2/test/settings/test_oauth_test_03.yaml')
     ga.LocalWebserverAuth()
     self.assertEqual(ga.access_token_expired, False)
     # Test if correct credentials file is created
@@ -46,7 +46,7 @@ class GoogleAuthTest(unittest.TestCase):
     # Delete old credentials file
     self.DeleteOldCredentialsFile('credentials/1.dat')
     # Test if authentication works with config read from file
-    ga = GoogleAuth('pydrive2/test/settings/test4.yaml')
+    ga = GoogleAuth('pydrive2/test/settings/test_oauth_test_04.yaml')
     ga.CommandLineAuth()
     self.assertEqual(ga.access_token_expired, False)
     # Test if correct credentials file is created
@@ -55,14 +55,14 @@ class GoogleAuthTest(unittest.TestCase):
 
   def test_05_ConfigFromSettingsWithoutOauthScope(self):
     # Test if authentication works without oauth_scope
-    ga = GoogleAuth('pydrive2/test/settings/test5.yaml')
+    ga = GoogleAuth('pydrive2/test/settings/test_oauth_test_05.yaml')
     ga.LocalWebserverAuth()
     self.assertEqual(ga.access_token_expired, False)
     time.sleep(1)
 
   def test_06_ServiceAuthFromSavedCredentialsFile(self):
     setup_credentials("credentials/6.dat")
-    ga = GoogleAuth('pydrive2/test/settings/test6.yaml')
+    ga = GoogleAuth('pydrive2/test/settings/test_oauth_test_06.yaml')
     ga.ServiceAuth()
     self.assertEqual(ga.access_token_expired, False)
     time.sleep(1)
@@ -74,7 +74,7 @@ class GoogleAuthTest(unittest.TestCase):
       pass
 
   def CheckCredentialsFile(self, credentials, no_file=False):
-    ga = GoogleAuth('pydrive2/test/settings/default.yaml')
+    ga = GoogleAuth('pydrive2/test/settings/test_oauth_default.yaml')
     ga.LoadCredentialsFile(credentials)
     self.assertEqual(ga.access_token_expired, no_file)
 

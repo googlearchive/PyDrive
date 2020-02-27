@@ -20,7 +20,7 @@ class GoogleDriveFileListTest(unittest.TestCase):
   def setup_class(cls):
     setup_credentials()
 
-    cls.ga = GoogleAuth('pydrive2/test/settings/test1.yaml')
+    cls.ga = GoogleAuth('pydrive2/test/settings/default.yaml')
     cls.ga.ServiceAuth()
     cls.drive = GoogleDrive(cls.ga)
 

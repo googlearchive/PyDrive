@@ -26,7 +26,7 @@ class ApiAttributeTest(unittest.TestCase):
         self.assertTrue('metadata' not in self.file1.metadata)
 
     def setUp(self):
-        ga = GoogleAuth('pydrive2/test/settings/test1.yaml')
+        ga = GoogleAuth('pydrive2/test/settings/default.yaml')
         ga.ServiceAuth()
         self.drive = GoogleDrive(ga)
         self.file1 = self.drive.CreateFile()
