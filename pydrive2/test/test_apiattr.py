@@ -18,7 +18,7 @@ class ApiAttributeTest(unittest.TestCase):
     def test_UpdateMetadataNotInfinitelyNesting(self):
         # Verify 'metadata' field present.
         self.assertTrue(self.file1.metadata is not None)
-        pydrive_retry(lambda: self.file1.UpdateMetadata())
+        pydrive_retry(self.file1.UpdateMetadata)
 
         # Verify 'metadata' field still present.
         self.assertTrue(self.file1.metadata is not None)
@@ -30,10 +30,10 @@ class ApiAttributeTest(unittest.TestCase):
         ga.ServiceAuth()
         self.drive = GoogleDrive(ga)
         self.file1 = self.drive.CreateFile()
-        pydrive_retry(lambda: self.file1.Upload())
+        pydrive_retry(self.file1.Upload)
 
     def tearDown(self):
-        pydrive_retry(lambda: self.file1.Delete())
+        pydrive_retry(self.file1.Delete)
 
 if __name__ == '__main__':
     unittest.main()

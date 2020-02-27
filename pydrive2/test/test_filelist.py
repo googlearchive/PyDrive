@@ -57,7 +57,7 @@ class GoogleDriveFileListTest(unittest.TestCase):
     files = []
     while True:
       try:
-        x = pydrive_retry(lambda: flist.GetList())
+        x = pydrive_retry(flist.GetList)
         self.assertTrue(len(x) <= 2)
         files.extend(x)
       except StopIteration:
@@ -75,7 +75,7 @@ class GoogleDriveFileListTest(unittest.TestCase):
     folder1 = drive.CreateFile(
       {'mimeType': 'application/vnd.google-apps.folder',
        'title': self.title})
-    pydrive_retry(lambda: folder1.Upload())
+    pydrive_retry(folder1.Upload)
     self.file_list.append(folder1)
     query = "title = '{}' and trashed = false".format(self.title)
     count = 0
@@ -93,7 +93,7 @@ class GoogleDriveFileListTest(unittest.TestCase):
     for x in range(0, 10):
       file1 = self.drive.CreateFile()
       file1['title'] = title
-      pydrive_retry(lambda: file1.Upload())
+      pydrive_retry(file1.Upload)
       file_list.append(file1)
 
     self.title = title
@@ -102,7 +102,7 @@ class GoogleDriveFileListTest(unittest.TestCase):
   def tearDown(self):
     # Deleting uploaded files.
     for file1 in self.file_list:
-      pydrive_retry(lambda: file1.Delete())
+      pydrive_retry(file1.Delete)
 
   def assertFileInFileList(self, file_object):
     found = False

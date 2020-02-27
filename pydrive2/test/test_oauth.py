@@ -1,6 +1,7 @@
 import unittest
 import os
 import time
+import pytest
 
 from pydrive2.auth import GoogleAuth
 from pydrive2.test.test_util import setup_credentials
@@ -60,6 +61,7 @@ class GoogleAuthTest(unittest.TestCase):
     self.assertEqual(ga.access_token_expired, False)
     time.sleep(1)
 
+  @pytest.mark.automated
   def test_06_ServiceAuthFromSavedCredentialsFile(self):
     setup_credentials("credentials/6.dat")
     ga = GoogleAuth('pydrive2/test/settings/test_oauth_test_06.yaml')

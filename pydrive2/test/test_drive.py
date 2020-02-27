@@ -23,7 +23,7 @@ class GoogleDriveTest(unittest.TestCase):
     def test_01_About_Request(self):
         drive = GoogleDrive(self.ga)
 
-        about_object = pydrive_retry(lambda: drive.GetAbout())
+        about_object = pydrive_retry(drive.GetAbout)
         self.assertTrue(about_object is not None, "About object not loading.")
 
 
