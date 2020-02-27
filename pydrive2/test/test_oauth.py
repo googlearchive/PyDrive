@@ -4,7 +4,7 @@ import time
 import pytest
 
 from pydrive2.auth import GoogleAuth
-from pydrive2.test.test_util import setup_credentials
+from pydrive2.test.test_util import setup_credentials, delete_file
 
 
 class GoogleAuthTest(unittest.TestCase):
@@ -13,7 +13,7 @@ class GoogleAuthTest(unittest.TestCase):
   @pytest.mark.manual
   def test_01_LocalWebserverAuthWithClientConfigFromFile(self):
     # Delete old credentials file
-    self.DeleteOldCredentialsFile('credentials/1.dat')
+    delete_file('credentials/1.dat')
     # Test if authentication works with config read from file
     ga = GoogleAuth('pydrive2/test/settings/test_oauth_test_01.yaml')
     ga.LocalWebserverAuth()
@@ -25,7 +25,7 @@ class GoogleAuthTest(unittest.TestCase):
   @pytest.mark.manual
   def test_02_LocalWebserverAuthWithClientConfigFromSettings(self):
     # Delete old credentials file
-    self.DeleteOldCredentialsFile('credentials/2.dat')
+    delete_file('credentials/2.dat')
     # Test if authentication works with config read from settings
     ga = GoogleAuth('pydrive2/test/settings/test_oauth_test_02.yaml')
     ga.LocalWebserverAuth()
@@ -37,7 +37,7 @@ class GoogleAuthTest(unittest.TestCase):
   @pytest.mark.manual
   def test_03_LocalWebServerAuthWithNoCredentialsSaving(self):
     # Delete old credentials file
-    self.DeleteOldCredentialsFile('credentials/4.dat')
+    delete_file('credentials/4.dat')
     # Provide wrong credentials file
     ga = GoogleAuth('pydrive2/test/settings/test_oauth_test_03.yaml')
     ga.LocalWebserverAuth()
@@ -49,7 +49,7 @@ class GoogleAuthTest(unittest.TestCase):
   @pytest.mark.manual
   def test_04_CommandLineAuthWithClientConfigFromFile(self):
     # Delete old credentials file
-    self.DeleteOldCredentialsFile('credentials/1.dat')
+    delete_file('credentials/1.dat')
     # Test if authentication works with config read from file
     ga = GoogleAuth('pydrive2/test/settings/test_oauth_test_04.yaml')
     ga.CommandLineAuth()
@@ -72,10 +72,6 @@ class GoogleAuthTest(unittest.TestCase):
     ga.ServiceAuth()
     self.assertEqual(ga.access_token_expired, False)
     time.sleep(1)
-
-  def DeleteOldCredentialsFile(self, credentials):
-    if os._exists(credentials):
-      os.remove(credentials)
 
   def CheckCredentialsFile(self, credentials, no_file=False):
     ga = GoogleAuth('pydrive2/test/settings/test_oauth_default.yaml')

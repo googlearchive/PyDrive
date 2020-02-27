@@ -68,4 +68,9 @@ def StripNewlines(string):
 
 def create_file(path, content):
     with open(path, "w") as f:
-      f.write(content)
+        f.write(content)
+
+
+def delete_file(path):
+    if os.path.exists(path):
+        os.remove(path)

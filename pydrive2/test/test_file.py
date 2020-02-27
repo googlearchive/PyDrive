@@ -14,7 +14,7 @@ from pydrive2.auth import GoogleAuth
 from pydrive2.drive import GoogleDrive
 from pydrive2.files import ApiRequestError, GoogleDriveFile
 from pydrive2.test import test_util
-from pydrive2.test.test_util import pydrive_retry, setup_credentials, create_file
+from pydrive2.test.test_util import pydrive_retry, setup_credentials, create_file, delete_file
 
 
 class GoogleDriveFileTest(unittest.TestCase):
@@ -40,8 +40,8 @@ class GoogleDriveFileTest(unittest.TestCase):
 
   @classmethod
   def tearDownClass(cls):
-    os.remove(cls.first_file)
-    os.remove(cls.second_file)
+    delete_file(cls.first_file)
+    delete_file(cls.second_file)
 
 
   def test_01_Files_Insert(self):
@@ -118,8 +118,8 @@ class GoogleDriveFileTest(unittest.TestCase):
 
 
   def test_05_Files_Insert_Content_File(self):
-    os.remove(self.first_file+'1')
-    os.remove(self.first_file+'2')
+    delete_file(self.first_file+'1')
+    delete_file(self.first_file+'2')
     drive = GoogleDrive(self.ga)
     file1 = drive.CreateFile()
     filename = 'filecontent'
@@ -137,6 +137,8 @@ class GoogleDriveFileTest(unittest.TestCase):
     self.assertEqual(filecmp.cmp(self.first_file, self.first_file+'2'), True)
 
     self.DeleteUploadedFiles(drive, [file1['id']])
+    delete_file(self.first_file + '1')
+    delete_file(self.first_file + '2')
 
 
   def test_06_Files_Patch(self):
@@ -208,8 +210,8 @@ class GoogleDriveFileTest(unittest.TestCase):
 
 
   def test_09_Files_Update_File(self):
-    os.remove(self.first_file+'1')
-    os.remove(self.second_file+'1')
+    delete_file(self.first_file+'1')
+    delete_file(self.second_file+'1')
     drive = GoogleDrive(self.ga)
     file1 = drive.CreateFile()
     filename = 'preupdatetestfile'
@@ -232,6 +234,9 @@ class GoogleDriveFileTest(unittest.TestCase):
     self.assertEqual(filecmp.cmp(self.second_file, self.second_file+'1'), True)
 
     self.DeleteUploadedFiles(drive, [file1['id']])
+
+    delete_file(self.first_file + '1')
+    delete_file(self.second_file + '1')
 
   # Tests for Trash/UnTrash/Delete.
   # ===============================
@@ -461,7 +466,7 @@ class GoogleDriveFileTest(unittest.TestCase):
     self.assertEqual(test_string, downloaded_string, "Strings do not match")
 
     # Delete temp file.
-    os.remove(downloaded_file_name)
+    delete_file(downloaded_file_name)
 
   # Tests for GDrive conversion.
   # ============================
