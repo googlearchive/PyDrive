@@ -6,7 +6,6 @@ from pydrive2.drive import GoogleDrive
 from pydrive2.test.test_util import pydrive_retry, setup_credentials
 
 
-@pytest.mark.automated
 class ApiAttributeTest(unittest.TestCase):
     """Test ApiAttr functions.
     """

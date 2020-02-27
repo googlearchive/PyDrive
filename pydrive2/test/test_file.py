@@ -17,7 +17,6 @@ from pydrive2.test import test_util
 from pydrive2.test.test_util import pydrive_retry, setup_credentials, create_file, delete_file
 
 
-@pytest.mark.automated
 class GoogleDriveFileTest(unittest.TestCase):
   """Tests basic file operations of files.GoogleDriveFile.
   Upload and download of contents and metadata, and thread-safety checks.

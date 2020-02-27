@@ -10,7 +10,6 @@ from pydrive2.test import test_util
 from pydrive2.test.test_util import pydrive_retry, pydrive_list_item, setup_credentials
 
 
-@pytest.mark.automated
 class GoogleDriveFileListTest(unittest.TestCase):
   """Tests operations of files.GoogleDriveFileList class.
   Equivalent to Files.list in Google Drive API.

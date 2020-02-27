@@ -7,7 +7,6 @@ from pydrive2.drive import GoogleDrive
 from pydrive2.test.test_util import pydrive_retry, setup_credentials
 
 
-@pytest.mark.automated
 class GoogleDriveTest(unittest.TestCase):
     """Tests basic operations on meta-data information of the linked Google Drive account.
     """

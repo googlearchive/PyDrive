@@ -3,4 +3,4 @@
 set -x
 set -e
 
-py.test -v -s -m automated
+py.test -v -s -m "not manual"
