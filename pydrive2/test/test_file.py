@@ -14,7 +14,7 @@ from pydrive2.auth import GoogleAuth
 from pydrive2.drive import GoogleDrive
 from pydrive2.files import ApiRequestError, GoogleDriveFile
 from pydrive2.test import test_util
-from pydrive2.test.test_util import pydrive_retry, setup_credentials, create_file, delete_file
+from pydrive2.test.test_util import pydrive_retry, setup_credentials, create_file
 
 
 class GoogleDriveFileTest(unittest.TestCase):
@@ -40,8 +40,8 @@ class GoogleDriveFileTest(unittest.TestCase):
 
   @classmethod
   def tearDownClass(cls):
-    delete_file(cls.first_file)
-    delete_file(cls.second_file)
+    os.remove(cls.first_file)
+    os.remove(cls.second_file)
 
 
   def test_01_Files_Insert(self):
@@ -118,8 +118,8 @@ class GoogleDriveFileTest(unittest.TestCase):
 
 
   def test_05_Files_Insert_Content_File(self):
-    delete_file(self.first_file+'1')
-    delete_file(self.first_file+'2')
+    os.remove(self.first_file+'1')
+    os.remove(self.first_file+'2')
     drive = GoogleDrive(self.ga)
     file1 = drive.CreateFile()
     filename = 'filecontent'
@@ -208,8 +208,8 @@ class GoogleDriveFileTest(unittest.TestCase):
 
 
   def test_09_Files_Update_File(self):
-    delete_file(self.first_file+'1')
-    delete_file(self.second_file+'1')
+    os.remove(self.first_file+'1')
+    os.remove(self.second_file+'1')
     drive = GoogleDrive(self.ga)
     file1 = drive.CreateFile()
     filename = 'preupdatetestfile'

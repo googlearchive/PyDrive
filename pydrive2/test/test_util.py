@@ -67,15 +67,5 @@ def StripNewlines(string):
 
 
 def create_file(path, content):
-    try:
-        with open(path, "w") as f:
-          f.write(content)
-    except OSError:
-      pass
-
-
-def delete_file(file_name):
-    try:
-      os.remove(file_name)
-    except OSError:
-      pass
+    with open(path, "w") as f:
+      f.write(content)

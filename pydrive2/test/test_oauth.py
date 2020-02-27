@@ -74,10 +74,8 @@ class GoogleAuthTest(unittest.TestCase):
     time.sleep(1)
 
   def DeleteOldCredentialsFile(self, credentials):
-    try:
+    if os._exists(credentials):
       os.remove(credentials)
-    except OSError:
-      pass
 
   def CheckCredentialsFile(self, credentials, no_file=False):
     ga = GoogleAuth('pydrive2/test/settings/test_oauth_default.yaml')
