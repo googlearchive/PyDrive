@@ -20,6 +20,6 @@ setup(
         "pyOpenSSL >= 19.1.0"
     ],
     extras_require={
-        "tests": ["pytest>=4.6.0,<5.1.2", "timeout-decorator", "funcy>=1.14,<2"],
+        "tests": ["pytest>=4.6.0", "timeout-decorator", "funcy>=1.14"],
     },
 )
