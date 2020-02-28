@@ -1,4 +1,17 @@
+import sys
 from setuptools import setup
+
+# Extra dependecies to run tests
+tests_requirements = [
+    "pytest>=4.6.0",
+    "timeout-decorator",
+    "funcy>=1.14",
+    "flake8",
+    "flake8-docstrings",
+]
+
+if sys.version_info >= (3, 6):
+    tests_requirements.append("black==19.10b0")
 
 setup(
     name='PyDrive2',
@@ -20,6 +33,6 @@ setup(
         "pyOpenSSL >= 19.1.0"
     ],
     extras_require={
-        "tests": ["pytest>=4.6.0", "timeout-decorator", "funcy>=1.14"],
+        "tests": tests_requirements,
     },
 )
