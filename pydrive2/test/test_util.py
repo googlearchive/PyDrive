@@ -1,4 +1,3 @@
-import unittest
 import random
 import re
 import os
@@ -7,7 +6,7 @@ from funcy import retry
 from funcy.py3 import cat
 from pydrive2.files import ApiRequestError
 
-newline_pattern = re.compile(r'[\r\n]')
+newline_pattern = re.compile(r"[\r\n]")
 
 GDRIVE_USER_CREDENTIALS_DATA = "GDRIVE_USER_CREDENTIALS_DATA"
 DEFAULT_USER_CREDENTIALS_FILE = "credentials/default.dat"
@@ -17,12 +16,8 @@ def setup_credentials(credentials_path=DEFAULT_USER_CREDENTIALS_FILE):
     if os.getenv(GDRIVE_USER_CREDENTIALS_DATA):
         if not os.path.exists(os.path.dirname(credentials_path)):
             os.makedirs(os.path.dirname(credentials_path), exist_ok=True)
-        with open(
-                credentials_path, "w"
-        ) as credentials_file:
-            credentials_file.write(
-                os.getenv(GDRIVE_USER_CREDENTIALS_DATA)
-            )
+        with open(credentials_path, "w") as credentials_file:
+            credentials_file.write(os.getenv(GDRIVE_USER_CREDENTIALS_DATA))
 
 
 class PyDriveRetriableError(Exception):
@@ -51,7 +46,9 @@ def pydrive_list_item(drive, query, max_results=1000):
     file_list = drive.ListFile(param)
 
     # Isolate and decorate fetching of remote drive items in pages
-    get_list = lambda: pydrive_retry(lambda: next(file_list, None))
+    get_list = lambda: pydrive_retry(  # noqa: E731
+        lambda: next(file_list, None)
+    )
 
     # Fetch pages until None is received, lazily flatten the thing
     return cat(iter(get_list, None))

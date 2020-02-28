@@ -10,11 +10,21 @@ env:
     - PATH="$PYENV_ROOT/bin:$PATH"
     - PIP_CACHE_DIR="$HOME/.cache/pip"  # unify pip cache location for all platforms
 stages:
+  - check
   - test
   - build
 # Each job will use the previous job's `stage` tag if not specified.
 jobs:
   include:
+  # patch formatting checks
+  - name: "Check patch formatting"
+    stage: check
+    os: linux
+    language: python
+    python: 3.7
+    before_install:
+    install:
+    script: ./scripts/ci/check_patch.sh
   # test jobs
   - name: "3.7 on Windows"
     stage: test
