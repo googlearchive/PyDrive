@@ -22,10 +22,10 @@ class ApiAttributeTest(unittest.TestCase):
         # Verify 'metadata' field still present.
         self.assertTrue(self.file1.metadata is not None)
         # Ensure no 'metadata' field in 'metadata' (i.e. nested).
-        self.assertTrue('metadata' not in self.file1.metadata)
+        self.assertTrue("metadata" not in self.file1.metadata)
 
     def setUp(self):
-        ga = GoogleAuth('pydrive2/test/settings/default.yaml')
+        ga = GoogleAuth("pydrive2/test/settings/default.yaml")
         ga.ServiceAuth()
         self.drive = GoogleDrive(ga)
         self.file1 = self.drive.CreateFile()
@@ -34,5 +34,6 @@ class ApiAttributeTest(unittest.TestCase):
     def tearDown(self):
         pydrive_retry(self.file1.Delete)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

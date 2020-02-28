@@ -5,19 +5,19 @@ from .auth import LoadAuth
 
 
 class GoogleDrive(ApiAttributeMixin, object):
-  """Main Google Drive class."""
+    """Main Google Drive class."""
 
-  def __init__(self, auth=None):
-    """Create an instance of GoogleDrive.
+    def __init__(self, auth=None):
+        """Create an instance of GoogleDrive.
 
     :param auth: authorized GoogleAuth instance.
     :type auth: pydrive2.auth.GoogleAuth.
     """
-    ApiAttributeMixin.__init__(self)
-    self.auth = auth
+        ApiAttributeMixin.__init__(self)
+        self.auth = auth
 
-  def CreateFile(self, metadata=None):
-    """Create an instance of GoogleDriveFile with auth of this instance.
+    def CreateFile(self, metadata=None):
+        """Create an instance of GoogleDriveFile with auth of this instance.
 
     This method would not upload a file to GoogleDrive.
 
@@ -25,10 +25,10 @@ class GoogleDrive(ApiAttributeMixin, object):
     :type metadata: dict.
     :returns: pydrive2.files.GoogleDriveFile -- initialized with auth of this instance.
     """
-    return GoogleDriveFile(auth=self.auth, metadata=metadata)
+        return GoogleDriveFile(auth=self.auth, metadata=metadata)
 
-  def ListFile(self, param=None):
-    """Create an instance of GoogleDriveFileList with auth of this instance.
+    def ListFile(self, param=None):
+        """Create an instance of GoogleDriveFileList with auth of this instance.
 
     This method will not fetch from Files.List().
 
@@ -36,12 +36,12 @@ class GoogleDrive(ApiAttributeMixin, object):
     :type param: dict.
     :returns: pydrive2.files.GoogleDriveFileList -- initialized with auth of this instance.
     """
-    return GoogleDriveFileList(auth=self.auth, param=param)
+        return GoogleDriveFileList(auth=self.auth, param=param)
 
-  @LoadAuth
-  def GetAbout(self):
-    """Return information about the Google Drive of the auth instance.
+    @LoadAuth
+    def GetAbout(self):
+        """Return information about the Google Drive of the auth instance.
 
     :returns: A dictionary of Google Drive information like user, usage, quota etc.
     """
-    return self.auth.service.about().get().execute(http=self.http)
+        return self.auth.service.about().get().execute(http=self.http)
