@@ -1,4 +1,3 @@
-import unittest
 import random
 import re
 import os
@@ -47,7 +46,9 @@ def pydrive_list_item(drive, query, max_results=1000):
     file_list = drive.ListFile(param)
 
     # Isolate and decorate fetching of remote drive items in pages
-    get_list = lambda: pydrive_retry(lambda: next(file_list, None))
+    get_list = lambda: pydrive_retry(  # noqa: E731
+        lambda: next(file_list, None)
+    )
 
     # Fetch pages until None is received, lazily flatten the thing
     return cat(iter(get_list, None))

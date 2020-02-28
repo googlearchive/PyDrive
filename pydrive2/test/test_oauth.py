@@ -1,5 +1,4 @@
 import unittest
-import os
 import time
 import pytest
 

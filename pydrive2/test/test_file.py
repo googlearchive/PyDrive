@@ -336,7 +336,7 @@ class GoogleDriveFileTest(unittest.TestCase):
         try:
             pydrive_retry(file2.FetchMetadata)
             self.fail("File not deleted correctly.")
-        except ApiRequestError as e:
+        except ApiRequestError:
             pass
 
     def test_Files_Delete_File_Just_ID(self):
@@ -350,7 +350,7 @@ class GoogleDriveFileTest(unittest.TestCase):
         try:
             pydrive_retry(file1.FetchMetadata)
             self.fail("File not deleted correctly.")
-        except ApiRequestError as e:
+        except ApiRequestError:
             pass
 
     # Tests for Permissions.
@@ -444,7 +444,7 @@ class GoogleDriveFileTest(unittest.TestCase):
         try:
             pydrive_retry(lambda: file1.DeletePermission("invalid id"))
             self.fail("Deleting invalid permission not raising exception.")
-        except ApiRequestError as e:
+        except ApiRequestError:
             pass
 
         pydrive_retry(file1.Delete)

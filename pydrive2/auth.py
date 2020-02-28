@@ -236,7 +236,7 @@ class GoogleAuth(ApiAttributeMixin, object):
                 httpd = ClientRedirectServer(
                     (host_name, port), ClientRedirectHandler
                 )
-            except socket.error as e:
+            except socket.error:
                 pass
             else:
                 success = True
@@ -433,7 +433,7 @@ class GoogleAuth(ApiAttributeMixin, object):
             )
         except clientsecrets.InvalidClientSecretsError as error:
             raise InvalidConfigError("Invalid client secrets file %s" % error)
-        if not client_type in (
+        if client_type not in (
             clientsecrets.TYPE_WEB,
             clientsecrets.TYPE_INSTALLED,
         ):

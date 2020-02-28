@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
-import sys
 import unittest
-import pytest
 
 from pydrive2.auth import GoogleAuth
 from pydrive2.drive import GoogleDrive
