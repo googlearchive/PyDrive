@@ -52,7 +52,7 @@ def LoadAuth(decoratee):
       self.auth = GoogleAuth()
     # Re-create access token if it expired.
     if self.auth.access_token_expired:
-      if getattr(self, 'auth_method', False) == 'service':
+      if getattr(self.auth, 'auth_method', False) == 'service':
         self.auth.ServiceAuth()
       else:
         self.auth.LocalWebserverAuth()
@@ -93,14 +93,9 @@ def CheckServiceAuth(decoratee):
       decoratee(self, *args, **kwargs)
       self.Authorize()
       dirty = True
-    else:
-      if self.access_token_expired:
-        if self.credentials.refresh_token is not None:
-          self.Refresh()
-        else:
-          decoratee(self, *args, **kwargs)
-          self.Authorize()
-        dirty = True
+    elif self.access_token_expired:
+      self.Refresh()
+      dirty = True
     if dirty and save_credentials:
       self.SaveCredentials()
   return _decorated
@@ -472,7 +467,7 @@ class GoogleAuth(ApiAttributeMixin, object):
     """
     if self.credentials is None:
       raise RefreshError('No credential to refresh.')
-    if self.credentials.refresh_token is None:
+    if self.credentials.refresh_token is None and self.auth_method != 'service':
       raise RefreshError('No refresh_token found.'
                          'Please set access_type of OAuth to offline.')
     if self.http is None:
@@ -521,10 +516,11 @@ class GoogleAuth(ApiAttributeMixin, object):
 
     :raises: AuthenticationError
     """
-    if self.http is None:
-      self.http = httplib2.Http(timeout=self.http_timeout)
     if self.access_token_expired:
       raise AuthenticationError('No valid credentials provided to authorize')
+
+    if self.http is None:
+      self.http = httplib2.Http(timeout=self.http_timeout)
     self.http = self.credentials.authorize(self.http)
     self.service = build('drive', 'v2', http=self.http, cache_discovery=False)
 

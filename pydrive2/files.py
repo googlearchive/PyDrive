@@ -560,7 +560,7 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
       if 'permissions' in self and 'permissions' in self.metadata:
         permissions = self['permissions']
         is_not_current_permission = lambda per: per['id'] == permission_id
-        permissions = filter(is_not_current_permission, permissions)
+        permissions = list(filter(is_not_current_permission, permissions))
         self['permissions'] = permissions
         self.metadata['permissions'] = permissions
       return True
