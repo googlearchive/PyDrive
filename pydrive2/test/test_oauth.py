@@ -36,25 +36,25 @@ class GoogleAuthTest(unittest.TestCase):
     @pytest.mark.manual
     def test_03_LocalWebServerAuthWithNoCredentialsSaving(self):
         # Delete old credentials file
-        delete_file("credentials/4.dat")
+        delete_file("credentials/3.dat")
         # Provide wrong credentials file
         ga = GoogleAuth("pydrive2/test/settings/test_oauth_test_03.yaml")
         ga.LocalWebserverAuth()
         self.assertEqual(ga.access_token_expired, False)
         # Test if correct credentials file is created
-        self.CheckCredentialsFile("credentials/4.dat", no_file=True)
+        self.CheckCredentialsFile("credentials/3.dat", no_file=True)
         time.sleep(1)
 
     @pytest.mark.manual
     def test_04_CommandLineAuthWithClientConfigFromFile(self):
         # Delete old credentials file
-        delete_file("credentials/1.dat")
+        delete_file("credentials/4.dat")
         # Test if authentication works with config read from file
         ga = GoogleAuth("pydrive2/test/settings/test_oauth_test_04.yaml")
         ga.CommandLineAuth()
         self.assertEqual(ga.access_token_expired, False)
         # Test if correct credentials file is created
-        self.CheckCredentialsFile("credentials/1.dat")
+        self.CheckCredentialsFile("credentials/4.dat")
         time.sleep(1)
 
     @pytest.mark.manual
