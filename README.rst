@@ -16,6 +16,7 @@ Project Info
 - Homepage: `https://pypi.python.org/pypi/PyDrive2 <https://pypi.python.org/pypi/PyDrive2>`_
 - Documentation: `Official documentation on GitHub pages <https://gsuitedevs.github.io/PyDrive/docs/build/html/index.html>`_
 - GitHub: `https://github.com/iterative/PyDrive2 <https://github.com/iterative/PyDrive2>`_
+- `Running tests </pydrive2/test/README.rst>`_
 
 Features of PyDrive2
 --------------------

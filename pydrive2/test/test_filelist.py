@@ -9,6 +9,7 @@ from pydrive2.test.test_util import (
     pydrive_retry,
     pydrive_list_item,
     setup_credentials,
+    settings_file_path,
 )
 
 
@@ -21,7 +22,7 @@ class GoogleDriveFileListTest(unittest.TestCase):
     def setup_class(cls):
         setup_credentials()
 
-        cls.ga = GoogleAuth("pydrive2/test/settings/default.yaml")
+        cls.ga = GoogleAuth(settings_file_path("default.yaml"))
         cls.ga.ServiceAuth()
         cls.drive = GoogleDrive(cls.ga)
 

@@ -9,3 +9,5 @@ build/
 .cache
 
 client_secrets.json
+*.p12
+pydrive2/test/settings/local/

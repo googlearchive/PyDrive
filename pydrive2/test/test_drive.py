@@ -3,7 +3,11 @@ import unittest
 
 from pydrive2.auth import GoogleAuth
 from pydrive2.drive import GoogleDrive
-from pydrive2.test.test_util import pydrive_retry, setup_credentials
+from pydrive2.test.test_util import (
+    pydrive_retry,
+    setup_credentials,
+    settings_file_path,
+)
 
 
 class GoogleDriveTest(unittest.TestCase):
@@ -14,7 +18,7 @@ class GoogleDriveTest(unittest.TestCase):
     def setup_class(cls):
         setup_credentials()
 
-        cls.ga = GoogleAuth("pydrive2/test/settings/default.yaml")
+        cls.ga = GoogleAuth(settings_file_path("default.yaml"))
         cls.ga.ServiceAuth()
 
     def test_01_About_Request(self):

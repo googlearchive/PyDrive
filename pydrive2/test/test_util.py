@@ -5,11 +5,15 @@ import os
 from funcy import retry
 from funcy.py3 import cat
 from pydrive2.files import ApiRequestError
+from shutil import copyfile
 
 newline_pattern = re.compile(r"[\r\n]")
 
 GDRIVE_USER_CREDENTIALS_DATA = "GDRIVE_USER_CREDENTIALS_DATA"
 DEFAULT_USER_CREDENTIALS_FILE = "credentials/default.dat"
+
+SETTINGS_PATH = "pydrive2/test/settings/"
+LOCAL_PATH = "pydrive2/test/settings/local/"
 
 
 def setup_credentials(credentials_path=DEFAULT_USER_CREDENTIALS_FILE):
@@ -18,6 +22,17 @@ def setup_credentials(credentials_path=DEFAULT_USER_CREDENTIALS_FILE):
             os.makedirs(os.path.dirname(credentials_path), exist_ok=True)
         with open(credentials_path, "w") as credentials_file:
             credentials_file.write(os.getenv(GDRIVE_USER_CREDENTIALS_DATA))
+
+
+def settings_file_path(settings_file):
+    template_path = SETTINGS_PATH + settings_file
+    local_path = LOCAL_PATH + settings_file
+    assert os.path.exists(template_path)
+    if not os.path.exists(LOCAL_PATH):
+        os.makedirs(LOCAL_PATH, exist_ok=True)
+    if not os.path.exists(local_path):
+        copyfile(template_path, local_path)
+    return local_path
 
 
 class PyDriveRetriableError(Exception):
