@@ -1,0 +1,2 @@
+client_config_backend: 'file'
+client_config_file: 'configs/client_secrets.json'

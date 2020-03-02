@@ -2,7 +2,11 @@ import unittest
 
 from pydrive2.auth import GoogleAuth
 from pydrive2.drive import GoogleDrive
-from pydrive2.test.test_util import pydrive_retry, setup_credentials
+from pydrive2.test.test_util import (
+    pydrive_retry,
+    setup_credentials,
+    settings_file_path,
+)
 
 
 class ApiAttributeTest(unittest.TestCase):
@@ -24,7 +28,7 @@ class ApiAttributeTest(unittest.TestCase):
         self.assertTrue("metadata" not in self.file1.metadata)
 
     def setUp(self):
-        ga = GoogleAuth("pydrive2/test/settings/default.yaml")
+        ga = GoogleAuth(settings_file_path("default.yaml"))
         ga.ServiceAuth()
         self.drive = GoogleDrive(ga)
         self.file1 = self.drive.CreateFile()

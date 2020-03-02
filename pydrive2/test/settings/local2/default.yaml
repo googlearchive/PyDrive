@@ -1,0 +1,12 @@
+client_config_backend: file
+service_config:
+  client_service_email: your-service-account-email
+  client_pkcs12_file_path: your-file-path.p12
+  client_user_email:
+
+save_credentials: True
+save_credentials_backend: file
+save_credentials_file: credentials/default.dat
+
+oauth_scope:
+  - https://www.googleapis.com/auth/drive

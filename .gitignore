@@ -9,3 +9,4 @@ build/
 .cache
 
 client_secrets.json
+*.p12

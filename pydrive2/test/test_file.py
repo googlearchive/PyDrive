@@ -19,6 +19,7 @@ from pydrive2.test.test_util import (
     setup_credentials,
     create_file,
     delete_file,
+    settings_file_path,
 )
 
 
@@ -38,7 +39,7 @@ class GoogleDriveFileTest(unittest.TestCase):
         create_file(cls.first_file, cls.first_file)
         create_file(cls.second_file, cls.second_file)
 
-        cls.ga = GoogleAuth("pydrive2/test/settings/default.yaml")
+        cls.ga = GoogleAuth(settings_file_path("default.yaml"))
         cls.ga.ServiceAuth()
 
     @classmethod
