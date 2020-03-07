@@ -1,13 +1,17 @@
 *.pyc
 *~
-pydrive/test/configs/*
-pydrive/test/credentials/*
+pydrive2/test/configs/*
+pydrive2/test/credentials/*
+pydrive2/test/settings/local/*
 
 *.egg-info
 dist
 build/
 .cache
 
+.env
+.idea
+pip-wheel-metadata
+
 client_secrets.json
 *.p12
-pydrive2/test/settings/local/

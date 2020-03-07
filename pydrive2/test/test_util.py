@@ -1,6 +1,7 @@
 import random
 import re
 import os
+import posixpath
 
 from funcy import retry
 from funcy.py3 import cat
@@ -12,11 +13,13 @@ newline_pattern = re.compile(r"[\r\n]")
 GDRIVE_USER_CREDENTIALS_DATA = "GDRIVE_USER_CREDENTIALS_DATA"
 DEFAULT_USER_CREDENTIALS_FILE = "credentials/default.dat"
 
-SETTINGS_PATH = "pydrive2/test/settings/"
-LOCAL_PATH = "pydrive2/test/settings/local/"
+TESTS_ROOTDIR = os.path.dirname(__file__)
+SETTINGS_PATH = posixpath.join(TESTS_ROOTDIR, "settings/")
+LOCAL_PATH = posixpath.join(TESTS_ROOTDIR, "settings/local/")
 
 
 def setup_credentials(credentials_path=DEFAULT_USER_CREDENTIALS_FILE):
+    os.chdir(TESTS_ROOTDIR)
     if os.getenv(GDRIVE_USER_CREDENTIALS_DATA):
         if not os.path.exists(os.path.dirname(credentials_path)):
             os.makedirs(os.path.dirname(credentials_path), exist_ok=True)

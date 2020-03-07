@@ -1,16 +1,13 @@
 Run tests locally
 -----------------
 
-1. Create **local** directory and copy settings files there:
+1. Copy settings files to the `pydrive2/test/settings/local` directory:
 
 ::
 
-    cd pydrive2/test/settings
-    mkdir -p local && cp *.yaml local
+    cd pydrive2/test/settings && cp *.yaml local
 
-2. Create **credentials** directory in the root directory of the repo.
-
-3. Setup a Google service account for your Google Cloud Project:
+2. Setup a Google service account for your Google Cloud Project:
     - Sign into the `Google API Console
       <https://console.developers.google.com>`_
     - Select or `Create a new
@@ -27,13 +24,13 @@ Run tests locally
       tests", and click **Create**. Select **Continue** at the next **Service
       account permissions** page, click at **+ CREATE KEY**, select **P12** and
       **Create**. Save generated **.p12** key file at your local disk.
-    - Edit files **/pydrive2/test/settings/local/default.yaml** and
-      **/pydrive2/test/settings/local/test_oauth_test_06.yaml** by replacing
+    - Edit files `pydrive2/test/settings/local/default.yaml` and
+      `pydrive2/test/settings/local/test_oauth_test_06.yaml` by replacing
       **your-service-account-email** with email of your new created service account
-      and **your-file-path.p12** with path to the downloaded **.p12** key file.
-      Value for key **client_user_email** should be left blank.
+      and **your-file-path.p12** with absolute or relative path to the downloaded
+      `.p12` key file. Value for key **client_user_email** should be left blank.
 
-4. Create an OAuth client ID and configure tests with it:
+3. Create an OAuth client ID and configure tests with it:
     - Under `Google API Console <https://console.developers.google.com>`_ select
       **APIs & Services** from the left sidebar, and select **OAuth consent screen**.
       Chose a **User Type** and click **CREATE**. On the next screen, enter an
@@ -44,22 +41,30 @@ Run tests locally
       and click **Create** to proceed with a default client name. At **Credentials**
       screen find a list of your **OAuth 2.0 Client IDs**, click download icon in
       front of your OAuth client id created previously. You should be prompted to
-      download **client_secret_xxx_.json** file.
-    - **cd** to PyDrive project root
-      directory to create **configs** folder and copy downloaded **.json** file into
-      it. Rename the copied file to **client_secrets.json**.
+      download `client_secret_xxx_.json` file.
+    - Copy downloaded `.json` file into `pydrive2/test/configs` directory and
+      rename to `client_secrets.json`.
     - Replace {{ }} sections
-      in **pydrive2/test/settings/local/test_oauth_test_02.yaml** with the relevant
-      sections from your **client_secrets.json** file.
+      in `pydrive2/test/settings/local/test_oauth_test_02.yaml` with the relevant
+      values of `client_id` and `client_secret` from your
+      **client_secrets.json** file.
 
-5. Install **tests** deps:
+4. Setup virtual environment (recommended optional step):
+
+::
+
+
+    virtualenv -p python .env
+    source .env/bin/activate
+
+5. Install tests deps:
 
 ::
 
     pip install -e .[tests]
 
 
-6. Run tests:
+5. Run tests:
 
 ::
 
