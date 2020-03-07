@@ -1,7 +1,7 @@
 Run tests locally
 -----------------
 
-1. Copy settings files to the `pydrive2/test/settings/local` directory:
+1. Copy settings files to the :code:`pydrive2/test/settings/local` directory:
 
 ::
 
@@ -23,13 +23,13 @@ Run tests locally
       ACCOUNT**, on the next screen, enter **Service account name** e.g. "PyDrive
       tests", and click **Create**. Select **Continue** at the next **Service
       account permissions** page, click at **+ CREATE KEY**, select **P12** and
-      **Create**. Save generated `.p12` key file at your local disk.
-    - Copy downloaded `p.12` file to `pydrive2/test` directory.
-      Edit files `pydrive2/test/settings/local/default.yaml` and
-      `pydrive2/test/settings/local/test_oauth_test_06.yaml` by replacing
+      **Create**. Save generated :code:`.p12` key file at your local disk.
+    - Copy downloaded :code:`p.12` file to :code:`pydrive2/test` directory.
+      Edit files :code:`pydrive2/test/settings/local/default.yaml` and
+      :code:`pydrive2/test/settings/local/test_oauth_test_06.yaml` by replacing
       **your-service-account-email** with email of your new created service account
-      and by replacing **your-file-path.p12** with name of copied `.p12` key file,
-      for example `pydrive-test-270414-581c887879a3.p12`. Value for
+      and by replacing **your-file-path.p12** with name of copied :code:`.p12` key
+      file, for example :code:`pydrive-test-270414-581c887879a3.p12`. Value for
       **client_user_email** should be left blank.
 
 3. Create an OAuth client ID and configure tests with it:
@@ -43,12 +43,12 @@ Run tests locally
       and click **Create** to proceed with a default client name. At **Credentials**
       screen find a list of your **OAuth 2.0 Client IDs**, click download icon in
       front of your OAuth client id created previously. You should be prompted to
-      download `client_secret_xxx_.json` file.
-    - Copy downloaded `.json` file into `pydrive2/test/configs` directory and
-      rename to `client_secrets.json`.
+      download :code:`client_secret_xxx_.json` file.
+    - Copy downloaded :code:`.json` file into :code:`pydrive2/test/configs`
+      directory and rename to `client_secrets.json`.
     - Replace {{ }} sections
-      in `pydrive2/test/settings/local/test_oauth_test_02.yaml` with the relevant
-      values of `client_id` and `client_secret` from your
+      in :code:`pydrive2/test/settings/local/test_oauth_test_02.yaml` with the
+      relevant values of :code:`client_id` and :code:`client_secret` from your
       **client_secrets.json** file.
 
 4. Setup virtual environment (recommended optional step):
