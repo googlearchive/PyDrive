@@ -8,7 +8,9 @@ Run tests locally
     cd pydrive2/test/settings
     mkdir -p local && cp *.yaml local
 
-2. Setup a Google service account for your Google Cloud Project:
+2. Create **credentials** directory in the root directory of the repo.
+
+3. Setup a Google service account for your Google Cloud Project:
     - Sign into the `Google API Console
       <https://console.developers.google.com>`_
     - Select or `Create a new
@@ -25,11 +27,13 @@ Run tests locally
       tests", and click **Create**. Select **Continue** at the next **Service
       account permissions** page, click at **+ CREATE KEY**, select **P12** and
       **Create**. Save generated **.p12** key file at your local disk.
-    - Edit **/pydrive2/test/settings/local/default.yaml** by replacing email
-      **your-service-account-email** with your new created service account
+    - Edit files **/pydrive2/test/settings/local/default.yaml** and
+      **/pydrive2/test/settings/local/test_oauth_test_06.yaml** by replacing
+      **your-service-account-email** with email of your new created service account
       and **your-file-path.p12** with path to the downloaded **.p12** key file.
+      Value for key **client_user_email** should be left blank.
 
-3. Create an OAuth client ID and configure tests with it:
+4. Create an OAuth client ID and configure tests with it:
     - Under `Google API Console <https://console.developers.google.com>`_ select
       **APIs & Services** from the left sidebar, and select **OAuth consent screen**.
       Chose a **User Type** and click **CREATE**. On the next screen, enter an
@@ -48,7 +52,14 @@ Run tests locally
       in **pydrive2/test/settings/local/test_oauth_test_02.yaml** with the relevant
       sections from your **client_secrets.json** file.
 
-4. Run tests:
+5. Install **tests** deps:
+
+::
+
+    pip install -e .[tests]
+
+
+6. Run tests:
 
 ::
 
