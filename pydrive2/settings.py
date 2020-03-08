@@ -69,7 +69,7 @@ SETTINGS_STRUCT = {
         "struct": {
             "client_user_email": {
                 "type": str,
-                "required": False,
+                "required": True,
                 "default": None,
             },
             "client_service_email": {"type": str, "required": True},
