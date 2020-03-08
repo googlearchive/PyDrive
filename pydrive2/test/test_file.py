@@ -134,7 +134,7 @@ class GoogleDriveFileTest(unittest.TestCase):
         pydrive_retry(
             file1.FetchContent
         )  # Force download and double check content.
-        file1.GetContentFile(self.first_file + "1")
+        pydrive_retry(lambda: file1.GetContentFile(self.first_file + "1"))
         self.assertEqual(
             filecmp.cmp(self.first_file, self.first_file + "1"), True
         )
@@ -232,7 +232,7 @@ class GoogleDriveFileTest(unittest.TestCase):
         pydrive_retry(
             file1.FetchContent
         )  # Force download and double check content.
-        file1.GetContentFile(self.first_file + "1")
+        pydrive_retry(lambda: file1.GetContentFile(self.first_file + "1"))
         self.assertEqual(
             filecmp.cmp(self.first_file, self.first_file + "1"), True
         )
@@ -241,7 +241,7 @@ class GoogleDriveFileTest(unittest.TestCase):
         file1.SetContentFile(self.second_file)
         pydrive_retry(file1.Upload)  # Files.update
         self.assertEqual(file1.metadata["title"], newfilename)
-        file1.GetContentFile(self.second_file + "1")
+        pydrive_retry(lambda: file1.GetContentFile(self.second_file + "1"))
         self.assertEqual(
             filecmp.cmp(self.second_file, self.second_file + "1"), True
         )
