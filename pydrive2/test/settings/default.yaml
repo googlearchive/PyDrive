@@ -2,7 +2,6 @@ client_config_backend: service
 service_config:
   client_service_email: your-service-account-email
   client_pkcs12_file_path: your-file-path.p12
-  client_user_email:
 
 save_credentials: True
 save_credentials_backend: file
