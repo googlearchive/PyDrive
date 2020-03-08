@@ -59,7 +59,7 @@ Run tests locally
     virtualenv -p python .env
     source .env/bin/activate
 
-5. Install tests deps:
+5. Install :code:`tests` deps from the root directory of the project:
 
 ::
 
