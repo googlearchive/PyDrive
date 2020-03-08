@@ -1,7 +1,7 @@
-client_config_backend: 'file'
-client_config_file: 'client_secrets.json'
+client_config_backend: file
+client_config_file: client_secrets.json
 
 save_credentials: False
 
 oauth_scope:
-  - 'https://www.googleapis.com/auth/drive'
+  - https://www.googleapis.com/auth/drive
