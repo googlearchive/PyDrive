@@ -32,7 +32,7 @@ Run tests locally
       file, for example :code:`pydrive-test-270414-581c887879a3.p12`. Value for
       **client_user_email** should be left blank.
 
-3. Create an OAuth client ID and configure tests with it:
+3. Optional. If you would like to use your own an OAuth client ID follow the steps:
     - Under `Google API Console <https://console.developers.google.com>`_ select
       **APIs & Services** from the left sidebar, and select **OAuth consent screen**.
       Chose a **User Type** and click **CREATE**. On the next screen, enter an
