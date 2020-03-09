@@ -1,0 +1,5 @@
+credentials/*
+settings/local/*
+
+client_secrets.json
+*.p12

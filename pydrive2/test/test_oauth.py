@@ -13,6 +13,10 @@ from pydrive2.test.test_util import (
 class GoogleAuthTest(unittest.TestCase):
     """Tests basic OAuth2 operations of auth.GoogleAuth."""
 
+    @classmethod
+    def setup_class(cls):
+        setup_credentials()
+
     @pytest.mark.manual
     def test_01_LocalWebserverAuthWithClientConfigFromFile(self):
         # Delete old credentials file
