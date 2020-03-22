@@ -1,5 +1,6 @@
 import io
 import mimetypes
+import json
 
 from apiclient import errors
 from apiclient.http import MediaIoBaseUpload
@@ -25,7 +26,13 @@ class FileNotUploadedError(RuntimeError):
 
 
 class ApiRequestError(IOError):
-    """Error while making any API requests."""
+    def __init__(self, http_error):
+        assert isinstance(http_error, errors.HttpError)
+        content = json.loads(http_error.content.decode("utf-8"))
+        self.error = content.get("error", {}) if content else {}
+
+        # Initialize args for backward compatibility
+        super().__init__(http_error)
 
 
 class FileNotDownloadableError(RuntimeError):
