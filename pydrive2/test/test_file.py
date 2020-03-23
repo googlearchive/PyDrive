@@ -9,6 +9,7 @@ from io import BytesIO
 from six.moves import range
 import timeout_decorator
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from apiclient import errors
 
 from pydrive2.auth import GoogleAuth
 from pydrive2.drive import GoogleDrive
@@ -449,6 +450,22 @@ class GoogleDriveFileTest(unittest.TestCase):
             pass
 
         pydrive_retry(file1.Delete)
+
+    def test_ApiRequestError_HttpError_Propagation(self):
+        file = GoogleDrive(self.ga).CreateFile()
+        pydrive_retry(file.Upload)
+        try:
+            pydrive_retry(lambda: file.DeletePermission("invalid id"))
+            self.fail("Deleting invalid permission not raising exception.")
+        except ApiRequestError as exc:
+            self.assertTrue(
+                exc.args and isinstance(exc.args[0], errors.HttpError)
+            )
+            self.assertTrue(exc.error is not None)
+            # Validating for HttpError 404 "Permission not found: invalid id"
+            self.assertTrue(exc.error["code"] == 404)
+        finally:
+            pydrive_retry(file.Delete)
 
     def test_GFile_Conversion_Lossless_String(self):
         drive = GoogleDrive(self.ga)
