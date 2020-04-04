@@ -539,7 +539,7 @@ class GoogleAuth(ApiAttributeMixin, object):
                 "Please set access_type of OAuth to offline."
             )
         if self.http is None:
-            self.http = httplib2.Http(timeout=self.http_timeout)
+            self.http = self._build_http()
         try:
             self.credentials.refresh(self.http)
         except AccessTokenRefreshError as error:
@@ -579,6 +579,16 @@ class GoogleAuth(ApiAttributeMixin, object):
             raise AuthenticationError("OAuth2 code exchange failed: %s" % e)
         print("Authentication successful.")
 
+    def _build_http(self):
+        http = httplib2.Http(timeout=self.http_timeout)
+        # 308's are used by several Google APIs (Drive, YouTube)
+        # for Resumable Uploads rather than Permanent Redirects.
+        # This asks httplib2 to exclude 308s from the status codes
+        # it treats as redirects
+        # See also: https://stackoverflow.com/a/59850170/298182
+        http.redirect_codes = http.redirect_codes - {308}
+        return http
+
     def Authorize(self):
         """Authorizes and builds service.
 
@@ -590,7 +600,7 @@ class GoogleAuth(ApiAttributeMixin, object):
             )
 
         if self.http is None:
-            self.http = httplib2.Http(timeout=self.http_timeout)
+            self.http = self._build_http()
         self.http = self.credentials.authorize(self.http)
         self.service = build(
             "drive", "v2", http=self.http, cache_discovery=False
@@ -602,6 +612,6 @@ class GoogleAuth(ApiAttributeMixin, object):
     :return: The http object to be used in each call.
     :rtype: httplib2.Http
     """
-        http = httplib2.Http(timeout=self.http_timeout)
+        http = self._build_http()
         http = self.credentials.authorize(http)
         return http
