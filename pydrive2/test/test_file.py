@@ -9,7 +9,7 @@ from io import BytesIO
 from six.moves import range
 import timeout_decorator
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from apiclient import errors
+from googleapiclient import errors
 
 from pydrive2.auth import GoogleAuth
 from pydrive2.drive import GoogleDrive
