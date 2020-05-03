@@ -5,7 +5,7 @@ import json
 from googleapiclient import errors
 from googleapiclient.http import MediaIoBaseUpload
 from googleapiclient.http import MediaIoBaseDownload
-from functools import wraps, partial
+from functools import wraps
 
 from .apiattr import ApiAttribute
 from .apiattr import ApiAttributeMixin
@@ -221,7 +221,6 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
             self.FetchContent(mimetype, remove_bom)
         return self.content.getvalue().decode(encoding)
 
-    @LoadMetadata
     def GetContentFile(
         self, filename, mimetype=None, remove_bom=False, callback=None
     ):
@@ -238,21 +237,31 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     :raises: ApiRequestError, FileNotUploadedError, FileNotDownloadableError
     """
         files = self.auth.service.files()
-        get = files.get_media
-        # patch `get` for docs files
-        meta_mimeType = self.metadata.get("mimeType") or self.get("mimeType")
-        if meta_mimeType.startswith("application/vnd.google-apps."):
-            mimetype = mimetype or "text/plain"
-            get = partial(files.export_media, mimeType=mimetype)
+        file_id = self.metadata.get("id") or self.get("id")
 
-        request = get(fileId=self.metadata.get("id") or self.get("id"))
-        with open(filename, mode="w+b") as fd:
+        def download(fd, request):
             downloader = MediaIoBaseDownload(fd, request)
             done = False
             while done is False:
                 status, done = downloader.next_chunk()
                 if callback:
                     callback(status.resumable_progress, status.total_size)
+
+        with open(filename, mode="w+b") as fd:
+            # Ideally would use files.export_media instead if
+            # metadata.get("mimeType").startswith("application/vnd.google-apps.")
+            # but that would first require a slow call to FetchMetadata()
+            try:
+                download(fd, files.get_media(fileId=file_id))
+            except errors.HttpError as error:
+                err_str = str(error).lower()
+                if "403" not in err_str or "use export" not in err_str:
+                    raise
+                mimetype = mimetype or "text/plain"
+                fd.seek(0)
+                download(
+                    fd, files.export_media(fileId=file_id, mimeType=mimetype)
+                )
 
             if mimetype == "text/plain" and remove_bom:
                 fd.seek(0)
