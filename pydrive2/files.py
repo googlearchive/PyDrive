@@ -4,6 +4,7 @@ import json
 
 from googleapiclient import errors
 from googleapiclient.http import MediaIoBaseUpload
+from googleapiclient.http import MediaIoBaseDownload
 from functools import wraps
 
 from .apiattr import ApiAttribute
@@ -220,7 +221,10 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
             self.FetchContent(mimetype, remove_bom)
         return self.content.getvalue().decode(encoding)
 
-    def GetContentFile(self, filename, mimetype=None, remove_bom=False):
+    @LoadMetadata
+    def GetContentFile(
+        self, filename, mimetype=None, remove_bom=False, callback=None
+    ):
         """Save content of this file as a local file.
 
     :param filename: name of the file to write to.
@@ -229,17 +233,26 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     :type mimetype: str
     :param remove_bom: Whether to remove the byte order marking.
     :type remove_bom: bool
+    :param callback: passed two arguments: (total trasferred, file size).
+    :type param: callable
     :raises: ApiRequestError, FileNotUploadedError, FileNotDownloadableError
     """
-        if (
-            self.content is None
-            or type(self.content) is not io.BytesIO
-            or self.has_bom == remove_bom
-        ):
-            self.FetchContent(mimetype, remove_bom)
-        f = open(filename, "wb")
-        f.write(self.content.getvalue())
-        f.close()
+        file_id = self.metadata.get("id") or self.get("id")
+        request = self.auth.service.files().get_media(fileId=file_id)
+        with open(filename, mode="w+b") as fd:
+            downloader = MediaIoBaseDownload(fd, request)
+            done = False
+            while done is False:
+                status, done = downloader.next_chunk()
+                if callback:
+                    callback(status.resumable_progress, status.total_size)
+
+            if mimetype == "text/plain" and remove_bom:
+                fd.seek(0)
+                self._RemovePrefix(
+                    fd, MIME_TYPE_TO_BOM[self["mimeType"]][mimetype]
+                )
+                self.has_bom = not remove_bom
 
     @LoadAuth
     def FetchMetadata(self, fields=None, fetch_all=False):
