@@ -5,7 +5,7 @@ import json
 from googleapiclient import errors
 from googleapiclient.http import MediaIoBaseUpload
 from googleapiclient.http import MediaIoBaseDownload
-from functools import wraps
+from functools import wraps, partial
 
 from .apiattr import ApiAttribute
 from .apiattr import ApiAttributeMixin
@@ -239,7 +239,11 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     """
         file_id = self.metadata.get("id") or self.get("id")
         files = self.auth.service.files()
-        get = files.get_media if mimetype is None else files.export_media
+        get = (
+            files.get_media
+            if mimetype is None
+            else partial(files.export_media, mimeType=mimetype)
+        )
         request = get(fileId=file_id)
         with open(filename, mode="w+b") as fd:
             downloader = MediaIoBaseDownload(fd, request)
