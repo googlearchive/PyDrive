@@ -237,14 +237,13 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     :type param: callable
     :raises: ApiRequestError, FileNotUploadedError, FileNotDownloadableError
     """
-        file_id = self.metadata.get("id") or self.get("id")
         files = self.auth.service.files()
         get = (
             files.get_media
             if mimetype is None
             else partial(files.export_media, mimeType=mimetype)
         )
-        request = get(fileId=file_id)
+        request = get(fileId=self.metadata.get("id") or self.get("id"))
         with open(filename, mode="w+b") as fd:
             downloader = MediaIoBaseDownload(fd, request)
             done = False
