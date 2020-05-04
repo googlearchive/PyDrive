@@ -31,6 +31,7 @@ class ApiRequestError(IOError):
         assert isinstance(http_error, errors.HttpError)
         content = json.loads(http_error.content.decode("utf-8"))
         self.error = content.get("error", {}) if content else {}
+        self.status = http_error.resp.status
 
         # Initialize args for backward compatibility
         super().__init__(http_error)
@@ -254,21 +255,23 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
             try:
                 download(fd, files.get_media(fileId=file_id))
             except errors.HttpError as error:
-                err_str = str(error).lower()
-                if "403" not in err_str or "use export" not in err_str:
+                err = ApiRequestError(error)
+                if err.status != 403 or "use export" not in err.error["message"]:
                     raise
                 mimetype = mimetype or "text/plain"
                 fd.seek(0)
-                download(
-                    fd, files.export_media(fileId=file_id, mimeType=mimetype)
-                )
+                try:
+                    download(
+                        fd, files.export_media(fileId=file_id, mimeType=mimetype)
+                    )
+                except errors.HttpError as error:
+                    raise ApiRequestError(error)
 
             if mimetype == "text/plain" and remove_bom:
                 fd.seek(0)
                 self._RemovePrefix(
                     fd, MIME_TYPE_TO_BOM[self["mimeType"]][mimetype]
                 )
-                self.has_bom = not remove_bom
 
     @LoadAuth
     def FetchMetadata(self, fields=None, fetch_all=False):
