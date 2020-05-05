@@ -4,6 +4,7 @@ import json
 
 from googleapiclient import errors
 from googleapiclient.http import MediaIoBaseUpload
+from googleapiclient.http import MediaIoBaseDownload
 from functools import wraps
 
 from .apiattr import ApiAttribute
@@ -33,6 +34,10 @@ class ApiRequestError(IOError):
 
         # Initialize args for backward compatibility
         super().__init__(http_error)
+
+    def GetField(self, field):
+        """Returns the `field` from the first error"""
+        return self.error.get("errors", [{}])[0].get(field, "")
 
 
 class FileNotDownloadableError(RuntimeError):
@@ -220,7 +225,9 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
             self.FetchContent(mimetype, remove_bom)
         return self.content.getvalue().decode(encoding)
 
-    def GetContentFile(self, filename, mimetype=None, remove_bom=False):
+    def GetContentFile(
+        self, filename, mimetype=None, remove_bom=False, callback=None
+    ):
         """Save content of this file as a local file.
 
     :param filename: name of the file to write to.
@@ -229,17 +236,53 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     :type mimetype: str
     :param remove_bom: Whether to remove the byte order marking.
     :type remove_bom: bool
+    :param callback: passed two arguments: (total trasferred, file size).
+    :type param: callable
     :raises: ApiRequestError, FileNotUploadedError, FileNotDownloadableError
     """
-        if (
-            self.content is None
-            or type(self.content) is not io.BytesIO
-            or self.has_bom == remove_bom
-        ):
-            self.FetchContent(mimetype, remove_bom)
-        f = open(filename, "wb")
-        f.write(self.content.getvalue())
-        f.close()
+        files = self.auth.service.files()
+        file_id = self.metadata.get("id") or self.get("id")
+
+        def download(fd, request):
+            downloader = MediaIoBaseDownload(fd, request)
+            done = False
+            while done is False:
+                status, done = downloader.next_chunk()
+                if callback:
+                    callback(status.resumable_progress, status.total_size)
+
+        with open(filename, mode="w+b") as fd:
+            # Ideally would use files.export_media instead if
+            # metadata.get("mimeType").startswith("application/vnd.google-apps.")
+            # but that would first require a slow call to FetchMetadata()
+            try:
+                download(fd, files.get_media(fileId=file_id))
+            except errors.HttpError as error:
+                exc = ApiRequestError(error)
+                if (
+                    exc.error["code"] != 403
+                    or exc.GetField("reason") != "fileNotDownloadable"
+                ):
+                    raise exc
+                mimetype = mimetype or "text/plain"
+                fd.seek(0)  # just in case `download()` modified `fd`
+                try:
+                    download(
+                        fd,
+                        files.export_media(fileId=file_id, mimeType=mimetype),
+                    )
+                except errors.HttpError as error:
+                    raise ApiRequestError(error)
+
+            if mimetype == "text/plain" and remove_bom:
+                fd.seek(0)
+                boms = [
+                    bom[mimetype]
+                    for bom in MIME_TYPE_TO_BOM.values()
+                    if mimetype in bom
+                ]
+                if boms:
+                    self._RemovePrefix(fd, boms[0])
 
     @LoadAuth
     def FetchMetadata(self, fields=None, fetch_all=False):

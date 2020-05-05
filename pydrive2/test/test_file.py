@@ -487,7 +487,7 @@ class GoogleDriveFileTest(unittest.TestCase):
         downloaded_file_name = "_tmp_downloaded_file_name.txt"
         pydrive_retry(
             lambda: file1.GetContentFile(
-                downloaded_file_name, mimetype="text/plain"
+                downloaded_file_name, mimetype="text/plain", remove_bom=True
             )
         )
         downloaded_string = open(downloaded_file_name).read()
