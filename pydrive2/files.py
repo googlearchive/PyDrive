@@ -31,7 +31,6 @@ class ApiRequestError(IOError):
         assert isinstance(http_error, errors.HttpError)
         content = json.loads(http_error.content.decode("utf-8"))
         self.error = content.get("error", {}) if content else {}
-        self.status = http_error.resp.status
 
         # Initialize args for backward compatibility
         super().__init__(http_error)
@@ -255,14 +254,17 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
             try:
                 download(fd, files.get_media(fileId=file_id))
             except errors.HttpError as error:
-                err = ApiRequestError(error)
-                if err.status != 403 or "use export" not in err.error["message"]:
-                    raise
+                exc = ApiRequestError(error)
+                reason = exc.error.get("errors", [{}])[0].get("reason", "")
+                if exc.error["code"] != 403 or reason != "??":
+                    print(reason)
+                    raise exc
                 mimetype = mimetype or "text/plain"
-                fd.seek(0)
+                fd.seek(0)  # just in case `download()` modified `fd`
                 try:
                     download(
-                        fd, files.export_media(fileId=file_id, mimeType=mimetype)
+                        fd,
+                        files.export_media(fileId=file_id, mimeType=mimetype),
                     )
                 except errors.HttpError as error:
                     raise ApiRequestError(error)
