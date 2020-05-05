@@ -35,6 +35,10 @@ class ApiRequestError(IOError):
         # Initialize args for backward compatibility
         super().__init__(http_error)
 
+    def GetField(self, field):
+        """Returns the `field` from the first error"""
+        return self.error.get("errors", [{}])[0].get(field, "")
+
 
 class FileNotDownloadableError(RuntimeError):
     """Error trying to download file that is not downloadable."""
@@ -255,9 +259,10 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
                 download(fd, files.get_media(fileId=file_id))
             except errors.HttpError as error:
                 exc = ApiRequestError(error)
-                reason = exc.error.get("errors", [{}])[0].get("reason", "")
-                if exc.error["code"] != 403 or reason != "??":
-                    print(reason)
+                if (
+                    exc.error["code"] != 403
+                    or exc.GetField("reason") != "fileNotDownloadable"
+                ):
                     raise exc
                 mimetype = mimetype or "text/plain"
                 fd.seek(0)  # just in case `download()` modified `fd`
