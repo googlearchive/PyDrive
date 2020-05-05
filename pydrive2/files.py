@@ -282,7 +282,7 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
                     if mimetype in bom
                 ]
                 if boms:
-                    self._RemovePrefix(fd, boms[0].encode("utf8"))
+                    self._RemovePrefix(fd, boms[0])
 
     @LoadAuth
     def FetchMetadata(self, fields=None, fetch_all=False):
