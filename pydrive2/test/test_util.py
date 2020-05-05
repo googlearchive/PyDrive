@@ -48,11 +48,7 @@ def pydrive_retry(call):
     try:
         result = call()
     except ApiRequestError as exception:
-        retry_codes = ["403", "500", "502", "503", "504"]
-        if any(
-            "HttpError {}".format(code) in str(exception)
-            for code in retry_codes
-        ):
+        if exception.error["code"] in [403, 500, 502, 503, 504]:
             raise PyDriveRetriableError("Google API request failed")
         raise
     return result
