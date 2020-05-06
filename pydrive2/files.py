@@ -225,6 +225,7 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
             self.FetchContent(mimetype, remove_bom)
         return self.content.getvalue().decode(encoding)
 
+    @LoadAuth
     def GetContentFile(
         self, filename, mimetype=None, remove_bom=False, callback=None
     ):
