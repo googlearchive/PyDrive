@@ -252,7 +252,11 @@ class GoogleDriveFileTest(unittest.TestCase):
         delete_file(self.first_file + "1")
         delete_file(self.second_file + "1")
 
-    def test_10_Files_Get_File(self):
+    def test_10_Files_Download_Service(self):
+        """
+        Tests that a fresh GoogleDrive object can correctly authenticate
+        and download from a file ID.
+        """
         delete_file(self.first_file + "1")
         delete_file(self.first_file + "2")
         drive = GoogleDrive(self.ga)
