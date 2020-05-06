@@ -252,6 +252,33 @@ class GoogleDriveFileTest(unittest.TestCase):
         delete_file(self.first_file + "1")
         delete_file(self.second_file + "1")
 
+    def test_10_Files_Get_File(self):
+        delete_file(self.first_file + "1")
+        delete_file(self.first_file + "2")
+        drive = GoogleDrive(self.ga)
+        file1 = drive.CreateFile()
+        filename = "prepatchtestfile"
+        content = "hello world!"
+
+        file1["title"] = filename
+        file1.SetContentString(content)
+        pydrive_retry(file1.Upload)  # Files.insert
+        self.assertEqual(file1.metadata["title"], filename)
+        pydrive_retry(lambda: file1.GetContentFile(self.first_file + "1"))
+
+        # fresh download-only instance
+        drive2 = GoogleDrive(self.ga)
+        file2 = drive2.CreateFile({"id": file1["id"]})
+        pydrive_retry(lambda: file2.GetContentFile(self.first_file + "2"))
+        self.assertEqual(
+            filecmp.cmp(self.first_file + "1", self.first_file + "2"), True
+        )
+
+        self.DeleteUploadedFiles(drive, [file1["id"]])
+
+        delete_file(self.first_file + "1")
+        delete_file(self.first_file + "2")
+
     # Tests for Trash/UnTrash/Delete.
     # ===============================
 
