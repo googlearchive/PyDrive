@@ -268,7 +268,9 @@ class GoogleDriveFileTest(unittest.TestCase):
         pydrive_retry(lambda: file1.GetContentFile(fileOut1))
 
         # fresh download-only instance
-        auth = GoogleAuth(settings_file_path("default.yaml"))
+        auth = GoogleAuth(
+            settings_file_path("default.yaml", os.path.join(self.tmpdir, ""))
+        )
         auth.ServiceAuth()
         drive2 = GoogleDrive(auth)
         file2 = drive2.CreateFile({"id": file1["id"]})
