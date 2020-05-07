@@ -20,6 +20,7 @@ from pydrive2.test import test_util
 from pydrive2.test.test_util import (
     pydrive_retry,
     setup_credentials,
+    create_file,
     delete_dir,
     delete_file,
     settings_file_path,
@@ -49,8 +50,7 @@ class GoogleDriveFileTest(unittest.TestCase):
     def getTempFile(cls, prefix="", content=""):
         filename = os.path.join(cls.tmpdir, prefix + str(time()))
         if content:
-            with open(filename, mode="wb") as fd:
-                fd.write(content)
+            create_file(filename, content)
         return filename
 
     def test_01_Files_Insert(self):
