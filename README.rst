@@ -115,26 +115,4 @@ File listing pagination made easy
 Concurrent access made easy
 ---------------------------
 
-All calls made are thread-safe. The underlying implementation in the
-google-api-client library
-`is not thread-safe <https://developers.google.com/api-client-library/python/guide/thread_safety>`_,
-which means that every request has to re-authenticate an http object. You
-can avoid this overhead by
-creating your own http object for each thread and re-use it for every call.
-
-This can be done as follows:
-
-.. code:: python
-
-    # Create httplib.Http() object.
-    http = drive.auth.Get_Http_Object()
-
-    # Create file object to upload.
-    file_obj = drive.CreateFile()
-    file_obj['title'] = "file name"
-
-    # Upload the file and pass the http object into the call to Upload.
-    file_obj.Upload(param={"http": http})
-
-You can specify the http-object in every access method which takes a *param*
-parameter.
+All calls made are thread-safe.
