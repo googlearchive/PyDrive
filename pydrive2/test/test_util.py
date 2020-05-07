@@ -27,12 +27,12 @@ def setup_credentials(credentials_path=DEFAULT_USER_CREDENTIALS_FILE):
             credentials_file.write(os.getenv(GDRIVE_USER_CREDENTIALS_DATA))
 
 
-def settings_file_path(settings_file):
+def settings_file_path(settings_file, wkdir=LOCAL_PATH):
     template_path = SETTINGS_PATH + settings_file
-    local_path = LOCAL_PATH + settings_file
+    local_path = wkdir + settings_file
     assert os.path.exists(template_path)
-    if not os.path.exists(LOCAL_PATH):
-        os.makedirs(LOCAL_PATH, exist_ok=True)
+    if not os.path.exists(wkdir):
+        os.makedirs(wkdir, exist_ok=True)
     if not os.path.exists(local_path):
         copyfile(template_path, local_path)
     return local_path

@@ -39,7 +39,9 @@ class GoogleDriveFileTest(unittest.TestCase):
 
         cls.tmpdir = mkdtemp()
 
-        cls.ga = GoogleAuth(settings_file_path("default.yaml"))
+        cls.ga = GoogleAuth(
+            settings_file_path("default.yaml", os.path.join(cls.tmpdir, ""))
+        )
         cls.ga.ServiceAuth()
 
     @classmethod
