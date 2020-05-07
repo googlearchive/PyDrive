@@ -3,4 +3,4 @@
 set -x
 set -e
 
-py.test -v -s -m "not manual" -k GoogleDriveFileTest
+py.test -v -s -m "not manual" -k GoogleDriveFileTest --tests-per-worker auto

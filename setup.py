@@ -4,6 +4,7 @@ from setuptools import setup
 # Extra dependecies to run tests
 tests_requirements = [
     "pytest>=4.6.0",
+    "pytest-parallel",
     "timeout-decorator",
     "funcy>=1.14",
     "flake8",
