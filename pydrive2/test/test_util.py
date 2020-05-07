@@ -82,6 +82,6 @@ def create_file(path, content):
         f.write(content)
 
 
-def delete_file(path):
+def delete_file(path, dir=False):
     if os.path.exists(path):
-        os.remove(path)
+        (os.rmdir if dir else os.remove)(path)
