@@ -6,7 +6,7 @@ import posixpath
 from funcy import retry
 from funcy.py3 import cat
 from pydrive2.files import ApiRequestError
-from shutil import copyfile
+from shutil import copyfile, rmtree
 
 newline_pattern = re.compile(r"[\r\n]")
 
@@ -82,6 +82,10 @@ def create_file(path, content):
         f.write(content)
 
 
-def delete_file(path, dir=False):
+def delete_file(path):
     if os.path.exists(path):
-        (os.rmdir if dir else os.remove)(path)
+        os.remove(path)
+
+
+def delete_dir(path):
+    rmtree(path, ignore_errors=True)
