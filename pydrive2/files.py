@@ -239,10 +239,12 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     :type remove_bom: bool
     :param callback: passed two arguments: (total trasferred, file size).
     :type param: callable
-    :raises: ApiRequestError
+    :raises: ApiRequestError, FileNotUploadedError
     """
         files = self.auth.service.files()
         file_id = self.metadata.get("id") or self.get("id")
+        if not file_id:
+            raise FileNotUploadedError()
 
         def download(fd, request):
             # Ensures thread safety. Similar to other places where we call
