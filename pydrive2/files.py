@@ -239,12 +239,17 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     :type remove_bom: bool
     :param callback: passed two arguments: (total trasferred, file size).
     :type param: callable
-    :raises: ApiRequestError, FileNotUploadedError, FileNotDownloadableError
+    :raises: ApiRequestError
     """
         files = self.auth.service.files()
         file_id = self.metadata.get("id") or self.get("id")
 
         def download(fd, request):
+            # Ensures thread safety. Similar to other places where we call
+            # `.execute(http=self.http)` to pass a client from the thread
+            # local storage.
+            if self.http:
+                request.http = self.http
             downloader = MediaIoBaseDownload(fd, request)
             done = False
             while done is False:
