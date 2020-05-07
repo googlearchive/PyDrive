@@ -681,11 +681,28 @@ class GoogleDriveFileTest(unittest.TestCase):
         def run(self):
             pydrive_retry(lambda: self.gdrive_file.Upload(param=self.param))
 
+    class DownloadWorker:
+        def __init__(self, gdrive_file, generate_http=False):
+            self.gdrive_file = gdrive_file
+            self.param = {}
+            if generate_http:
+                gdrive_file.http = gdrive_file.auth.Get_Http_Object()
+
+        def run(self):
+            pydrive_retry(
+                lambda: self.gdrive_file.GetContentFile(
+                    self.gdrive_file["title"]
+                )
+            )
+
     FILE_UPLOAD_COUNT = 10
 
     def _parallel_uploader(
         self, num_of_uploads, num_of_workers, use_per_thread_http=False
     ):
+        """
+        :returns: list[str] of file IDs
+        """
         drive = GoogleDrive(self.ga)
         thread_pool = ThreadPoolExecutor(max_workers=num_of_workers)
         first_file = self.getTempFile("first_file", "some string")
@@ -730,24 +747,62 @@ class GoogleDriveFileTest(unittest.TestCase):
         )
         self.assertTrue(len(files) == self.FILE_UPLOAD_COUNT)
 
+        return [fi["id"] for fi in upload_files]
+
+    def _parallel_downloader(
+        self, file_ids, num_of_workers, use_per_thread_http=False
+    ):
+        drive = GoogleDrive(self.ga)
+        thread_pool = ThreadPoolExecutor(max_workers=num_of_workers)
+
+        # Create list of gdrive_files.
+        download_files = []
+        for file_id in file_ids:
+            file1 = drive.CreateFile({"id": file_id})
+            file1["title"] = self.getTempFile()
+            download_files.append(file1)
+
+        # Ensure files don't exist yet.
+        for file_obj in download_files:
+            self.assertTrue(not delete_file(file_obj["title"]))
+
+        # Submit upload jobs to ThreadPoolExecutor.
+        futures = []
+        for file_obj in download_files:
+            download_worker = self.DownloadWorker(
+                file_obj, use_per_thread_http
+            )
+            futures.append(thread_pool.submit(download_worker.run))
+
+        # Ensure that all threads a) return, and b) encountered no exceptions.
+        for future in as_completed(futures):
+            self.assertIsNone(future.exception())
+        thread_pool.shutdown()
+
+        # Ensure all files were downloaded.
+        for file_obj in download_files:
+            self.assertTrue(delete_file(file_obj["title"]))
+
         # Remove uploaded files.
-        self.DeleteUploadedFiles(drive, [fi["id"] for fi in upload_files])
+        self.DeleteUploadedFiles(drive, file_ids)
 
     @pytest.mark.skipif(
         sys.platform == "win32",
         reason="timeout_decorator doesn't support Windows",
     )
-    @timeout_decorator.timeout(160)
+    @timeout_decorator.timeout(320)
     def test_Parallel_Files_Insert_File_Auto_Generated_HTTP(self):
-        self._parallel_uploader(self.FILE_UPLOAD_COUNT, 10)
+        files = self._parallel_uploader(self.FILE_UPLOAD_COUNT, 10)
+        self._parallel_downloader(files, 10)
 
     @pytest.mark.skipif(
         sys.platform == "win32",
         reason="timeout_decorator doesn't support Windows",
     )
-    @timeout_decorator.timeout(160)
+    @timeout_decorator.timeout(320)
     def test_Parallel_Insert_File_Passed_HTTP(self):
-        self._parallel_uploader(self.FILE_UPLOAD_COUNT, 10, True)
+        files = self._parallel_uploader(self.FILE_UPLOAD_COUNT, 10, True)
+        self._parallel_downloader(files, 10, True)
 
     # Helper functions.
     # =================

@@ -85,6 +85,8 @@ def create_file(path, content):
 def delete_file(path):
     if os.path.exists(path):
         os.remove(path)
+        return True
+    return False
 
 
 def delete_dir(path):
