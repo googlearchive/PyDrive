@@ -671,22 +671,16 @@ class GoogleDriveFileTest(unittest.TestCase):
 
     # Setup for concurrent upload testing.
     # =====================================
-    class UploadWorker:
-        def __init__(self, gdrive_file, generate_http=False):
+    class UploadWorker(object):
+        def __init__(self, gdrive_file):
             self.gdrive_file = gdrive_file
-            self.param = {}
-            if generate_http:
-                self.param = {"http": gdrive_file.auth.Get_Http_Object()}
 
         def run(self):
-            pydrive_retry(lambda: self.gdrive_file.Upload(param=self.param))
+            pydrive_retry(lambda: self.gdrive_file.Upload())
 
-    class DownloadWorker:
-        def __init__(self, gdrive_file, generate_http=False):
+    class DownloadWorker(object):
+        def __init__(self, gdrive_file):
             self.gdrive_file = gdrive_file
-            self.param = {}
-            if generate_http:
-                gdrive_file.http = gdrive_file.auth.Get_Http_Object()
 
         def run(self):
             pydrive_retry(
@@ -729,9 +723,7 @@ class GoogleDriveFileTest(unittest.TestCase):
         # Submit upload jobs to ThreadPoolExecutor.
         futures = []
         for i in range(num_of_uploads):
-            upload_worker = self.UploadWorker(
-                upload_files[i], use_per_thread_http
-            )
+            upload_worker = self.UploadWorker(upload_files[i])
             futures.append(thread_pool.submit(upload_worker.run))
 
         # Ensure that all threads a) return, and b) encountered no exceptions.
@@ -769,9 +761,7 @@ class GoogleDriveFileTest(unittest.TestCase):
         # Submit upload jobs to ThreadPoolExecutor.
         futures = []
         for file_obj in download_files:
-            download_worker = self.DownloadWorker(
-                file_obj, use_per_thread_http
-            )
+            download_worker = self.DownloadWorker(file_obj)
             futures.append(thread_pool.submit(download_worker.run))
 
         # Ensure that all threads a) return, and b) encountered no exceptions.
