@@ -670,9 +670,7 @@ class GoogleDriveFileTest(unittest.TestCase):
     # =====================================
     FILE_UPLOAD_COUNT = 10
 
-    def _parallel_uploader(
-        self, num_of_uploads, num_of_workers, use_per_thread_http=False
-    ):
+    def _parallel_uploader(self, num_of_uploads, num_of_workers):
         """
         :returns: list[str] of file IDs
         """
@@ -719,9 +717,7 @@ class GoogleDriveFileTest(unittest.TestCase):
 
         return [fi["id"] for fi in upload_files]
 
-    def _parallel_downloader(
-        self, file_ids, num_of_workers, use_per_thread_http=False
-    ):
+    def _parallel_downloader(self, file_ids, num_of_workers):
         drive = GoogleDrive(self.ga)
         thread_pool = ThreadPoolExecutor(max_workers=num_of_workers)
 
@@ -762,18 +758,9 @@ class GoogleDriveFileTest(unittest.TestCase):
         reason="timeout_decorator doesn't support Windows",
     )
     @timeout_decorator.timeout(320)
-    def test_Parallel_Files_Insert_File_Auto_Generated_HTTP(self):
+    def test_Parallel_Insert_File_Passed_HTTP(self):
         files = self._parallel_uploader(self.FILE_UPLOAD_COUNT, 10)
         self._parallel_downloader(files, 10)
-
-    @pytest.mark.skipif(
-        sys.platform == "win32",
-        reason="timeout_decorator doesn't support Windows",
-    )
-    @timeout_decorator.timeout(320)
-    def test_Parallel_Insert_File_Passed_HTTP(self):
-        files = self._parallel_uploader(self.FILE_UPLOAD_COUNT, 10, True)
-        self._parallel_downloader(files, 10, True)
 
     # Helper functions.
     # =================
