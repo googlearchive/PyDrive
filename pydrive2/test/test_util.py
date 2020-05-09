@@ -44,9 +44,9 @@ class PyDriveRetriableError(Exception):
 
 # 15 tries, start at 0.5s, multiply by golden ratio, cap at 20s
 @retry(15, PyDriveRetriableError, timeout=lambda a: min(0.5 * 1.618 ** a, 20))
-def pydrive_retry(call):
+def pydrive_retry(call, *args, **kwargs):
     try:
-        result = call()
+        result = call(*args, **kwargs)
     except ApiRequestError as exception:
         if exception.error["code"] in [403, 500, 502, 503, 504]:
             raise PyDriveRetriableError("Google API request failed")
@@ -60,9 +60,7 @@ def pydrive_list_item(drive, query, max_results=1000):
     file_list = drive.ListFile(param)
 
     # Isolate and decorate fetching of remote drive items in pages
-    get_list = lambda: pydrive_retry(  # noqa: E731
-        lambda: next(file_list, None)
-    )
+    get_list = lambda: pydrive_retry(next, file_list, None)  # noqa: E731
 
     # Fetch pages until None is received, lazily flatten the thing
     return cat(iter(get_list, None))
