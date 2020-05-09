@@ -739,11 +739,11 @@ class GoogleDriveFileTest(unittest.TestCase):
         # Submit upload jobs to ThreadPoolExecutor.
         futures = []
         for file_obj in download_files:
-
-            def worker():
-                file_obj.GetContentFile(file_obj["title"])
-
-            futures.append(thread_pool.submit(pydrive_retry, worker))
+            futures.append(
+                thread_pool.submit(
+                    pydrive_retry, file_obj.GetContentFile, file_obj["title"]
+                )
+            )
 
         # Ensure that all threads a) return, and b) encountered no exceptions.
         for future in as_completed(futures):
