@@ -413,7 +413,9 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
         try:
             permission = (
                 self.auth.service.permissions()
-                .insert(fileId=file_id, body=new_permission)
+                .insert(
+                    fileId=file_id, body=new_permission, supportsAllDrives=True
+                )
                 .execute(http=self.http)
             )
         except errors.HttpError as error:
