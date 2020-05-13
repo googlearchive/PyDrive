@@ -9,7 +9,7 @@ PyDrive2
 `google-api-python-client <https://github.com/google/google-api-python-client>`_
 that simplifies many common Google Drive API tasks. It is an actively
 maintained fork of `https://pypi.python.org/pypi/PyDrive <https://pypi.python.org/pypi/PyDrive>`_.
-By the authors and maintainers of the `DVC | Git for Data <https://dvc.org>`
+By the authors and maintainers of the `Git for Data <https://dvc.org>`_ - DVC
 project.
 
 Project Info
