@@ -117,4 +117,4 @@ File listing pagination made easy
 Concurrent access made easy
 ---------------------------
 
-All calls made are thread-safe.
+All API functions made to be thread-safe.
