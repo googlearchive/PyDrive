@@ -291,9 +291,11 @@ class GoogleDriveFileTest(unittest.TestCase):
 
         buffer1 = pydrive_retry(file1.GetContentIOBuffer)
         self.assertEqual(file1.metadata["title"], filename)
+        self.assertEqual(len(buffer1), len(content))
         self.assertEqual(b"".join(iter(buffer1)).decode("ascii"), content)
 
         buffer2 = pydrive_retry(file1.GetContentIOBuffer, encoding="ascii")
+        self.assertEqual(len(buffer2), len(content))
         self.assertEqual("".join(iter(buffer2)), content)
 
         self.DeleteUploadedFiles(drive, [file1["id"]])

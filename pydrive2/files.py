@@ -137,6 +137,7 @@ class MediaIoReadable(object):
         self.downloader = MediaIoBaseDownload(
             self._fd, request, chunksize=chunksize
         )
+        self.size = None
         self._pre_buffer = False
         if pre_buffer:
             self.read()
@@ -157,7 +158,8 @@ class MediaIoReadable(object):
         if self.done:
             return None
         try:
-            _, self.done = self.downloader.next_chunk()
+            status, self.done = self.downloader.next_chunk()
+            self.size = status.total_size
         except errors.HttpError as error:
             raise ApiRequestError(error)
         return self._fd.read()
@@ -171,6 +173,9 @@ class MediaIoReadable(object):
             if chunk is None:
                 break
             yield chunk
+
+    def __len__(self):
+        return self.size
 
 
 class GoogleDriveFile(ApiAttributeMixin, ApiResource):
