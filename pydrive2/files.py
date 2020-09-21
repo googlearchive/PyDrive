@@ -1,3 +1,4 @@
+import os
 import io
 import mimetypes
 import json
@@ -261,7 +262,9 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     :param content: content of the file in string.
     :type content: str
     """
-        self.content = io.BytesIO(content.encode(encoding))
+        if content:
+            self.content = io.BytesIO(content.encode(encoding))
+
         if self.get("mimeType") is None:
             self["mimeType"] = "text/plain"
 
@@ -275,7 +278,9 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     :param filename: name of the file to be uploaded.
     :type filename: str.
     """
-        self.content = open(filename, "rb")
+        if os.path.getsize(filename):
+            self.content = open(filename, "rb")
+
         if self.get("title") is None:
             self["title"] = filename
         if self.get("mimeType") is None:
@@ -353,20 +358,32 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
                 download(fd, files.get_media(fileId=file_id))
             except errors.HttpError as error:
                 exc = ApiRequestError(error)
-                if (
-                    exc.error["code"] != 403
-                    or exc.GetField("reason") != "fileNotDownloadable"
-                ):
+                code = exc.error["code"]
+                reason = exc.GetField("reason")
+                if code == 403 and reason == "fileNotDownloadable":
+                    mimetype = mimetype or "text/plain"
+                    fd.seek(0)  # just in case `download()` modified `fd`
+                    try:
+                        download(
+                            fd,
+                            files.export_media(
+                                fileId=file_id, mimeType=mimetype
+                            ),
+                        )
+                    except errors.HttpError as error:
+                        raise ApiRequestError(error)
+                elif code == 416 and reason == "requestedRangeNotSatisfiable":
+                    # NOTE: An empty file case. Wasting one API call to make
+                    # absolutely sure. See
+                    # https://github.com/iterative/dvc/issues/4507
+                    try:
+                        self.FetchMetadata(fields="fileSize")
+                        if int(self["fileSize"]) != 0:
+                            raise exc
+                    except errors.HttpError:
+                        raise exc
+                else:
                     raise exc
-                mimetype = mimetype or "text/plain"
-                fd.seek(0)  # just in case `download()` modified `fd`
-                try:
-                    download(
-                        fd,
-                        files.export_media(fileId=file_id, mimeType=mimetype),
-                    )
-                except errors.HttpError as error:
-                    raise ApiRequestError(error)
 
             if mimetype == "text/plain" and remove_bom:
                 fd.seek(0)

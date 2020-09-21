@@ -300,6 +300,40 @@ class GoogleDriveFileTest(unittest.TestCase):
 
         self.DeleteUploadedFiles(drive, [file1["id"]])
 
+    def test_12_Upload_Download_Empty_File(self):
+        filename = os.path.join(self.tmpdir, str(time()))
+        create_file(filename, "")
+
+        drive = GoogleDrive(self.ga)
+        file1 = drive.CreateFile()
+        file1.SetContentFile(filename)
+        pydrive_retry(file1.Upload)
+
+        fileOut1 = self.getTempFile()
+        pydrive_retry(file1.GetContentFile, fileOut1)
+        self.assertEqual(os.path.getsize(fileOut1), 0)
+
+        self.DeleteUploadedFiles(drive, [file1["id"]])
+
+    def test_13_Upload_Download_Empty_String(self):
+        drive = GoogleDrive(self.ga)
+        file1 = drive.CreateFile()
+        file1.SetContentString("")
+        pydrive_retry(file1.Upload)
+
+        self.assertEqual(pydrive_retry(file1.GetContentString), "")
+
+        # Force download and double check content
+        pydrive_retry(file1.FetchContent)
+        self.assertEqual(file1.GetContentString(), "")
+
+        # Download file from id
+        file2 = drive.CreateFile({"id": file1["id"]})
+        pydrive_retry(file2.FetchContent)
+        self.assertEqual(file2.GetContentString(), "")
+
+        self.DeleteUploadedFiles(drive, [file1["id"]])
+
     # Tests for Trash/UnTrash/Delete.
     # ===============================
 
