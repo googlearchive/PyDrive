@@ -9,7 +9,7 @@ Project Info
 ------------
 
 - Homepage: `https://pypi.python.org/pypi/PyDrive <https://pypi.python.org/pypi/PyDrive>`_
-- Documentation: `Official documentation on GitHub pages <https://gsuitedevs.github.io/PyDrive/docs/build/html/index.html>`_
+- Documentation: `Official documentation on GitHub pages <https://googleworkspace.github.io/PyDrive/docs/build/html/index.html>`_
 - GitHub: `https://github.com/gsuitedevs/PyDrive <https://github.com/gsuitedevs/PyDrive>`_
 
 Features of PyDrive
