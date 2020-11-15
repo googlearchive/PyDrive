@@ -7,7 +7,7 @@ PyDrive2
 
 *PyDrive2* is a wrapper library of
 `google-api-python-client <https://github.com/google/google-api-python-client>`_
-that simplifies many common Google Drive API tasks. It is an actively
+that simplifies many common Google Drive API V2 tasks. It is an actively
 maintained fork of `https://pypi.python.org/pypi/PyDrive <https://pypi.python.org/pypi/PyDrive>`_.
 By the authors and maintainers of the `Git for Data <https://dvc.org>`_ - DVC
 project.
@@ -24,7 +24,7 @@ Features of PyDrive2
 --------------------
 
 -  Simplifies OAuth2.0 into just few lines with flexible settings.
--  Wraps `Google Drive API <https://developers.google.com/drive/>`_ into
+-  Wraps `Google Drive API V2 <https://developers.google.com/drive/v2/web/about-sdk>`_ into
    classes of each resource to make your program more object-oriented.
 -  Helps common operations else than API calls, such as content fetching
    and pagination control.

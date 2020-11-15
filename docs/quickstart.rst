@@ -12,9 +12,8 @@ Drive API requires OAuth2.0 for authentication. *PyDrive2* makes your life much 
 
  a. Select 'Application type' to be *Web application*.
  b. Enter an appropriate name.
- c. Input *http://localhost:8080* for 'Authorized JavaScript origins'.
- d. Input *http://localhost:8080/* for 'Authorized redirect URIs'.
- e. Click 'Create'.
+ c. Input *http://localhost:8080/* for 'Authorized redirect URIs'.
+ d. Click 'Create'.
 
 5. Click 'Download JSON' on the right side of Client ID to download **client_secret_<really long ID>.json**.
 

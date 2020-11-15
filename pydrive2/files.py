@@ -211,20 +211,22 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
             self.update(metadata)
         self._ALL_FIELDS = (
             "alternateLink,appDataContents,"
-            "canComment,canReadRevisions,"
+            "canComment,canReadRevisions,capabilities"
             "copyable,createdDate,defaultOpenWithLink,description,"
             "downloadUrl,editable,embedLink,etag,explicitlyTrashed,"
             "exportLinks,fileExtension,fileSize,folderColorRgb,"
-            "fullFileExtension,headRevisionId,iconLink,id,"
+            "fullFileExtension,hasAugmentedPermissions,"
+            "headRevisionId,iconLink,id,"
             "imageMediaMetadata,indexableText,isAppAuthorized,kind,"
             "labels,lastModifyingUser,lastModifyingUserName,"
             "lastViewedByMeDate,markedViewedByMeDate,md5Checksum,"
             "mimeType,modifiedByMeDate,modifiedDate,openWithLinks,"
             "originalFilename,ownedByMe,ownerNames,owners,parents,"
             "permissions,properties,quotaBytesUsed,selfLink,shareable,"
-            "shared,sharedWithMeDate,sharingUser,spaces,thumbnail,"
-            "thumbnailLink,title,userPermission,version,"
-            "videoMediaMetadata,webContentLink,webViewLink,writersCanShare"
+            "shared,sharedWithMeDate,sharingUser,spaces,teamDriveId,"
+            "thumbnail,thumbnailLink,title,trashedDate,trashingUser"
+            "userPermission,version,videoMediaMetadata,webContentLink,"
+            "webViewLink,writersCanShare"
         )
         self.has_bom = True
 
@@ -537,25 +539,31 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
     """
         self._FilesDelete(param=param)
 
-    def InsertPermission(self, new_permission):
+    def InsertPermission(self, new_permission, param=None):
         """Insert a new permission. Re-fetches all permissions after call.
 
     :param new_permission: The new permission to insert, please see the
                            official Google Drive API guide on permissions.insert
                            for details.
-
     :type new_permission: object
+
+    :param param: addition parameters to pass
+    :type param: dict
 
     :return: The permission object.
     :rtype: object
     """
-        file_id = self.metadata.get("id") or self["id"]
+        if param is None:
+            param = {}
+        param["fileId"] = self.metadata.get("id") or self["id"]
+        param["body"] = new_permission
+        # Teamdrive support
+        param["supportsAllDrives"] = True
+
         try:
             permission = (
                 self.auth.service.permissions()
-                .insert(
-                    fileId=file_id, body=new_permission, supportsAllDrives=True
-                )
+                .insert(**param)
                 .execute(http=self.http)
             )
         except errors.HttpError as error:

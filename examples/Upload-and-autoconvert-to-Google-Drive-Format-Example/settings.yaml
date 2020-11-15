@@ -1,0 +1,19 @@
+# Original author: Evren Yurtesen - https://github.com/yurtesen/
+
+client_config_backend: settings
+client_config:
+  client_id: <INSERT YOUR CLIENT_ID HERE>
+  client_secret: <INSERT YOUR SECRET HERE>
+  auth_uri: https://accounts.google.com/o/oauth2/auth
+  token_uri: https://accounts.google.com/o/oauth2/token
+  redirect_uri: urn:ietf:wg:oauth:2.0:oob
+  revoke_uri:
+
+save_credentials: True
+save_credentials_backend: file
+save_credentials_file: <STORAGE PATH, e.g. /usr/local/scripts/pydrive/credentials.json>
+
+get_refresh_token: True
+
+oauth_scope:
+  - https://www.googleapis.com/auth/drive.file
