@@ -47,7 +47,10 @@ master_doc = "index"
 
 # General information about the project.
 project = u"PyDrive2"
-copyright = u"2020, JunYoung Gwak, Scott Blevins, Robin Nabel, Google Inc., Iterative Inc"
+copyright = (
+    u"2020, JunYoung Gwak, Scott Blevins, Robin Nabel, Google Inc, "
+    u"Iterative Inc"
+)
 author = u"JunYoung Gwak, Scott Blevins, Robin Nabel, Iterative Inc"
 
 # The version info for the project you're documenting, acts as replacement for
