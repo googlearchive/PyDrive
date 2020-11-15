@@ -849,13 +849,16 @@ not downloaded by FetchMetadata by default.</p>
 
 <dl class="py method">
 <dt id="pydrive2.files.GoogleDriveFile.InsertPermission">
-<code class="sig-name descname">InsertPermission</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_permission</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.files.GoogleDriveFile.InsertPermission" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">InsertPermission</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_permission</span></em>, <em class="sig-param"><span class="n">param</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.files.GoogleDriveFile.InsertPermission" title="Permalink to this definition">¶</a></dt>
 <dd><p>Insert a new permission. Re-fetches all permissions after call.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>new_permission</strong> (<em>object</em>) – The new permission to insert, please see the
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>new_permission</strong> (<em>object</em>) – The new permission to insert, please see the
 official Google Drive API guide on permissions.insert
-for details.</p>
+for details.</p></li>
+<li><p><strong>param</strong> (<em>dict</em>) – addition parameters to pass</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>The permission object.</p>
@@ -1072,7 +1075,7 @@ Sets mimeType to be ‘text/plain’ if not specified.</p>
   <div role="contentinfo">
     <p>
         
-        &copy; Copyright 2020, JunYoung Gwak, Scott Blevins, Robin Nabel, Google Inc., Iterative Inc
+        &copy; Copyright 2020, JunYoung Gwak, Scott Blevins, Robin Nabel, Google Inc, Iterative Inc
 
     </p>
   </div>
