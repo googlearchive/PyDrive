@@ -64,6 +64,9 @@ jobs:
       on:
         tags: true
         repo: iterative/PyDrive2
+      edge:
+        source: 'native-api/dpl'
+        branch: 'pip_fix_upgrade_deps'
 
 before_install:
   - bash ./scripts/ci/before_install.sh
