@@ -436,7 +436,7 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
         """Download file's metadata from id using Files.get().
 
     :param fields: The fields to include, as one string, each entry separated
-    by commas, e.g. 'fields,labels'.
+                   by commas, e.g. 'fields,labels'.
     :type fields: str
 
     :param fetch_all: Whether to fetch all fields.
@@ -541,7 +541,8 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
         """Insert a new permission. Re-fetches all permissions after call.
 
     :param new_permission: The new permission to insert, please see the
-    official Google Drive API guide on permissions.insert for details.
+                           official Google Drive API guide on permissions.insert
+                           for details.
 
     :type new_permission: object
 

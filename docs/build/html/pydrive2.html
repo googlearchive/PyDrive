@@ -1,0 +1,1110 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pydrive2 package &mdash; PyDrive2 1.6.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="File listing made easy" href="filelist.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> PyDrive2
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.6.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="oauth.html">OAuth made easy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filemanagement.html">File management made easy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filelist.html">File listing made easy</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">pydrive2 package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-pydrive2.apiattr">pydrive2.apiattr module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-pydrive2.auth">pydrive2.auth module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-pydrive2.drive">pydrive2.drive module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-pydrive2.files">pydrive2.files module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-pydrive2.settings">pydrive2.settings module</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PyDrive2</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>pydrive2 package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/pydrive2.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pydrive2-package">
+<h1>pydrive2 package<a class="headerlink" href="#pydrive2-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-pydrive2.apiattr">
+<span id="pydrive2-apiattr-module"></span><h2>pydrive2.apiattr module<a class="headerlink" href="#module-pydrive2.apiattr" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="pydrive2.apiattr.ApiAttribute">
+<em class="property">class </em><code class="sig-prename descclassname">pydrive2.apiattr.</code><code class="sig-name descname">ApiAttribute</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.apiattr.ApiAttribute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A data descriptor that sets and returns values.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="pydrive2.apiattr.ApiAttributeMixin">
+<em class="property">class </em><code class="sig-prename descclassname">pydrive2.apiattr.</code><code class="sig-name descname">ApiAttributeMixin</code><a class="headerlink" href="#pydrive2.apiattr.ApiAttributeMixin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Mixin to initialize required global variables to use ApiAttribute.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="pydrive2.apiattr.ApiResource">
+<em class="property">class </em><code class="sig-prename descclassname">pydrive2.apiattr.</code><code class="sig-name descname">ApiResource</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.apiattr.ApiResource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
+<p>Super class of all api resources.</p>
+<p>Inherits and behaves as a python dictionary to handle api resources.
+Save clean copy of metadata in self.metadata as a dictionary.
+Provides changed metadata elements to efficiently update api resources.</p>
+<dl class="py method">
+<dt id="pydrive2.apiattr.ApiResource.GetChanges">
+<code class="sig-name descname">GetChanges</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.apiattr.ApiResource.GetChanges" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns changed metadata elements to update api resources efficiently.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>dict – changed metadata elements.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydrive2.apiattr.ApiResource.UpdateMetadata">
+<code class="sig-name descname">UpdateMetadata</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">metadata</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.apiattr.ApiResource.UpdateMetadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update metadata and mark all of them to be clean.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pydrive2.apiattr.ApiResource.auth">
+<code class="sig-name descname">auth</code><a class="headerlink" href="#pydrive2.apiattr.ApiResource.auth" title="Permalink to this definition">¶</a></dt>
+<dd><p>A data descriptor that sets and returns values.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydrive2.apiattr.ApiResource.update">
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.apiattr.ApiResource.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overwritten method of dictionary.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="pydrive2.apiattr.ApiResourceList">
+<em class="property">class </em><code class="sig-prename descclassname">pydrive2.apiattr.</code><code class="sig-name descname">ApiResourceList</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">auth</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">metadata</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.apiattr.ApiResourceList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pydrive2.apiattr.ApiAttributeMixin" title="pydrive2.apiattr.ApiAttributeMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydrive2.apiattr.ApiAttributeMixin</span></code></a>, <a class="reference internal" href="#pydrive2.apiattr.ApiResource" title="pydrive2.apiattr.ApiResource"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydrive2.apiattr.ApiResource</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Abstract class of all api list resources.</p>
+<p>Inherits ApiResource and builds iterator to list any API resource.</p>
+<dl class="py method">
+<dt id="pydrive2.apiattr.ApiResourceList.GetList">
+<code class="sig-name descname">GetList</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.apiattr.ApiResourceList.GetList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get list of API resources.</p>
+<p>If ‘maxResults’ is not specified, it will automatically iterate through
+every resources available. Otherwise, it will make API call once and
+update ‘pageToken’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list – list of API resources.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydrive2.apiattr.ApiResourceList.Reset">
+<code class="sig-name descname">Reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.apiattr.ApiResourceList.Reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets current iteration</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pydrive2.apiattr.ApiResourceList.metadata">
+<code class="sig-name descname">metadata</code><a class="headerlink" href="#pydrive2.apiattr.ApiResourceList.metadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>A data descriptor that sets and returns values.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pydrive2.auth">
+<span id="pydrive2-auth-module"></span><h2>pydrive2.auth module<a class="headerlink" href="#module-pydrive2.auth" title="Permalink to this headline">¶</a></h2>
+<dl class="py exception">
+<dt id="pydrive2.auth.AuthError">
+<em class="property">exception </em><code class="sig-prename descclassname">pydrive2.auth.</code><code class="sig-name descname">AuthError</code><a class="headerlink" href="#pydrive2.auth.AuthError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Base error for authentication/authorization errors.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="pydrive2.auth.AuthenticationError">
+<em class="property">exception </em><code class="sig-prename descclassname">pydrive2.auth.</code><code class="sig-name descname">AuthenticationError</code><a class="headerlink" href="#pydrive2.auth.AuthenticationError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pydrive2.auth.AuthError" title="pydrive2.auth.AuthError"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydrive2.auth.AuthError</span></code></a></p>
+<p>General authentication error.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="pydrive2.auth.AuthenticationRejected">
+<em class="property">exception </em><code class="sig-prename descclassname">pydrive2.auth.</code><code class="sig-name descname">AuthenticationRejected</code><a class="headerlink" href="#pydrive2.auth.AuthenticationRejected" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pydrive2.auth.AuthError" title="pydrive2.auth.AuthError"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydrive2.auth.AuthError</span></code></a></p>
+<p>User rejected authentication.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pydrive2.auth.CheckAuth">
+<code class="sig-prename descclassname">pydrive2.auth.</code><code class="sig-name descname">CheckAuth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">decoratee</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.auth.CheckAuth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorator to check if it requires OAuth2 flow request.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pydrive2.auth.CheckServiceAuth">
+<code class="sig-prename descclassname">pydrive2.auth.</code><code class="sig-name descname">CheckServiceAuth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">decoratee</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.auth.CheckServiceAuth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorator to authorize service account.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="pydrive2.auth.GoogleAuth">
+<em class="property">class </em><code class="sig-prename descclassname">pydrive2.auth.</code><code class="sig-name descname">GoogleAuth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">settings_file</span><span class="o">=</span><span class="default_value">'settings.yaml'</span></em>, <em class="sig-param"><span class="n">http_timeout</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.auth.GoogleAuth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pydrive2.apiattr.ApiAttributeMixin" title="pydrive2.apiattr.ApiAttributeMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydrive2.apiattr.ApiAttributeMixin</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Wrapper class for oauth2client library in google-api-python-client.</p>
+<p>Loads all settings and credentials from one ‘settings.yaml’ file
+and performs common OAuth2.0 related functionality such as authentication
+and authorization.</p>
+<dl class="py method">
+<dt id="pydrive2.auth.GoogleAuth.Auth">
+<code class="sig-name descname">Auth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">code</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.auth.GoogleAuth.Auth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Authenticate, authorize, and build service.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>code</strong> (<em>str.</em>) – Code for authentication.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p>AuthenticationError</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydrive2.auth.GoogleAuth.Authenticate">
+<code class="sig-name descname">Authenticate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">code</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.auth.GoogleAuth.Authenticate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Authenticates given authentication code back from user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>code</strong> (<em>str.</em>) – Code for authentication.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p>AuthenticationError</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydrive2.auth.GoogleAuth.Authorize">
+<code class="sig-name descname">Authorize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.auth.GoogleAuth.Authorize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Authorizes and builds service.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p>AuthenticationError</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pydrive2.auth.GoogleAuth.CLIENT_CONFIGS_LIST">
+<code class="sig-name descname">CLIENT_CONFIGS_LIST</code><em class="property"> = ['client_id', 'client_secret', 'auth_uri', 'token_uri', 'revoke_uri', 'redirect_uri']</em><a class="headerlink" href="#pydrive2.auth.GoogleAuth.CLIENT_CONFIGS_LIST" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydrive2.auth.GoogleAuth.CommandLineAuth">
+<code class="sig-name descname">CommandLineAuth</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.auth.GoogleAuth.CommandLineAuth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Authenticate and authorize from user by printing authentication url
+retrieving authentication code from command-line.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>str – code returned from commandline.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pydrive2.auth.GoogleAuth.DEFAULT_SETTINGS">
+<code class="sig-name descname">DEFAULT_SETTINGS</code><em class="property"> = {'client_config_backend': 'file', 'client_config_file': 'client_secrets.json', 'oauth_scope': ['https://www.googleapis.com/auth/drive'], 'save_credentials': False}</em><a class="headerlink" href="#pydrive2.auth.GoogleAuth.DEFAULT_SETTINGS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydrive2.auth.GoogleAuth.GetAuthUrl">
+<code class="sig-name descname">GetAuthUrl</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.auth.GoogleAuth.GetAuthUrl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates authentication url where user visits to grant access.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>str – Authentication url.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydrive2.auth.GoogleAuth.GetFlow">
+<code class="sig-name descname">GetFlow</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.auth.GoogleAuth.GetFlow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets Flow object from client configuration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p>InvalidConfigError</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydrive2.auth.GoogleAuth.Get_Http_Object">
+<code class="sig-name descname">Get_Http_Object</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.auth.GoogleAuth.Get_Http_Object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create and authorize an httplib2.Http object. Necessary for
+thread-safety.
+:return: The http object to be used in each call.
+:rtype: httplib2.Http</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydrive2.auth.GoogleAuth.LoadClientConfig">
+<code class="sig-name descname">LoadClientConfig</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">backend</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.auth.GoogleAuth.LoadClientConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads client configuration according to specified backend.</p>
+<p>If you have any specific backend to load client configuration from in mind,
+don’t use this function and use the corresponding function you want.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>backend</strong> (<em>str.</em>) – backend to load client configuration from.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p>InvalidConfigError</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydrive2.auth.GoogleAuth.LoadClientConfigFile">
+<code class="sig-name descname">LoadClientConfigFile</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">client_config_file</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.auth.GoogleAuth.LoadClientConfigFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads client configuration file downloaded from APIs console.</p>
+<p>Loads client config file from path in settings if not specified.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>client_config_file</strong> (<em>str.</em>) – path of client config file to read.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p>InvalidConfigError</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydrive2.auth.GoogleAuth.LoadClientConfigSettings">
+<code class="sig-name descname">LoadClientConfigSettings</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.auth.GoogleAuth.LoadClientConfigSettings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads client configuration from settings file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p>InvalidConfigError</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydrive2.auth.GoogleAuth.LoadCredentials">
+<code class="sig-name descname">LoadCredentials</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">backend</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.auth.GoogleAuth.LoadCredentials" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads credentials or create empty credentials if it doesn’t exist.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>backend</strong> (<em>str.</em>) – target backend to save credential to.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p>InvalidConfigError</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydrive2.auth.GoogleAuth.LoadCredentialsFile">
+<code class="sig-name descname">LoadCredentialsFile</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">credentials_file</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.auth.GoogleAuth.LoadCredentialsFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads credentials or create empty credentials if it doesn’t exist.</p>
+<p>Loads credentials file from path in settings if not specified.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>credentials_file</strong> (<em>str.</em>) – path of credentials file to read.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p>InvalidConfigError, InvalidCredentialsError</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydrive2.auth.GoogleAuth.LoadServiceConfigSettings">
+<code class="sig-name descname">LoadServiceConfigSettings</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.auth.GoogleAuth.LoadServiceConfigSettings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads client configuration from settings file.
+:raises: InvalidConfigError</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydrive2.auth.GoogleAuth.LocalWebserverAuth">
+<code class="sig-name descname">LocalWebserverAuth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">host_name</span><span class="o">=</span><span class="default_value">'localhost'</span></em>, <em class="sig-param"><span class="n">port_numbers</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.auth.GoogleAuth.LocalWebserverAuth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Authenticate and authorize from user by creating local web server and
+retrieving authentication code.</p>
+<p>This function is not for web server application. It creates local web server
+for user from standalone application.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>host_name</strong> (<em>str.</em>) – host name of the local web server.</p></li>
+<li><p><strong>port_numbers</strong> (<em>list.</em>) – list of port numbers to be tried to used.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>str – code returned from local web server</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p>AuthenticationRejected, AuthenticationError</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydrive2.auth.GoogleAuth.Refresh">
+<code class="sig-name descname">Refresh</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.auth.GoogleAuth.Refresh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Refreshes the access_token.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p>RefreshError</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pydrive2.auth.GoogleAuth.SERVICE_CONFIGS_LIST">
+<code class="sig-name descname">SERVICE_CONFIGS_LIST</code><em class="property"> = ['client_service_email', 'client_user_email', 'client_pkcs12_file_path']</em><a class="headerlink" href="#pydrive2.auth.GoogleAuth.SERVICE_CONFIGS_LIST" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydrive2.auth.GoogleAuth.SaveCredentials">
+<code class="sig-name descname">SaveCredentials</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">backend</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.auth.GoogleAuth.SaveCredentials" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves credentials according to specified backend.</p>
+<p>If you have any specific credentials backend in mind, don’t use this
+function and use the corresponding function you want.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>backend</strong> (<em>str.</em>) – backend to save credentials.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p>InvalidConfigError</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydrive2.auth.GoogleAuth.SaveCredentialsFile">
+<code class="sig-name descname">SaveCredentialsFile</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">credentials_file</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.auth.GoogleAuth.SaveCredentialsFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves credentials to the file in JSON format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>credentials_file</strong> (<em>str.</em>) – destination to save file to.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p>InvalidConfigError, InvalidCredentialsError</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydrive2.auth.GoogleAuth.ServiceAuth">
+<code class="sig-name descname">ServiceAuth</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.auth.GoogleAuth.ServiceAuth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Authenticate and authorize using P12 private key, client id
+and client email for a Service account.
+:raises: AuthError, InvalidConfigError</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydrive2.auth.GoogleAuth.access_token_expired">
+<em class="property">property </em><code class="sig-name descname">access_token_expired</code><a class="headerlink" href="#pydrive2.auth.GoogleAuth.access_token_expired" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if access token doesn’t exist or is expired.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>bool – True if access token doesn’t exist or is expired.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pydrive2.auth.GoogleAuth.auth_method">
+<code class="sig-name descname">auth_method</code><a class="headerlink" href="#pydrive2.auth.GoogleAuth.auth_method" title="Permalink to this definition">¶</a></dt>
+<dd><p>A data descriptor that sets and returns values.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pydrive2.auth.GoogleAuth.client_config">
+<code class="sig-name descname">client_config</code><a class="headerlink" href="#pydrive2.auth.GoogleAuth.client_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>A data descriptor that sets and returns values.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pydrive2.auth.GoogleAuth.credentials">
+<code class="sig-name descname">credentials</code><a class="headerlink" href="#pydrive2.auth.GoogleAuth.credentials" title="Permalink to this definition">¶</a></dt>
+<dd><p>A data descriptor that sets and returns values.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pydrive2.auth.GoogleAuth.flow">
+<code class="sig-name descname">flow</code><a class="headerlink" href="#pydrive2.auth.GoogleAuth.flow" title="Permalink to this definition">¶</a></dt>
+<dd><p>A data descriptor that sets and returns values.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pydrive2.auth.GoogleAuth.http">
+<code class="sig-name descname">http</code><a class="headerlink" href="#pydrive2.auth.GoogleAuth.http" title="Permalink to this definition">¶</a></dt>
+<dd><p>A data descriptor that sets and returns values.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pydrive2.auth.GoogleAuth.service">
+<code class="sig-name descname">service</code><a class="headerlink" href="#pydrive2.auth.GoogleAuth.service" title="Permalink to this definition">¶</a></dt>
+<dd><p>A data descriptor that sets and returns values.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pydrive2.auth.GoogleAuth.settings">
+<code class="sig-name descname">settings</code><a class="headerlink" href="#pydrive2.auth.GoogleAuth.settings" title="Permalink to this definition">¶</a></dt>
+<dd><p>A data descriptor that sets and returns values.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt id="pydrive2.auth.InvalidCredentialsError">
+<em class="property">exception </em><code class="sig-prename descclassname">pydrive2.auth.</code><code class="sig-name descname">InvalidCredentialsError</code><a class="headerlink" href="#pydrive2.auth.InvalidCredentialsError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">OSError</span></code></p>
+<p>Error trying to read credentials file.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pydrive2.auth.LoadAuth">
+<code class="sig-prename descclassname">pydrive2.auth.</code><code class="sig-name descname">LoadAuth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">decoratee</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.auth.LoadAuth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorator to check if the auth is valid and loads auth if not.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="pydrive2.auth.RefreshError">
+<em class="property">exception </em><code class="sig-prename descclassname">pydrive2.auth.</code><code class="sig-name descname">RefreshError</code><a class="headerlink" href="#pydrive2.auth.RefreshError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pydrive2.auth.AuthError" title="pydrive2.auth.AuthError"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydrive2.auth.AuthError</span></code></a></p>
+<p>Access token refresh error.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pydrive2.drive">
+<span id="pydrive2-drive-module"></span><h2>pydrive2.drive module<a class="headerlink" href="#module-pydrive2.drive" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="pydrive2.drive.GoogleDrive">
+<em class="property">class </em><code class="sig-prename descclassname">pydrive2.drive.</code><code class="sig-name descname">GoogleDrive</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">auth</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.drive.GoogleDrive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pydrive2.apiattr.ApiAttributeMixin" title="pydrive2.apiattr.ApiAttributeMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydrive2.apiattr.ApiAttributeMixin</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Main Google Drive class.</p>
+<dl class="py method">
+<dt id="pydrive2.drive.GoogleDrive.CreateFile">
+<code class="sig-name descname">CreateFile</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">metadata</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.drive.GoogleDrive.CreateFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an instance of GoogleDriveFile with auth of this instance.</p>
+<p>This method would not upload a file to GoogleDrive.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>metadata</strong> (<em>dict.</em>) – file resource to initialize GoogleDriveFile with.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>pydrive2.files.GoogleDriveFile – initialized with auth of this
+instance.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydrive2.drive.GoogleDrive.GetAbout">
+<code class="sig-name descname">GetAbout</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.drive.GoogleDrive.GetAbout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return information about the Google Drive of the auth instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A dictionary of Google Drive information like user, usage, quota etc.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydrive2.drive.GoogleDrive.ListFile">
+<code class="sig-name descname">ListFile</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">param</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.drive.GoogleDrive.ListFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an instance of GoogleDriveFileList with auth of this instance.</p>
+<p>This method will not fetch from Files.List().</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>param</strong> (<em>dict.</em>) – parameter to be sent to Files.List().</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>pydrive2.files.GoogleDriveFileList – initialized with auth of
+this instance.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pydrive2.files">
+<span id="pydrive2-files-module"></span><h2>pydrive2.files module<a class="headerlink" href="#module-pydrive2.files" title="Permalink to this headline">¶</a></h2>
+<dl class="py exception">
+<dt id="pydrive2.files.ApiRequestError">
+<em class="property">exception </em><code class="sig-prename descclassname">pydrive2.files.</code><code class="sig-name descname">ApiRequestError</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">http_error</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.files.ApiRequestError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">OSError</span></code></p>
+<dl class="py method">
+<dt id="pydrive2.files.ApiRequestError.GetField">
+<code class="sig-name descname">GetField</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">field</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.files.ApiRequestError.GetField" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the <cite>field</cite> from the first error</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt id="pydrive2.files.FileNotDownloadableError">
+<em class="property">exception </em><code class="sig-prename descclassname">pydrive2.files.</code><code class="sig-name descname">FileNotDownloadableError</code><a class="headerlink" href="#pydrive2.files.FileNotDownloadableError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">RuntimeError</span></code></p>
+<p>Error trying to download file that is not downloadable.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="pydrive2.files.FileNotUploadedError">
+<em class="property">exception </em><code class="sig-prename descclassname">pydrive2.files.</code><code class="sig-name descname">FileNotUploadedError</code><a class="headerlink" href="#pydrive2.files.FileNotUploadedError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">RuntimeError</span></code></p>
+<p>Error trying to access metadata of file that is not uploaded.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="pydrive2.files.GoogleDriveFile">
+<em class="property">class </em><code class="sig-prename descclassname">pydrive2.files.</code><code class="sig-name descname">GoogleDriveFile</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">auth</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">metadata</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">uploaded</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.files.GoogleDriveFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pydrive2.apiattr.ApiAttributeMixin" title="pydrive2.apiattr.ApiAttributeMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydrive2.apiattr.ApiAttributeMixin</span></code></a>, <a class="reference internal" href="#pydrive2.apiattr.ApiResource" title="pydrive2.apiattr.ApiResource"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydrive2.apiattr.ApiResource</span></code></a></p>
+<p>Google Drive File instance.</p>
+<p>Inherits ApiResource which inherits dict.
+Can access and modify metadata like dictionary.</p>
+<dl class="py method">
+<dt id="pydrive2.files.GoogleDriveFile.Delete">
+<code class="sig-name descname">Delete</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">param</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.files.GoogleDriveFile.Delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hard-delete a file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>param</strong> (<em>dict.</em>) – additional parameter to file.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p>ApiRequestError</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydrive2.files.GoogleDriveFile.DeletePermission">
+<code class="sig-name descname">DeletePermission</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">permission_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.files.GoogleDriveFile.DeletePermission" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes the permission specified by the permission_id.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>permission_id</strong> (<em>str</em>) – The permission id.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if it succeeds.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydrive2.files.GoogleDriveFile.FetchContent">
+<code class="sig-name descname">FetchContent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mimetype</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">remove_bom</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.files.GoogleDriveFile.FetchContent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download file’s content from download_url.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p>ApiRequestError, FileNotUploadedError, FileNotDownloadableError</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydrive2.files.GoogleDriveFile.FetchMetadata">
+<code class="sig-name descname">FetchMetadata</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fields</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">fetch_all</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.files.GoogleDriveFile.FetchMetadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download file’s metadata from id using Files.get().</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fields</strong> (<em>str</em>) – The fields to include, as one string, each entry separated
+by commas, e.g. ‘fields,labels’.</p></li>
+<li><p><strong>fetch_all</strong> (<em>bool</em>) – Whether to fetch all fields.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p>ApiRequestError, FileNotUploadedError</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydrive2.files.GoogleDriveFile.GetContentFile">
+<code class="sig-name descname">GetContentFile</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em>, <em class="sig-param"><span class="n">mimetype</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">remove_bom</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">callback</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">chunksize</span><span class="o">=</span><span class="default_value">104857600</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.files.GoogleDriveFile.GetContentFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save content of this file as a local file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>str</em>) – name of the file to write to.</p></li>
+<li><p><strong>mimetype</strong> (<em>str</em>) – mimeType of the file.</p></li>
+<li><p><strong>remove_bom</strong> (<em>bool</em>) – Whether to remove the byte order marking.</p></li>
+<li><p><strong>callback</strong> – passed two arguments: (total trasferred, file size).</p></li>
+<li><p><strong>chunksize</strong> (<em>int</em>) – chunksize in bytes (standard 100 MB(1024*1024*100))</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p>ApiRequestError, FileNotUploadedError</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydrive2.files.GoogleDriveFile.GetContentIOBuffer">
+<code class="sig-name descname">GetContentIOBuffer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mimetype</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">encoding</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">remove_bom</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">chunksize</span><span class="o">=</span><span class="default_value">104857600</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.files.GoogleDriveFile.GetContentIOBuffer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a file-like object which has a buffered read() method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mimetype</strong> (<em>str</em>) – mimeType of the file.</p></li>
+<li><p><strong>encoding</strong> (<em>str</em>) – The encoding to use when decoding the byte string.</p></li>
+<li><p><strong>remove_bom</strong> (<em>bool</em>) – Whether to remove the byte order marking.</p></li>
+<li><p><strong>chunksize</strong> (<em>int</em>) – default read()/iter() chunksize.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>MediaIoReadable – file-like object.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p>ApiRequestError, FileNotUploadedError</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydrive2.files.GoogleDriveFile.GetContentString">
+<code class="sig-name descname">GetContentString</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mimetype</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">encoding</span><span class="o">=</span><span class="default_value">'utf-8'</span></em>, <em class="sig-param"><span class="n">remove_bom</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.files.GoogleDriveFile.GetContentString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get content of this file as a string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mimetype</strong> (<em>str</em>) – The mimetype of the content string.</p></li>
+<li><p><strong>encoding</strong> (<em>str</em>) – The encoding to use when decoding the byte string.</p></li>
+<li><p><strong>remove_bom</strong> (<em>bool</em>) – Whether to strip a known BOM.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>str – utf-8 decoded content of the file</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p>ApiRequestError, FileNotUploadedError, FileNotDownloadableError</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydrive2.files.GoogleDriveFile.GetPermissions">
+<code class="sig-name descname">GetPermissions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.files.GoogleDriveFile.GetPermissions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Downloads all permissions from Google Drive, as this information is
+not downloaded by FetchMetadata by default.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A list of the permission objects.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>object[]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydrive2.files.GoogleDriveFile.InsertPermission">
+<code class="sig-name descname">InsertPermission</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_permission</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.files.GoogleDriveFile.InsertPermission" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert a new permission. Re-fetches all permissions after call.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_permission</strong> (<em>object</em>) – The new permission to insert, please see the
+official Google Drive API guide on permissions.insert
+for details.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The permission object.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydrive2.files.GoogleDriveFile.SetContentFile">
+<code class="sig-name descname">SetContentFile</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.files.GoogleDriveFile.SetContentFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set content of this file from a file.</p>
+<p>Opens the file specified by this method.
+Will be read, uploaded, and closed by Upload() method.
+Sets metadata ‘title’ and ‘mimeType’ automatically if not specified.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filename</strong> (<em>str.</em>) – name of the file to be uploaded.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydrive2.files.GoogleDriveFile.SetContentString">
+<code class="sig-name descname">SetContentString</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">content</span></em>, <em class="sig-param"><span class="n">encoding</span><span class="o">=</span><span class="default_value">'utf-8'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.files.GoogleDriveFile.SetContentString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set content of this file to be a string.</p>
+<p>Creates io.BytesIO instance of utf-8 encoded string.
+Sets mimeType to be ‘text/plain’ if not specified.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>encoding</strong> (<em>str</em>) – The encoding to use when setting the content of this file.</p></li>
+<li><p><strong>content</strong> (<em>str</em>) – content of the file in string.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydrive2.files.GoogleDriveFile.Trash">
+<code class="sig-name descname">Trash</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">param</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.files.GoogleDriveFile.Trash" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move a file to the trash.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p>ApiRequestError</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydrive2.files.GoogleDriveFile.UnTrash">
+<code class="sig-name descname">UnTrash</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">param</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.files.GoogleDriveFile.UnTrash" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move a file out of the trash.
+:param param: Additional parameter to file.
+:type param: dict.
+:raises: ApiRequestError</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pydrive2.files.GoogleDriveFile.Upload">
+<code class="sig-name descname">Upload</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">param</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.files.GoogleDriveFile.Upload" title="Permalink to this definition">¶</a></dt>
+<dd><p>Upload/update file by choosing the most efficient method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>param</strong> (<em>dict.</em>) – additional parameter to upload file.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p>ApiRequestError</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pydrive2.files.GoogleDriveFile.content">
+<code class="sig-name descname">content</code><a class="headerlink" href="#pydrive2.files.GoogleDriveFile.content" title="Permalink to this definition">¶</a></dt>
+<dd><p>A data descriptor that sets and returns values.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pydrive2.files.GoogleDriveFile.metadata">
+<code class="sig-name descname">metadata</code><a class="headerlink" href="#pydrive2.files.GoogleDriveFile.metadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>A data descriptor that sets and returns values.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pydrive2.files.GoogleDriveFile.uploaded">
+<code class="sig-name descname">uploaded</code><a class="headerlink" href="#pydrive2.files.GoogleDriveFile.uploaded" title="Permalink to this definition">¶</a></dt>
+<dd><p>A data descriptor that sets and returns values.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="pydrive2.files.GoogleDriveFileList">
+<em class="property">class </em><code class="sig-prename descclassname">pydrive2.files.</code><code class="sig-name descname">GoogleDriveFileList</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">auth</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">param</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.files.GoogleDriveFileList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pydrive2.apiattr.ApiResourceList" title="pydrive2.apiattr.ApiResourceList"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydrive2.apiattr.ApiResourceList</span></code></a></p>
+<p>Google Drive FileList instance.</p>
+<p>Equivalent to Files.list() in Drive APIs.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="pydrive2.files.IoBuffer">
+<em class="property">class </em><code class="sig-prename descclassname">pydrive2.files.</code><code class="sig-name descname">IoBuffer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">encoding</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.files.IoBuffer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Lightweight retention of one chunk.</p>
+<dl class="py method">
+<dt id="pydrive2.files.IoBuffer.read">
+<code class="sig-name descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.files.IoBuffer.read" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pydrive2.files.IoBuffer.write">
+<code class="sig-name descname">write</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">chunk</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.files.IoBuffer.write" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="pydrive2.files.LoadMetadata">
+<code class="sig-prename descclassname">pydrive2.files.</code><code class="sig-name descname">LoadMetadata</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">decoratee</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.files.LoadMetadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorator to check if the file has metadata and fetches it if not.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p>ApiRequestError, FileNotUploadedError</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt id="pydrive2.files.MediaIoReadable">
+<em class="property">class </em><code class="sig-prename descclassname">pydrive2.files.</code><code class="sig-name descname">MediaIoReadable</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em>, <em class="sig-param"><span class="n">encoding</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">pre_buffer</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">remove_prefix</span><span class="o">=</span><span class="default_value">b''</span></em>, <em class="sig-param"><span class="n">chunksize</span><span class="o">=</span><span class="default_value">104857600</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.files.MediaIoReadable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="pydrive2.files.MediaIoReadable.read">
+<code class="sig-name descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.files.MediaIoReadable.read" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>bytes or str – chunk (or None if done)</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p>ApiRequestError</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pydrive2.settings">
+<span id="pydrive2-settings-module"></span><h2>pydrive2.settings module<a class="headerlink" href="#module-pydrive2.settings" title="Permalink to this headline">¶</a></h2>
+<dl class="py exception">
+<dt id="pydrive2.settings.InvalidConfigError">
+<em class="property">exception </em><code class="sig-prename descclassname">pydrive2.settings.</code><code class="sig-name descname">InvalidConfigError</code><a class="headerlink" href="#pydrive2.settings.InvalidConfigError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">OSError</span></code></p>
+<p>Error trying to read client configuration.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pydrive2.settings.LoadSettingsFile">
+<code class="sig-prename descclassname">pydrive2.settings.</code><code class="sig-name descname">LoadSettingsFile</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span><span class="o">=</span><span class="default_value">'settings.yaml'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.settings.LoadSettingsFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads settings file in yaml format given file name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filename</strong> (<em>str.</em>) – path for settings file. ‘settings.yaml’ by default.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p>SettingsError</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="pydrive2.settings.SettingsError">
+<em class="property">exception </em><code class="sig-prename descclassname">pydrive2.settings.</code><code class="sig-name descname">SettingsError</code><a class="headerlink" href="#pydrive2.settings.SettingsError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">OSError</span></code></p>
+<p>Error while loading/saving settings</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pydrive2.settings.ValidateSettings">
+<code class="sig-prename descclassname">pydrive2.settings.</code><code class="sig-name descname">ValidateSettings</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydrive2.settings.ValidateSettings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validates if current settings is valid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>dict.</em>) – dictionary containing all settings.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p>InvalidConfigError</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="filelist.html" class="btn btn-neutral float-left" title="File listing made easy" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, JunYoung Gwak, Scott Blevins, Robin Nabel, Google Inc., Iterative Inc
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
