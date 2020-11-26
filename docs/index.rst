@@ -12,8 +12,8 @@ Project Info
 ============
 
 - Homepage: `https://pypi.python.org/pypi/PyDrive <https://pypi.python.org/pypi/PyDrive>`_
-- Documentation: `Official documentation on GitHub pages <https://gsuitedevs.github.io/PyDrive/docs/build/html/index.html>`_
-- Github: `https://github.com/gsuitedevs/PyDrive <https://github.com/gsuitedevs/PyDrive>`_
+- Documentation: `Official documentation on GitHub pages <https://googleworkspace.github.io/PyDrive/docs/build/html/index.html>`_
+- Github: `https://github.com/googleworkspace/PyDrive <https://github.com/googleworkspace/PyDrive>`_
 
 How to install
 ==============
@@ -28,7 +28,7 @@ To install the current development version from GitHub, use:
 
 ::
 
-    $ pip install git+https://github.com/gsuitedevs/PyDrive.git#egg=PyDrive
+    $ pip install git+https://github.com/googleworkspace/PyDrive.git#egg=PyDrive
 
 Table of Contents
 =================
