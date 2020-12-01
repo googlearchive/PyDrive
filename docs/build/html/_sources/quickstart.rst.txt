@@ -34,8 +34,8 @@ Run this code with *python quickstart.py* and you will see a web browser asking 
 .. _`APIs Console`: https://console.developers.google.com/iam-admin/projects
 .. _`OAuth made easy`: ./oauth.html
 
-Creating and updating file
---------------------------
+Creating and Updating Files
+---------------------------
 
 There are many methods to create and update file metadata and contents. With *PyDrive2*, all you have to know is
 `Upload()`_ method which makes optimal API call for you. Add the following code to your *quickstart.py* and run it.
@@ -57,8 +57,8 @@ This code will create a new file with title *Hello.txt* and its content *Hello W
 .. _`Google Drive`: https://drive.google.com
 .. _`File management made easy`: ./filemanagement.html
 
-Getting list of files
----------------------
+Listing Files
+-------------
 
 *PyDrive2* handles paginations and parses response as list of `GoogleDriveFile`_. Let's get title and id of all the files in the root folder of Google Drive. Again, add the following code to *quickstart.py* and execute it.
 
@@ -84,23 +84,26 @@ GoogleDrive treats everything as a file and assigns different mimetypes for diff
       return newFolder
 
 
-Get Id of the title
--------------------
+Return File ID via File Title
+-----------------------------
 
-``get_id_of_title`` is a function that return id of the given title's file in the directory.
+A common task is providing the Google Drive API with a file id.
+``get_id_of_title`` demonstrates a simple workflow to return the id of a file handle by searching the file titles in a
+given directory. The function takes two arguments, ``title`` and ``parent_directory_id``. ``title`` is a string that
+will be compared against file titles included in a directory identified by the ``parent_directory_id``.
 
 .. code-block:: python
 
     def get_id_of_title(title,parent_directory_id):
       foldered_list=drive.ListFile({'q':  "'"+parent_directory_id+"' in parents and trashed=false"}).GetList()
       for file in foldered_list:
-      if(file['title']==title):
-        return file['id']
-      return None
+        if(file['title']==title):
+          return file['id']
+        return None
 
-folder browser
+Browse Folders
 --------------
-This return a json output of the data in the directory with some important attributes like size, title, parent_id etc
+This returns a json output of the data in a directory with some important attributes like size, title, parent_id.
 
 .. code-block:: python
 
@@ -136,7 +139,7 @@ This return a json output of the data in the directory with some important attri
 
 here ``folder_list`` is the list of folders that is present
 
-You will see title and id of all the files and folders in root folder of your Google Drive. For more details, take a look at documentation: `File listing made easy`_
+You will see title and id of all the files and folders in root folder of your Google Drive. For more details, refer to the documentation: `File listing made easy`_
 
 .. _`GoogleDriveFile`: ./pydrive2.html#pydrive2.files.GoogleDriveFile
 .. _`File listing made easy`: ./filelist.html

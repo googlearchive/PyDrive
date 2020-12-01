@@ -89,11 +89,11 @@
               <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Quickstart</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#authentication">Authentication</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#creating-and-updating-file">Creating and updating file</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#getting-list-of-files">Getting list of files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#creating-and-updating-files">Creating and Updating Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#listing-files">Listing Files</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#creating-a-folder">Creating a Folder</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#get-id-of-the-title">Get Id of the title</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#folder-browser">folder browser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#return-file-id-via-file-title">Return File ID via File Title</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#browse-folders">Browse Folders</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="oauth.html">OAuth made easy</a></li>
@@ -198,8 +198,8 @@
 </div>
 <p>Run this code with <em>python quickstart.py</em> and you will see a web browser asking you for authentication. Click <em>Accept</em> and you are done with authentication. For more details, take a look at documentation: <a class="reference external" href="./oauth.html">OAuth made easy</a></p>
 </div>
-<div class="section" id="creating-and-updating-file">
-<h2>Creating and updating file<a class="headerlink" href="#creating-and-updating-file" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="creating-and-updating-files">
+<h2>Creating and Updating Files<a class="headerlink" href="#creating-and-updating-files" title="Permalink to this headline">¶</a></h2>
 <p>There are many methods to create and update file metadata and contents. With <em>PyDrive2</em>, all you have to know is
 <a class="reference external" href="./pydrive2.html#pydrive2.files.GoogleDriveFile.Upload">Upload()</a> method which makes optimal API call for you. Add the following code to your <em>quickstart.py</em> and run it.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pydrive2.drive</span> <span class="kn">import</span> <span class="n">GoogleDrive</span>
@@ -216,8 +216,8 @@
 </dd>
 </dl>
 </div>
-<div class="section" id="getting-list-of-files">
-<h2>Getting list of files<a class="headerlink" href="#getting-list-of-files" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="listing-files">
+<h2>Listing Files<a class="headerlink" href="#listing-files" title="Permalink to this headline">¶</a></h2>
 <p><em>PyDrive2</em> handles paginations and parses response as list of <a class="reference external" href="./pydrive2.html#pydrive2.files.GoogleDriveFile">GoogleDriveFile</a>. Let’s get title and id of all the files in the root folder of Google Drive. Again, add the following code to <em>quickstart.py</em> and execute it.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Auto-iterate through all files that matches this query</span>
 <span class="n">file_list</span> <span class="o">=</span> <span class="n">drive</span><span class="o">.</span><span class="n">ListFile</span><span class="p">({</span><span class="s1">&#39;q&#39;</span><span class="p">:</span> <span class="s2">&quot;&#39;root&#39; in parents and trashed=false&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">GetList</span><span class="p">()</span>
@@ -240,21 +240,24 @@
 </pre></div>
 </div>
 </div>
-<div class="section" id="get-id-of-the-title">
-<h2>Get Id of the title<a class="headerlink" href="#get-id-of-the-title" title="Permalink to this headline">¶</a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">get_id_of_title</span></code> is a function that return id of the given title’s file in the directory.</p>
+<div class="section" id="return-file-id-via-file-title">
+<h2>Return File ID via File Title<a class="headerlink" href="#return-file-id-via-file-title" title="Permalink to this headline">¶</a></h2>
+<p>A common task is providing the Google Drive API with a file id.
+<code class="docutils literal notranslate"><span class="pre">get_id_of_title</span></code> demonstrates a simple workflow to return the id of a file handle by searching the file titles in a
+given directory. The function takes two arguments, <code class="docutils literal notranslate"><span class="pre">title</span></code> and <code class="docutils literal notranslate"><span class="pre">parent_directory_id</span></code>. <code class="docutils literal notranslate"><span class="pre">title</span></code> is a string that
+will be compared against file titles included in a directory identified by the <code class="docutils literal notranslate"><span class="pre">parent_directory_id</span></code>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_id_of_title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span><span class="n">parent_directory_id</span><span class="p">):</span>
   <span class="n">foldered_list</span><span class="o">=</span><span class="n">drive</span><span class="o">.</span><span class="n">ListFile</span><span class="p">({</span><span class="s1">&#39;q&#39;</span><span class="p">:</span>  <span class="s2">&quot;&#39;&quot;</span><span class="o">+</span><span class="n">parent_directory_id</span><span class="o">+</span><span class="s2">&quot;&#39; in parents and trashed=false&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">GetList</span><span class="p">()</span>
   <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">foldered_list</span><span class="p">:</span>
-  <span class="k">if</span><span class="p">(</span><span class="n">file</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">title</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">file</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
-  <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">file</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">title</span><span class="p">):</span>
+      <span class="k">return</span> <span class="n">file</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="kc">None</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="folder-browser">
-<h2>folder browser<a class="headerlink" href="#folder-browser" title="Permalink to this headline">¶</a></h2>
-<p>This return a json output of the data in the directory with some important attributes like size, title, parent_id etc</p>
+<div class="section" id="browse-folders">
+<h2>Browse Folders<a class="headerlink" href="#browse-folders" title="Permalink to this headline">¶</a></h2>
+<p>This returns a json output of the data in a directory with some important attributes like size, title, parent_id.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">browsed</span><span class="o">=</span><span class="p">[]</span>
 <span class="k">def</span> <span class="nf">folder_browser</span><span class="p">(</span><span class="n">folder_list</span><span class="p">,</span><span class="n">parent_id</span><span class="p">):</span>
   <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">folder_list</span><span class="p">:</span>
@@ -287,7 +290,7 @@
 </pre></div>
 </div>
 <p>here <code class="docutils literal notranslate"><span class="pre">folder_list</span></code> is the list of folders that is present</p>
-<p>You will see title and id of all the files and folders in root folder of your Google Drive. For more details, take a look at documentation: <a class="reference external" href="./filelist.html">File listing made easy</a></p>
+<p>You will see title and id of all the files and folders in root folder of your Google Drive. For more details, refer to the documentation: <a class="reference external" href="./filelist.html">File listing made easy</a></p>
 </div>
 </div>
 
