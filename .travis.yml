@@ -30,15 +30,18 @@ jobs:
     stage: test
     os: windows
     language: shell
-  - name: "3.5 on Linux"
-    language: python
-    python: 3.5
   - name: "3.6 on Linux"
     language: python
     python: 3.6
   - name: "3.7 on Linux"
     language: python
     python: 3.7
+  - name: "3.8 on Linux"
+    language: python
+    python: 3.8
+  - name: "3.9 on Linux"
+    language: python
+    python: 3.9
   - name: "3.7 on Mac"
     os: osx
     osx_image: xcode11.3
