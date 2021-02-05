@@ -575,14 +575,34 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
 
     @LoadAuth
     def GetPermissions(self):
-        """Downloads all permissions from Google Drive, as this information is
-    not downloaded by FetchMetadata by default.
+        """Get file's or shared drive's permissions.
+
+    For files in a shared drive, at most 100 results will be returned.
+    It doesn't paginate and collect all results.
 
     :return: A list of the permission objects.
     :rtype: object[]
     """
-        self.FetchMetadata(fields="permissions")
-        return self.metadata.get("permissions")
+        file_id = self.metadata.get("id") or self.get("id")
+
+        # We can't do FetchMetada call (which would nicely update
+        # local metada cache, etc) here since it  doesn't return
+        # permissions for the team drive use case.
+        permissions = (
+            self.auth.service.permissions()
+            .list(
+                fileId=file_id,
+                # Teamdrive support
+                supportsAllDrives=True,
+            )
+            .execute(http=self.http)
+        ).get("items")
+
+        if permissions:
+            self["permissions"] = permissions
+            self.metadata["permissions"] = permissions
+
+        return permissions
 
     def DeletePermission(self, permission_id):
         """Deletes the permission specified by the permission_id.
