@@ -161,11 +161,7 @@ class GoogleAuth(ApiAttributeMixin, object):
         "revoke_uri",
         "redirect_uri",
     ]
-    SERVICE_CONFIGS_LIST = [
-        "client_service_email",
-        "client_user_email",
-        "client_pkcs12_file_path",
-    ]
+    SERVICE_CONFIGS_LIST = ["client_user_email"]
     settings = ApiAttribute("settings")
     client_config = ApiAttribute("client_config")
     flow = ApiAttribute("flow")
@@ -296,14 +292,21 @@ class GoogleAuth(ApiAttributeMixin, object):
         if set(self.SERVICE_CONFIGS_LIST) - set(self.client_config):
             self.LoadServiceConfigSettings()
         scopes = scopes_to_string(self.settings["oauth_scope"])
+        client_service_json = self.client_config.get("client_json_file_path")
+        if client_service_json:
+            self.credentials = ServiceAccountCredentials.from_json_keyfile_name(
+                filename=client_service_json, scopes=scopes
+            )
+        else:
+            service_email = self.client_config["client_service_email"]
+            file_path = self.client_config["client_pkcs12_file_path"]
+            self.credentials = ServiceAccountCredentials.from_p12_keyfile(
+                service_account_email=service_email,
+                filename=file_path,
+                scopes=scopes,
+            )
+
         user_email = self.client_config.get("client_user_email")
-        service_email = self.client_config["client_service_email"]
-        file_path = self.client_config["client_pkcs12_file_path"]
-        self.credentials = ServiceAccountCredentials.from_p12_keyfile(
-            service_account_email=service_email,
-            filename=file_path,
-            scopes=scopes,
-        )
         if user_email:
             self.credentials = self.credentials.create_delegated(
                 sub=user_email
@@ -322,6 +325,8 @@ class GoogleAuth(ApiAttributeMixin, object):
                 raise InvalidConfigError("Please specify credential backend")
         if backend == "file":
             self.LoadCredentialsFile()
+        elif backend == "json":
+            self.LoadCredentialsFileJson()
         else:
             raise InvalidConfigError("Unknown save_credentials_backend")
 
@@ -347,6 +352,19 @@ class GoogleAuth(ApiAttributeMixin, object):
             raise InvalidCredentialsError(
                 "Credentials file cannot be symbolic link"
             )
+
+    def LoadCredentialsFileJson(self, credentials_file=None):
+        if credentials_file is None:
+            credentials_file = self.settings.get("save_credentials_file")
+            if credentials_file is None:
+                raise InvalidConfigError(
+                    "Please specify credentials file to read"
+                )
+
+        scopes = scopes_to_string(self.settings["oauth_scope"])
+        self.credentials = ServiceAccountCredentials.from_json_keyfile_name(
+            filename=credentials_file, scopes=scopes
+        )
 
     def SaveCredentials(self, backend=None):
         """Saves credentials according to specified backend.
@@ -471,6 +489,21 @@ class GoogleAuth(ApiAttributeMixin, object):
         """Loads client configuration from settings file.
     :raises: InvalidConfigError
     """
+        for file_format in ["json", "pkcs12"]:
+            config = f"client_{file_format}_file_path"
+            value = self.settings["service_config"].get(config)
+            if value:
+                self.client_config[config] = value
+                break
+        else:
+            raise InvalidConfigError(
+                "Either json or pkcs12 file path required "
+                "for service authentication"
+            )
+
+        if file_format == "pkcs12":
+            self.SERVICE_CONFIGS_LIST.append("client_service_email")
+
         for config in self.SERVICE_CONFIGS_LIST:
             try:
                 self.client_config[config] = self.settings["service_config"][
@@ -516,7 +549,7 @@ class GoogleAuth(ApiAttributeMixin, object):
             self.client_config["client_id"],
             self.client_config["client_secret"],
             scopes_to_string(self.settings["oauth_scope"]),
-            **constructor_kwargs
+            **constructor_kwargs,
         )
         if self.settings.get("get_refresh_token"):
             self.flow.params.update(

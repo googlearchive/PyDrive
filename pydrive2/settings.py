@@ -72,8 +72,9 @@ SETTINGS_STRUCT = {
                 "required": True,
                 "default": None,
             },
-            "client_service_email": {"type": str, "required": True},
-            "client_pkcs12_file_path": {"type": str, "required": True},
+            "client_service_email": {"type": str, "required": False},
+            "client_pkcs12_file_path": {"type": str, "required": False},
+            "client_json_file_path": {"type": str, "required": False},
         },
     },
     "oauth_scope": {

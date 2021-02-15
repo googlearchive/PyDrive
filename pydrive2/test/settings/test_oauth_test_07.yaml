@@ -4,7 +4,7 @@ service_config:
 
 save_credentials: True
 save_credentials_backend: json
-save_credentials_file: credentials/default.dat
+save_credentials_file: credentials/7.dat
 
 oauth_scope:
   - https://www.googleapis.com/auth/drive
