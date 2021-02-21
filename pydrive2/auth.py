@@ -542,6 +542,7 @@ class GoogleAuth(ApiAttributeMixin, object):
             "redirect_uri": self.client_config["redirect_uri"],
             "auth_uri": self.client_config["auth_uri"],
             "token_uri": self.client_config["token_uri"],
+            "access_type": "online",
         }
         if self.client_config["revoke_uri"] is not None:
             constructor_kwargs["revoke_uri"] = self.client_config["revoke_uri"]
