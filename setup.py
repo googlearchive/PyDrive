@@ -26,7 +26,7 @@ setup(
     description="Google Drive API made easy. Maintained fork of PyDrive.",
     long_description=open("README.rst").read(),
     install_requires=[
-        "google-api-python-client >= 1.12.5",
+        "google-api-python-client >= 1.12.5, <2",
         "six >= 1.13.0",
         "oauth2client >= 4.0.0",
         "PyYAML >= 3.0",
