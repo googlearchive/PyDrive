@@ -1,6 +1,6 @@
 client_config_backend: service
 service_config:
-  client_json_file_path: your-file-path.json
+  client_json_file_path: /tmp/pydrive2/credentials.json
 
 save_credentials: True
 save_credentials_backend: file

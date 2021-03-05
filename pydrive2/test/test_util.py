@@ -11,7 +11,7 @@ from shutil import copyfile, rmtree
 newline_pattern = re.compile(r"[\r\n]")
 
 GDRIVE_USER_CREDENTIALS_DATA = "GDRIVE_USER_CREDENTIALS_DATA"
-DEFAULT_USER_CREDENTIALS_FILE = "credentials/default.dat"
+DEFAULT_USER_CREDENTIALS_FILE = "/tmp/pydrive2/credentials.json"
 
 TESTS_ROOTDIR = os.path.dirname(__file__)
 SETTINGS_PATH = posixpath.join(TESTS_ROOTDIR, "settings/")
