@@ -3,7 +3,7 @@ service_config:
   client_json_file_path: your-file-path.json
 
 save_credentials: True
-save_credentials_backend: json
+save_credentials_backend: file
 save_credentials_file: credentials/7.dat
 
 oauth_scope:

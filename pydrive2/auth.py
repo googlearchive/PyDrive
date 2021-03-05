@@ -325,8 +325,6 @@ class GoogleAuth(ApiAttributeMixin, object):
                 raise InvalidConfigError("Please specify credential backend")
         if backend == "file":
             self.LoadCredentialsFile()
-        elif backend == "json":
-            self.LoadCredentialsFileJson()
         else:
             raise InvalidConfigError("Unknown save_credentials_backend")
 
@@ -352,19 +350,6 @@ class GoogleAuth(ApiAttributeMixin, object):
             raise InvalidCredentialsError(
                 "Credentials file cannot be symbolic link"
             )
-
-    def LoadCredentialsFileJson(self, credentials_file=None):
-        if credentials_file is None:
-            credentials_file = self.settings.get("save_credentials_file")
-            if credentials_file is None:
-                raise InvalidConfigError(
-                    "Please specify credentials file to read"
-                )
-
-        scopes = scopes_to_string(self.settings["oauth_scope"])
-        self.credentials = ServiceAccountCredentials.from_json_keyfile_name(
-            filename=credentials_file, scopes=scopes
-        )
 
     def SaveCredentials(self, backend=None):
         """Saves credentials according to specified backend.
