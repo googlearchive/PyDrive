@@ -83,12 +83,12 @@ class GoogleAuthTest(unittest.TestCase):
         time.sleep(1)
 
     def test_07_ServiceAuthFromSavedCredentialsJsonFile(self):
-        # Have an initial out so that credentials/7.dat gets saved
+        # Have an initial auth so that credentials/7.dat gets saved
         ga = GoogleAuth(settings_file_path("test_oauth_test_07.yaml"))
         ga.ServiceAuth()
         self.assertTrue(os.path.exists(ga.settings["save_credentials_file"]))
 
-        # Secondary out should be made only using the previously saved
+        # Secondary auth should be made only using the previously saved
         # login info
         ga = GoogleAuth(settings_file_path("test_oauth_test_07.yaml"))
         ga.ServiceAuth()
