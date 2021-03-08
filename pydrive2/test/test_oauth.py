@@ -1,3 +1,4 @@
+import os
 import unittest
 import time
 import pytest
@@ -82,9 +83,16 @@ class GoogleAuthTest(unittest.TestCase):
         time.sleep(1)
 
     def test_07_ServiceAuthFromSavedCredentialsJsonFile(self):
-        setup_credentials("credentials/7.dat")
+        # Have an initial auth so that credentials/7.dat gets saved
         ga = GoogleAuth(settings_file_path("test_oauth_test_07.yaml"))
         ga.ServiceAuth()
+        self.assertTrue(os.path.exists(ga.settings["save_credentials_file"]))
+
+        # Secondary auth should be made only using the previously saved
+        # login info
+        ga = GoogleAuth(settings_file_path("test_oauth_test_07.yaml"))
+        ga.ServiceAuth()
+
         self.assertEqual(ga.access_token_expired, False)
         time.sleep(1)
 
