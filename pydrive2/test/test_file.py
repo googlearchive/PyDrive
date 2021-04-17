@@ -451,6 +451,17 @@ class GoogleDriveFileTest(unittest.TestCase):
         self.assertTrue("permissions" in file1)
         pydrive_retry(file1.Delete)
 
+    def test_Files_FetchAllMetadata_Fields(self):
+        drive = GoogleDrive(self.ga)
+        file1 = drive.CreateFile()
+        pydrive_retry(file1.Upload)
+
+        pydrive_retry(file1.FetchMetadata, fetch_all=True)
+        self.assertTrue("hasThumbnail" in file1)
+        self.assertTrue("thumbnailVersion" in file1)
+        self.assertTrue("permissions" in file1)
+        pydrive_retry(file1.Delete)
+
     def test_Files_Insert_Permission(self):
         drive = GoogleDrive(self.ga)
         file1 = drive.CreateFile()

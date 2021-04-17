@@ -209,25 +209,6 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
             self.UpdateMetadata(metadata)
         elif metadata:
             self.update(metadata)
-        self._ALL_FIELDS = (
-            "alternateLink,appDataContents,"
-            "canComment,canReadRevisions,capabilities"
-            "copyable,createdDate,defaultOpenWithLink,description,"
-            "downloadUrl,editable,embedLink,etag,explicitlyTrashed,"
-            "exportLinks,fileExtension,fileSize,folderColorRgb,"
-            "fullFileExtension,hasAugmentedPermissions,"
-            "headRevisionId,iconLink,id,"
-            "imageMediaMetadata,indexableText,isAppAuthorized,kind,"
-            "labels,lastModifyingUser,lastModifyingUserName,"
-            "lastViewedByMeDate,markedViewedByMeDate,md5Checksum,"
-            "mimeType,modifiedByMeDate,modifiedDate,openWithLinks,"
-            "originalFilename,ownedByMe,ownerNames,owners,parents,"
-            "permissions,properties,quotaBytesUsed,selfLink,shareable,"
-            "shared,sharedWithMeDate,sharingUser,spaces,teamDriveId,"
-            "thumbnail,thumbnailLink,title,trashedDate,trashingUser"
-            "userPermission,version,videoMediaMetadata,webContentLink,"
-            "webViewLink,writersCanShare"
-        )
         self.has_bom = True
 
     def __getitem__(self, key):
@@ -449,7 +430,7 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
         file_id = self.metadata.get("id") or self.get("id")
 
         if fetch_all:
-            fields = self._ALL_FIELDS
+            fields = "*"
 
         if file_id:
             try:
