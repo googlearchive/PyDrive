@@ -1,3 +1,11 @@
+Deprecated
+----------
+
+This project is deprecated and no longer maintained. No further changes will be made.
+
+In one of the PyDrive `issues <https://github.com/googleworkspace/PyDrive/issues/199>`_, we learned about the `PyDrive2 <https://github.com/iterative/PyDrive2>`_ fork of PyDrive. Forks are permitted under PyDrive's `license <LICENSE>`_, and we hope that such forks will be useful for the needs of PyDrive users. The PyDrive team makes no endorsement or support promises of any particular fork, but we're excited to see the open source license being a vehicle for new project development.
+
+
 PyDrive
 -------
 
@@ -132,3 +140,5 @@ This can be done as follows:
 
 You can specify the http-object in every access method which takes a *param*
 parameter.
+
+Note: This is  not an official Google product.
