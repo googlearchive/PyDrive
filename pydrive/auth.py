@@ -529,5 +529,6 @@ class GoogleAuth(ApiAttributeMixin, object):
     :rtype: httplib2.Http
     """
     http = httplib2.Http(timeout=self.http_timeout)
+    http.redirect_codes = http.redirect_codes - {308}
     http = self.credentials.authorize(http)
     return http
