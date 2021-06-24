@@ -292,6 +292,10 @@ class GoogleDriveFile(ApiAttributeMixin, ApiResource):
         self._FilesPatch(param=param)
     else:
       self._FilesInsert(param=param)
+    try:
+        self.content.close()
+    except AttributeError:
+        pass
 
   def Trash(self, param=None):
     """Move a file to the trash.
