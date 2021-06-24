@@ -504,8 +504,10 @@ class GoogleAuth(ApiAttributeMixin, object):
     """
     if self.flow is None:
       self.GetFlow()
+    if self.http is None:
+      self.http = httplib2.Http(timeout=self.http_timeout)
     try:
-      self.credentials = self.flow.step2_exchange(code)
+      self.credentials = self.flow.step2_exchange(code, http=self.http)
     except FlowExchangeError as e:
       raise AuthenticationError('OAuth2 code exchange failed: %s' % e)
     print('Authentication successful.')
