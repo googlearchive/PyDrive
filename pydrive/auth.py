@@ -4,7 +4,7 @@ import httplib2
 import oauth2client.clientsecrets as clientsecrets
 from six.moves import input
 
-from apiclient.discovery import build
+from googleapiclient.discovery import build
 from functools import wraps
 from oauth2client.service_account import ServiceAccountCredentials
 from oauth2client.client import FlowExchangeError
